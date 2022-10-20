@@ -1,0 +1,14 @@
+torch==1.12.1
+pandas==1.5.0
+scikit-learn==1.1.2
+optuna==3.0.2
+statsmodels==0.13.2
+scipy==1.8.1
+pmdarima==2.0.1
+xgboost==1.6.2
+gpflow==2.5.2
+tensorflow==2.10.0
+tensorflow-probability==0.18
+joblib==1.2.0
+bayesian_torch
+
