@@ -5,15 +5,15 @@ from . import _stat_model
 
 class Arima(_stat_model.StatModel):
     """
-    Implementation of a class for a (Seasonal) Autoregressive Integrated Moving Average (with eXogenous factors)
-    ((S)ARIMA(X)) model.
-    See :obj:`~ForeTiS.model._base_model.BaseModel` and
-    :obj:`~ForeTiS.model._stat_model.StatModel` for more information on the attributes.
+    Implementation of a class for a (Seasonal) Autoregressive Integrated Moving Average with eXogenous factors ((S)ARIMAX) model.
+    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the attributes.
     """
 
     def define_model(self) -> pmdarima.ARIMA:
         """
-        Definition of a (S)ARIMA(X) model.
+        Definition of the actual prediction model.
+
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
         self.variance = True
 
@@ -37,8 +37,6 @@ class Arima(_stat_model.StatModel):
     def define_hyperparams_to_tune(self) -> dict:
         """
         See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
-        See :obj:`~ForeTiS.model._stat_model.StatModel` for more information on hyperparameters
-        common for all torch models.
         """
         return {
             'p': {

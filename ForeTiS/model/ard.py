@@ -4,11 +4,18 @@ from . import _sklearn_model
 
 
 class ARDRegression(_sklearn_model.SklearnModel):
-    """See BaseModel for more information on the parameters"""
+    """
+    Implementation of a class for ARDRegression.
+
+    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the attributes.
+    """
 
     def define_model(self) -> sklearn.linear_model.ARDRegression:
-        """See BaseModel for more information"""
-        # all hyperparameters defined for XGBoost are suggested for optimization
+        """
+        Definition of the actual prediction model.
+
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+        """
         self.variance = True
 
         self.standardize_X = self.suggest_hyperparam_to_optuna('standardize_X')
@@ -29,7 +36,9 @@ class ARDRegression(_sklearn_model.SklearnModel):
                                                   lambda_2=lambda_2, threshold_lambda=threshold_lambda, **params)
 
     def define_hyperparams_to_tune(self) -> dict:
-        """See BaseModel for more information on the format"""
+        """
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
+        """
         return {
             'alpha_1': {
                 'datatype': 'float',

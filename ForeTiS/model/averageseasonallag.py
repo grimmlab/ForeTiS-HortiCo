@@ -5,15 +5,25 @@ import numpy as np
 
 
 class AverageSeasonal(_baseline_model.BaselineModel):
-    """See BaseModel for more information on the parameters"""
+    """
+    Implementation of a class for AverageSeasonal.
+
+    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the attributes.
+    """
 
     def define_model(self):
-        """See BaseModel for more information"""
+        """
+        Definition of the actual prediction model.
+
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+        """
         self.window = self.suggest_hyperparam_to_optuna('window')
         return AverageSeasonal
 
     def define_hyperparams_to_tune(self) -> dict:
-        """See BaseModel for more information on the format"""
+        """
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
+        """
         return {
             'window': {
                 'datatype': 'int',
@@ -24,8 +34,8 @@ class AverageSeasonal(_baseline_model.BaselineModel):
 
     def retrain(self, retrain: pd.DataFrame):
         """
-        Implementation of the retraining for models with sklearn-like API.
-        See BaseModel for more information
+        Implementation of the retraining for the AverageSeasonal model.
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
         observed_period = retrain.shift(self.datasets.seasonal_periods)
         observed_period = observed_period.tail(self.window) if hasattr(self, 'window') else retrain
@@ -44,10 +54,8 @@ class AverageSeasonal(_baseline_model.BaselineModel):
 
     def update(self, update: pd.DataFrame, period: int):
         """
-        Implementation of the retraining for models with sklearn-like API.
+        Implementation of the retraining for the AverageSeasonal model.
         See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
-        :param update: data for updating
-        :param period: the current refit cycle
         """
         observed_period = update.shift(self.datasets.seasonal_periods).tail(
             self.window) if hasattr(self, 'window') else update

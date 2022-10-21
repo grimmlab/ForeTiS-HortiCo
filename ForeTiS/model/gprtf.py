@@ -7,10 +7,18 @@ from gpflow.kernels import Matern52, White, RationalQuadratic, Periodic, \
     SquaredExponential, Polynomial
 
 class Gpr(_tensorflow_model.TensorflowModel):
-    """See BaseModel for more information on the parameters"""
+    """
+    Implementation of a class for Gpr.
+
+    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the attributes.
+    """
 
     def define_model(self) -> gpflow.models.GPR:
-        """See BaseModel for more information"""
+        """
+        Definition of the actual prediction model.
+
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+        """
         self.variance = True
 
         self.standardize_X = self.suggest_hyperparam_to_optuna('standardize_X')
@@ -32,7 +40,9 @@ class Gpr(_tensorflow_model.TensorflowModel):
                                  noise_variance=noise_variance)
 
     def define_hyperparams_to_tune(self) -> dict:
-        """See BaseModel for more information on the format"""
+        """
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
+        """
         kernels, self.kernel_dict = self.extend_kernel_combinations()
         return {
             'kernel': {

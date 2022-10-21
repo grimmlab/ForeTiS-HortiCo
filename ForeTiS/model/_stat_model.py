@@ -11,8 +11,8 @@ from sklearn.preprocessing import PowerTransformer
 
 class StatModel(_base_model.BaseModel, abc.ABC):
     """
-    Parent class based on BaseModel for all models with a statsmodel-like API to share functionalities
-    See BaseModel for more information
+    Parent class based on BaseModel for all models with a statsmodels-like API to share functionalities.
+    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
     """
     def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, test_set_size_percentage: int, featureset: str,
                  current_model_name: str = None, target_column: str = None):
@@ -33,7 +33,7 @@ class StatModel(_base_model.BaseModel, abc.ABC):
     def retrain(self, retrain: pd.DataFrame):
         """
         Implementation of the retraining for models with statsmodels-like API.
-        See BaseModel for more information
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
         retrain = self.get_transformed_set(df=retrain, target_column=self.target_column, transf=self.transf,
                                            power_transformer=self.power_transformer, only_transform=False)
@@ -76,10 +76,8 @@ class StatModel(_base_model.BaseModel, abc.ABC):
 
     def update(self, update: pd.DataFrame, period: int):
         """
-        Update existing model due to new samples
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
-        :param update: data for updating
-        :param period: the current refit cycle
+        Update existing model due to new samples.
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
         update = self.get_transformed_set(df=update, target_column=self.target_column, transf=self.transf,
                                           power_transformer=self.power_transformer, only_transform=False)
@@ -111,8 +109,7 @@ class StatModel(_base_model.BaseModel, abc.ABC):
     def predict(self, X_in: pd.DataFrame) -> np.array:
         """
         Implementation of a prediction based on input features for models with statsmodels-like API.
-        See BaseModel for more information
-        :param X_in: data for updating
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
         X_in = self.get_transformed_set(df=X_in, target_column=self.target_column,
                                         transf=self.transf, power_transformer=self.power_transformer,
@@ -147,8 +144,7 @@ class StatModel(_base_model.BaseModel, abc.ABC):
     def train_val_loop(self, train: pd.DataFrame, val: pd.DataFrame) -> np.array:
         """
         Implementation of a train and validation loop for models with statsmodels-like API.
-        See BaseModel for more information
-        :return: the trained model and predictions of the final model
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
         self.prediction = None
         self.retrain(train)
@@ -159,11 +155,13 @@ class StatModel(_base_model.BaseModel, abc.ABC):
                             power_transformer: PowerTransformer, only_transform=False) -> pd.DataFrame:
         """
         Function returning dataset with (log or power) transformed column
+
         :param df: dataset to transform
         :param target_column: column to transform
         :param transf: type of transformation
         :param power_transformer: if power transforming was applied, the used transformer
         :param only_transform: whether to only transform or not
+
         :return: dataset with transformed column
         """
         dataset_manip = df.copy()
@@ -187,9 +185,11 @@ class StatModel(_base_model.BaseModel, abc.ABC):
     def get_inverse_transformed_set(self, y: np.array, transf: str, power_transformer, is_conf: bool=False) -> np.array:
         """
         Function returning inverse (log or power) transformed column
+
         :param y: array to be inverse transformed
         :param power_transformer: if power transforming was applied, the used transformer
         :param transf: type of transformation
+
         :return: transformed column
         """
         if is_conf:
@@ -217,7 +217,7 @@ class StatModel(_base_model.BaseModel, abc.ABC):
         """
         Add hyperparameters that are common for PyTorch models.
         Do not need to be included in optimization for every child model.
-        Also See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
         return {
             'transf': {

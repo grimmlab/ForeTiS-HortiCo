@@ -43,6 +43,7 @@ def get_list_of_implemented_models() -> list:
 def get_mapping_name_to_class() -> dict:
     """
     Get a mapping from model name (naming in package model without .py) to class name.
+
     :return: dictionary with mapping model name to class name
     """
     if os.path.exists('../model'):
@@ -69,6 +70,7 @@ def get_mapping_name_to_class() -> dict:
 def set_all_seeds(seed: int=0):
     """
     Set all seeds of libs with a specific function for reproducibility of results
+
     :param seed: seed to use
     """
     torch.manual_seed(seed)
@@ -83,8 +85,10 @@ def set_all_seeds(seed: int=0):
 def get_folds(datasplit: str, n_splits: int):
     """
     Get the folds for the optuna optimization
+
     :param datasplit: which datasplit should be performed
     :param n_splits: number of splits for the timeseries-cv
+
     :return: number of folds
     """
     if datasplit == "timeseries-cv" or datasplit == "cv":
@@ -98,9 +102,11 @@ def get_folds(datasplit: str, n_splits: int):
 def get_indexes(df: pd.DataFrame, n_splits: str, datasplit: str):
     """
     Get the indexes for timeseries-cv
+
     :param df: data that should be splited
     :param n_splits: number of splits for the timeseries-cv
     :param datasplit: splitting method
+
     :return: train and test indexes
     """
     if datasplit == 'timeseries-cv':

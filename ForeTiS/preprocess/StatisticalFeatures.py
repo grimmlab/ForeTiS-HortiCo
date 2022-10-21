@@ -4,7 +4,8 @@ import pandas as pd
 def add_lagged_statistics(seasonal_periods: int, windowsize_lagged_statistics: int, seasonal_lags: list,
                           df: pd.DataFrame, features_sales: list, correlations: list):
     """
-    unction adding lagged and seasonal-lagged features to dataset
+    Function adding lagged and seasonal-lagged features to dataset
+
     :param seasonal_periods: seasonal_period used for seasonal-lagged features
     :param windowsize_lagged_statistics: size of window used for sales statistics
     :param seasonal_lags: seasonal lags to add of the features specified
@@ -33,6 +34,7 @@ def add_current_statistics(seasonal_periods: int, windowsize_current_statistics:
                            features_weather_sales: list, correlations: list):
     """
     Function adding rolling seasonal statistics
+
     :param seasonal_periods: seasonal_period used for seasonal rolling statistics
     :param windowsize_current_statistics: size of window used for feature statistics
     :param df: dataset for adding features
@@ -53,6 +55,7 @@ def add_current_statistics(seasonal_periods: int, windowsize_current_statistics:
 def add_current_weekday_statistics(windowsize_current_statistics: int, df: pd.DataFrame, features_sales: list):
     """
     Function adding rolling statistics for each week
+
     :param windowsize_current_statistics: size of window used for feature statistics
     :param df: dataset for adding features
     :param features_sales: n target column

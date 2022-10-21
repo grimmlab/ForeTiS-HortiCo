@@ -4,10 +4,18 @@ from . import _sklearn_model
 
 
 class ElasticNet(_sklearn_model.SklearnModel):
-    """See BaseModel for more information on the parameters"""
+    """
+    Implementation of a class for ElasticNet.
+
+    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the attributes.
+    """
 
     def define_model(self) -> sklearn.linear_model.ElasticNet:
-        """See BaseModel for more information"""
+        """
+        Definition of the actual prediction model.
+
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+        """
         # all hyperparameters defined for XGBoost are suggested for optimization
         self.standardize_X = self.suggest_hyperparam_to_optuna('standardize_X')
 
@@ -26,7 +34,9 @@ class ElasticNet(_sklearn_model.SklearnModel):
         return sklearn.linear_model.ElasticNet(alpha=alpha, l1_ratio=l1_ratio, **params)
 
     def define_hyperparams_to_tune(self) -> dict:
-        """See BaseModel for more information on the format"""
+        """
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
+        """
         return {
             'alpha': {
                 'datatype': 'float',

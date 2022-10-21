@@ -5,14 +5,15 @@ from . import _stat_model
 
 class Es(_stat_model.StatModel):
     """
-    Implementation of a class for Exponential Smoothing (ES).
-    See :obj:`~ForeTiS.model._base_model.BaseModel` and
-    :obj:`~ForeTiS.model._stat_model.StatModel` for more information on the attributes.
+    Implementation of a class for a Exponential Smoothin (ES) model.
+    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the attributes.
     """
 
     def define_model(self) -> statsmodels.tsa.api.ExponentialSmoothing:
         """
-        Definition of an ES model.
+        Definition of the actual prediction model.
+
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
         self.remove_bias = self.suggest_hyperparam_to_optuna('remove_bias')
         self.use_brute = self.suggest_hyperparam_to_optuna('use_brute')
@@ -36,8 +37,6 @@ class Es(_stat_model.StatModel):
     def define_hyperparams_to_tune(self) -> dict:
         """
         See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
-        See :obj:`~ForeTiS.model._stat_model.StatModel` for more information on hyperparameters
-        common for all torch models.
         """
         return {
             'trend': {

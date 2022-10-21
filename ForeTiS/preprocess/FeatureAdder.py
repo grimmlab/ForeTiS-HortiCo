@@ -10,8 +10,10 @@ def add_calendar_features(df: pd.DataFrame, holiday_public_column: str, holiday_
                           cyclic_encoding: bool, resample_weekly: bool):
     """
     Function adding all calendar-based features
+
     :param df: dataset used for adding features
     :param holiday_public_column: name of the column containing the public holidays
+    :param holiday_public_column: name of the column containing the school holidays
     :param special_days: special days for the specific data
     :param cyclic_encoding: whether cyclic encoding is done or not
     :param resample_weekly: whether to resample weekly or not
@@ -29,6 +31,7 @@ def add_statistical_features(seasonal_periods: int, windowsize_current_statistic
                              resample_weekly: bool, features_weather_sales: list, features_sales: list,
                              correlations: list):
     """Function adding all statistical features
+
     :param seasonal_periods: seasonality used for seasonal-based features
     :param windowsize_current_statistics: size of window used for feature statistics
     :param windowsize_lagged_statistics: size of window used for sales statistics

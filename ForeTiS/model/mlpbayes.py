@@ -7,20 +7,22 @@ from ._model_classes import PrintLayer
 
 class Mlp(_torch_model.TorchModel):
     """
-    Implementation of a class for a feedforward Multilayer Perceptron (MLP).
-    See :obj:`~ForeTiS.model._base_model.BaseModel` and
-    :obj:`~ForeTiS.model._torch_model.TorchModel` for more
-    information on the attributes.
+    Implementation of a class for a bayesian feedforward Multilayer Perceptron (MLP).
+
+    See :obj:`~ForeTiS.model._base_model.BaseModel` and :obj:`~ForeTiS.model._torch_model.TorchModel` for more information on the attributes.
     """
 
     def define_model(self) -> torch.nn.Sequential:
         """
-        Definition of a ANN network.
+        Definition of an MLP network.
+
         Architecture:
-            - N_LAYERS of (Linear + Dropout)
-            - Linear, Dropout
-        Number of output channels of the first layer, dropout rate, frequency of a doubling of the output channels and
-        number of units in the first linear layer. may be fixed or optimized.
+
+            - N_LAYERS of (bayesian Linear (+ ActivationFunction) (+ BatchNorm) + Dropout)
+            - Bayesian Linear output layer
+            - Dropout layer
+
+        Number of units in the first bayesian linear layer and percentage decrease after each may be fixed or optimized.
         """
         self.variance = True
 
@@ -59,8 +61,8 @@ class Mlp(_torch_model.TorchModel):
     def define_hyperparams_to_tune(self) -> dict:
         """
         See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
-        See :obj:`~ForeTiS.model._torch_model.TorchModel` for more information on hyperparameters
-        common for all torch models.
+
+        See :obj:`~ForeTiS.model._torch_model.TorchModel` for more information on hyperparameters common for all torch models.
         """
         return {
             'n_initial_units_factor': {

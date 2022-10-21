@@ -11,17 +11,19 @@ from bayesian_torch.models.dnn_to_bnn import dnn_to_bnn
 
 class LSTM(_torch_model.TorchModel):
     """
-    Implementation of a class for a Long Short-Term Memory (LSTM) network.
-    See :obj:`~ForeTiS.model._base_model.BaseModel` and
-    :obj:`~ForeTiS.model._torch_model.TorchModel` for more information on the attributes.
+    Implementation of a class for a bayesian Long Short-Term Memory (LSTM) network.
+
+    See :obj:`~ForeTiS.model._base_model.BaseModel` and :obj:`~ForeTiS.model._torch_model.TorchModel` for more information on the attributes.
     """
 
     def define_model(self) -> torch.nn.Sequential:
         """
-        Definition of a LSTM network.
+        Definition of a bayesian LSTM network.
+
         Architecture:
-            - LSTM, Dropout, Linear
-            - Linear output layer
+            - Bayesian LSTM, Dropout, Linear
+            - Bayesian Linear output layer
+
         Number of output channels of the first layer, dropout rate, frequency of a doubling of the output channels and
         number of units in the first linear layer. may be fixed or optimized.
         """
@@ -59,8 +61,8 @@ class LSTM(_torch_model.TorchModel):
     def define_hyperparams_to_tune(self) -> dict:
         """
         See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
-        See :obj:`~ForeTiS.model._torch_model.TorchModel` for more information on hyperparameters
-        common for all torch models.
+
+        See :obj:`~ForeTiS.model._torch_model.TorchModel` for more information on hyperparameters common for all torch models.
         """
         return {
             'lstm_hidden_dim': {

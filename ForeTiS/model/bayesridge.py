@@ -4,10 +4,18 @@ from . import _sklearn_model
 
 
 class BayesianRidge(_sklearn_model.SklearnModel):
-    """See BaseModel for more information on the parameters"""
+    """
+    Implementation of a class for BayesianRidge.
+
+    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the attributes.
+    """
 
     def define_model(self) -> sklearn.linear_model.BayesianRidge:
-        """See BaseModel for more information"""
+        """
+        Definition of the actual prediction model.
+
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+        """
         # all hyperparameters defined for XGBoost are suggested for optimization
         self.variance = True
 
@@ -30,7 +38,9 @@ class BayesianRidge(_sklearn_model.SklearnModel):
                                                   lambda_2=lambda_2, **params)
 
     def define_hyperparams_to_tune(self) -> dict:
-        """See BaseModel for more information on the format"""
+        """
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
+        """
         return {
             'alpha_1': {
                 'datatype': 'float',

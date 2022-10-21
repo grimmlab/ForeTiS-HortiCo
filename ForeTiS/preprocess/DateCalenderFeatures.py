@@ -7,6 +7,7 @@ from ForeTiS.preprocess.raw_data_functions import drop_columns, encode_cyclical_
 def add_date_based_features(df: pd.DataFrame, holiday_public_column: str, cyclic_encoding: bool):
     """
     Function adding date based features to dataset
+
     :param df: dataset for adding features
     :param holiday_public_column: name of the column containing the public holidays
     :param cyclic_encoding: whether cyclic encoding is done or not
@@ -27,6 +28,7 @@ def add_date_based_features(df: pd.DataFrame, holiday_public_column: str, cyclic
 def add_valentine_mothersday(df: pd.DataFrame, holiday_public_column: str, special_days: list):
     """
     Function adding valentine's and mother's day to public_holiday column of dataset
+
     :param df: dataset for adding valentine's and mother's day
     :param holiday_public_column: name of the column containing the public holidays
     :param special_days: special days for the specific data
@@ -48,6 +50,7 @@ def add_public_holiday_counters(df: pd.DataFrame, holiday_public_column: str, sp
     """
     Function adding counters for upcoming or past public holidays (according to event_lags)
     with own counters for those specified in special_days
+
     :param df: dataset for adding features
     :param holiday_public_column: name of the column containing the public holidays
     :param special_days: special days for the specific data
@@ -83,6 +86,7 @@ def add_school_holiday_counters(df: pd.DataFrame, holiday_school_column: str, re
     """
     Function adding counters for upcoming or past public holidays (according to event_lags)
     with own counters for those specified in special_days
+
     :param df: dataset for adding features
     :param holiday_school_column: name of the column containing the public holidays
     :param resample_weekly: whether to resample weekly or not

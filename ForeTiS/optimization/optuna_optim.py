@@ -21,7 +21,7 @@ from ..model import _base_model, _model_functions, _torch_model
 
 class OptunaOptim:
     """
-    Class that contains all info for the whole optimization using optuna for one model and dataset
+    Class that contains all info for the whole optimization using optuna for one model and dataset.
 
     ** Attributes **
 
@@ -74,8 +74,9 @@ class OptunaOptim:
 
     def create_new_study(self) -> optuna.study.Study:
         """
-        Method to create a new optuna study
-        :return: optuna study
+        Create a new optuna study.
+
+        :return: a new optuna study instance
         """
         study_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + '_' + '-MODEL' + self.current_model_name\
                      + '-TRIALS' + str(self.user_input_params["n_trials"])
@@ -94,7 +95,9 @@ class OptunaOptim:
     def objective(self, trial: optuna.trial.Trial):
         """
         Objective function for optuna optimization that returns a score
+
         :param trial: trial of optuna for optimization
+
         :return: score of the current hyperparameter config
         """
         if (trial.number != 0) and (self.user_input_params["intermediate_results_interval"] is not None) and (
@@ -275,6 +278,7 @@ class OptunaOptim:
     def clean_up_after_exception(self, trial_number: int, trial_params: dict, reason: str):
         """
         Clean up things after an exception: delete unfitted model if it exists and update runtime csv
+
         :param trial_number: number of the trial
         :param trial_params: parameters of the trial
         :param reason: hint for the reason of the Exception
@@ -287,6 +291,7 @@ class OptunaOptim:
     def write_runtime_csv(self, dict_runtime: dict):
         """
         Write runtime info to runtime csv file
+
         :param dict_runtime: dictionary with runtime information
         """
         with open(self.save_path + self.current_model_name + '_runtime_overview.csv', 'a') as runtime_file:
@@ -299,6 +304,7 @@ class OptunaOptim:
     def calc_runtime_stats(self) -> dict:
         """
         Calculate runtime stats for saved csv file.
+
         :return: dict with runtime info enhanced with runtime stats
         """
         csv_file = pd.read_csv(self.save_path + self.current_model_name + '_runtime_overview.csv')
@@ -322,7 +328,9 @@ class OptunaOptim:
     def check_params_for_duplicate(self, current_params: dict) -> bool:
         """
         Check if params were already suggested which might happen by design of TPE sampler.
-        :param current_params: dictionary with current parameters
+
+        :param current_params: dictionar with current parameters
+
         :return: bool reflecting if current params were already used in the same study
         """
         past_params = [trial.params for trial in self.study.trials[:-1]]
@@ -330,8 +338,9 @@ class OptunaOptim:
 
     def generate_results_on_test(self) -> dict:
         """
-        Calculate final evaluation scores.
-        :return: final evaluation scores
+        Generate the results on the testing data
+
+        :return: evaluation metrics dictionary
         """
         helper_functions.set_all_seeds()
         print("## Retrain best model and test ##")
@@ -485,8 +494,10 @@ class OptunaOptim:
     def get_feature_importance(self, model: _base_model.BaseModel, period: int) -> pd.DataFrame:
         """
         Get feature importances for models that possess such a feature, e.g. XGBoost
+
         :param model: model to analyze
-        :param period: refitting period
+        param period: refitting period
+
         :return: DataFrame with feature importance information
         """
         feat_import_df = pd.DataFrame()
@@ -506,8 +517,9 @@ class OptunaOptim:
     @property
     def run_optuna_optimization(self) -> dict:
         """
-        Function to run whole optuna optimization for one model, dataset and datasplit
-        :return: overall results
+        Run whole optuna optimization for one model, dataset and datasplit.
+
+        :return: dictionary with results overview
         """
         helper_functions.set_all_seeds()
         overall_results = {}

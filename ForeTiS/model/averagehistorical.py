@@ -2,12 +2,22 @@ from . import _baseline_model
 
 
 class AverageHistorical(_baseline_model.BaselineModel):
-    """See BaseModel for more information on the parameters"""
+    """
+    Implementation of a class for AverageHistorical.
+
+    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the attributes.
+    """
 
     def define_model(self):
-        """See BaseModel for more information"""
+        """
+        Definition of the actual prediction model.
+
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+        """
         return AverageHistorical
 
     def define_hyperparams_to_tune(self) -> dict:
-        """See BaseModel for more information on the format"""
+        """
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
+        """
         return {}

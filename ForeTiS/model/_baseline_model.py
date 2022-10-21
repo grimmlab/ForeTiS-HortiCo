@@ -8,8 +8,8 @@ import sklearn
 
 class BaselineModel(_base_model.BaseModel, abc.ABC):
     """
-    Parent class based on BaseModel for all models with a sklearn-like API to share functionalities
-    See BaseModel for more information
+    Parent class based on BaseModel for all baseline models to share functionalities
+    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
     """
     def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, test_set_size_percentage: int,
                  featureset: str, target_column: str = None, current_model_name: str = None):
@@ -20,8 +20,8 @@ class BaselineModel(_base_model.BaseModel, abc.ABC):
 
     def retrain(self, retrain: pd.DataFrame):
         """
-        Implementation of the retraining for models with sklearn-like API.
-        See BaseModel for more information
+        Implementation of the retraining for baseline models.
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
         observed_period = retrain.tail(self.window) if hasattr(self, 'window') else retrain
         self.average = observed_period[self.target_column].mean()
@@ -40,10 +40,8 @@ class BaselineModel(_base_model.BaseModel, abc.ABC):
 
     def update(self, update: pd.DataFrame, period: int):
         """
-        Implementation of the retraining for models with sklearn-like API.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
-        :param update: data for updating
-        :param period: the current refit cycle
+        Implementation of the retraining for baseline models.
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
         observed_period = update.tail(self.window) if hasattr(self, 'window') else update
         self.average = observed_period[self.target_column].mean()
@@ -54,8 +52,8 @@ class BaselineModel(_base_model.BaseModel, abc.ABC):
 
     def predict(self, X_in: pd.DataFrame) -> np.array:
         """
-        Implementation of a prediction based on input features for models with sklearn-like API.
-        See BaseModel for more information
+        Implementation of a prediction based on input features for baseline models.
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
         # use average of train set for insample prediction (insample -> knowledge of whole train set)
         self.prediction = np.full((X_in.shape[0],), self.average)
@@ -63,8 +61,8 @@ class BaselineModel(_base_model.BaseModel, abc.ABC):
 
     def train_val_loop(self, train: pd.DataFrame, val: pd.DataFrame) -> np.array:
         """
-        Implementation of a train and validation loop for models with sklearn-like API.
-        See BaseModel for more information
+        Implementation of a train and validation loop for baseline models.
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
         # train model
         self.prediction = None
