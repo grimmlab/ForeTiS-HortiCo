@@ -1,4 +1,4 @@
-ForeTiS: A Forecasting Time Series framework where I try smth out
+ForeTiS: A Forecasting Time Series framework
 ===================================================
 ForeTiS is a Python framework that enables the rigorous training, comparison and analysis of time series forecasting for a variety of different models. 
 ForeTiS includes multiple state-of-the-art prediction models or machine learning methods, respectively. 
