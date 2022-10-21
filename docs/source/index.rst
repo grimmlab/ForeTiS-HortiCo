@@ -1,6 +1,6 @@
 ForeTiS: A Forecasting Time Series Framework
 ===================================================
-ForeTiS is a Python framework that enables the rigorous training, comparison and analysis of horticultural sales predictions for a variety of different models.
+ForeTiS is a Python framework that enables the rigorous training, comparison and analysis of   predictions for a variety of different models.
 ForeTiS includes multiple state-of-the-art prediction models or machine learning methods, respectively.
 These range from classical models, such as regularized linear regression over ensemble learners, e.g. XGBoost, to deep learning-based architectures, such as Multilayer Perceptron (MLP).
 To enable automatic hyperparameter optimization, we leverage state-of-the-art and efficient Bayesian optimization techniques.

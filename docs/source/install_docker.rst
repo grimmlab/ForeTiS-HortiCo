@@ -1,6 +1,6 @@
 Docker workflow
 ======================
-If you want to do horticultural sales predictions without the need of integrating parts of your own pipeline,
+If you want to do  time series predictions without the need of integrating parts of your own pipeline,
 we recommend the :ref:`Docker Workflow`: due to its easy-to-use interface and ready-to-use working environment
 within a `Docker <https://www.docker.com/>`_ container. Besides the written tutorial, we provide a :ref:`Video tutorial: Docker workflow setup` embedded below.
 
