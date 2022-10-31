@@ -10,5 +10,6 @@ gpflow==2.5.2
 tensorflow==2.10.0
 tensorflow-probability==0.18
 joblib==1.2.0
+tables==3.7.0
 bayesian_torch
 

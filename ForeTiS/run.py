@@ -23,7 +23,7 @@ if __name__ == '__main__':
     parser.add_argument("-sd", "--save_dir", type=str, default='docs/source/tutorials/tutorial_data',
                         help="Provide the full path of the directory in which you want to save your results. "
                              "Default is same as data_dir.")
-    parser.add_argument("-data", "--data", type=str, default=None,
+    parser.add_argument("-data", "--data", type=str, default='fahn',
                         help="specify the dataset that you want to use.")
     parser.add_argument("-tc", "--target_column", type=str, default='total_turnover',
                         help="specify the target column for the prediction.")
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     parser.add_argument("-ws", "--windowsize_lagged_statistics", type=int, default=3,
                         help="specify the windowsize for the feature engineering of the lagged statistics. "
                              "Standard is 3")
-    parser.add_argument("-sl", "--seasonal_lags", type=list, default=[1, 2],
+    parser.add_argument("-sl", "--seasonal_lags", type=list, default=[],
                         help="specify the seasonal lags to add in the feature engineering for the lagged statistics. "
                              "Standard is [1, 2]")
     parser.add_argument("-ce", "--cyclic_encoding", type=bool, default=True,

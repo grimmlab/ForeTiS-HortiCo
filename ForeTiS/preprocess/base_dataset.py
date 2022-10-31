@@ -295,9 +295,10 @@ class Dataset:
 
             # statistical feature extraction on dataset
             print('-Adding statistical dataset-')
-            if max(self.seasonal_lags)*2 >= df.shape[0]/self.seasonal_periods:
-                raise Exception('Dataset not long enough for the given number of seasonal lags. '
-                                'Try less seasonal lags.')
+            if self.seasonal_lags:
+                if max(self.seasonal_lags)*2 >= df.shape[0]/self.seasonal_periods:
+                    raise Exception('Dataset not long enough for the given number of seasonal lags. '
+                                    'Try less seasonal lags.')
             FeatureAdder.add_statistical_features(seasonal_periods=self.seasonal_periods,
                                                   windowsize_current_statistics=self.windowsize_current_statistics,
                                                   windowsize_lagged_statistics=self.windowsize_lagged_statistics,
