@@ -16,9 +16,11 @@ class ARDRegression(_sklearn_model.SklearnModel):
 
         See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
-        self.variance = True
+        self.conf = True
 
         self.standardize_X = self.suggest_hyperparam_to_optuna('standardize_X')
+        if self.standardize_X:
+            self.x_scaler = sklearn.preprocessing.StandardScaler()
 
         alpha_1 = self.suggest_hyperparam_to_optuna('alpha_1')
         alpha_2 = self.suggest_hyperparam_to_optuna('alpha_2')

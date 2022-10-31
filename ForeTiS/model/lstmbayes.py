@@ -1,5 +1,4 @@
 import torch
-import optuna
 import sklearn
 import pandas as pd
 import numpy as np
@@ -27,7 +26,9 @@ class LSTM(_torch_model.TorchModel):
         Number of output channels of the first layer, dropout rate, frequency of a doubling of the output channels and
         number of units in the first linear layer. may be fixed or optimized.
         """
-        self.variance = True
+        self.conf = True
+        self.num_monte_carlo = self.suggest_hyperparam_to_optuna('num_monte_carlo')
+
         self.y_scaler = sklearn.preprocessing.StandardScaler()
         self.sequential = True
         self.seq_length = self.suggest_hyperparam_to_optuna('seq_length')
@@ -122,13 +123,12 @@ class LSTM(_torch_model.TorchModel):
 
     def predict(self, X_in: pd.DataFrame) -> np.array:
         """
-        Implementation of a prediction based on input features for PyTorch models.
+        Implementation of a prediction based on input features for the bayes lstm model.
         See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
         """
         self.model.eval()
         predictions = None
-        if self.variance:
-            var = None
+        conf = None
         if type(X_in) == pd.DataFrame:
             dataloader = self.get_dataloader(X=X_in.drop(labels=[self.target_column], axis=1),
                                              y=X_in[self.target_column], only_transform=True, predict=True)
@@ -136,43 +136,99 @@ class LSTM(_torch_model.TorchModel):
                 for inputs in dataloader:
                     inputs = inputs.view(1, self.seq_length, -1)
                     inputs = inputs.to(device=self.device)
-                    if self.variance:
-                        predictions_mc = []
-                        for _ in range(self.num_monte_carlo):
-                            output = self.model(inputs)
-                            predictions_mc.append(output)
-                        predictions_ = torch.stack(predictions_mc)
-                        outputs = torch.mean(predictions_, dim=0)
-                        variance = torch.var(predictions_, dim=0)
-                    else:
-                        outputs = self.model(inputs)
-                    predictions = torch.clone(outputs) if predictions is None else torch.cat((predictions, outputs))
-                    if self.variance:
-                        var = torch.clone(variance) if var is None else torch.cat((var, variance))
-        else:
-            inputs = X_in.reshape(1, self.seq_length, -1)
-            with torch.no_grad():
-                inputs = torch.tensor(inputs.astype(np.float32))
-                inputs = inputs.to(device=self.device)
-                if self.variance:
                     predictions_mc = []
                     for _ in range(self.num_monte_carlo):
                         output = self.model(inputs)
                         predictions_mc.append(output)
                     predictions_ = torch.stack(predictions_mc)
                     outputs = torch.mean(predictions_, dim=0)
-                    variance = torch.var(predictions_, dim=0)
-                else:
-                    outputs = self.model(inputs)
-                predictions = torch.clone(outputs)
-                if self.variance:
-                    var = torch.clone(variance)
-        self.prediction = self.y_scaler.inverse_transform(predictions.cpu().detach().numpy()).flatten()
-        if self.variance:
-            var = self.y_scaler.inverse_transform(var)
-            return self.prediction, self.var_artifical, var.flatten()
+                    confidence = torch.conf(predictions_, dim=0)
+                    predictions = torch.clone(outputs) if predictions is None else torch.cat((predictions, outputs))
+                    conf = torch.clone(confidence) if conf is None else torch.cat((conf, confidence))
         else:
-            return self.prediction, self.var_artifical
+            inputs = X_in.reshape(1, self.seq_length, -1)
+            with torch.no_grad():
+                inputs = torch.tensor(inputs.astype(np.float32))
+                inputs = inputs.to(device=self.device)
+                predictions_mc = []
+                for _ in range(self.num_monte_carlo):
+                    output = self.model(inputs)
+                    predictions_mc.append(output)
+                predictions_ = torch.stack(predictions_mc)
+                outputs = torch.mean(predictions_, dim=0)
+                confidence = torch.conf(predictions_, dim=0)
+                predictions = torch.clone(outputs)
+                conf = torch.clone(confidence)
+        self.prediction = self.y_scaler.inverse_transform(predictions.cpu().detach().numpy()).flatten()
+        conf = self.y_scaler.inverse_transform(conf)
+        return self.prediction, self.var, conf.flatten()
+
+    def get_dataloader(self, X: np.array, y: np.array = None, only_transform: bool = None, predict: bool = False,
+                       shuffle: bool = False) -> torch.utils.data.DataLoader:
+        """
+        Get a Pytorch DataLoader using the specified data and batch size
+
+        :param X: feature matrix to use
+        :param y: optional target vector to use
+        :param only_transform: whether to only transform or not
+        :param predict: weather to use the data for predictions or not
+        :param shuffle: shuffle parameter for DataLoader
+
+        :return: Pytorch DataLoader
+        """
+        # drop last sample if last batch would only contain one sample
+        if (len(X) > self.batch_size) and (len(X) % self.batch_size == 1):
+            X = X[:-1]
+            y = y[:-1]
+
+        if only_transform:
+            X = self.X_scaler.transform(X)
+        else:
+            X = self.X_scaler.fit_transform(X)
+
+        if only_transform:
+            y = self.y_scaler.transform(y.values.reshape(-1, 1))
+        else:
+            y = self.y_scaler.fit_transform(y.values.reshape(-1, 1))
+        if predict:
+            X, _ = self.create_sequences(X, y)
+        else:
+            X, y = self.create_sequences(X, y)
+
+        X = torch.tensor(X.astype(np.float32))
+        y = None if predict else torch.reshape(torch.from_numpy(y).float(), (-1, 1))
+        dataset = X if predict else torch.utils.data.TensorDataset(X, y)
+        if predict:
+            data = dataset
+        else:
+            data = torch.utils.data.DataLoader(dataset=dataset, batch_size=self.batch_size, shuffle=shuffle,
+                                               worker_init_fn=np.random.seed(0))
+        return data
+
+    def create_sequences(self, X: np.array, y: np.array) -> tuple:
+        """
+        Create sequenced data according to self.seq_length
+
+        :return: sequenced data and labels
+        """
+        if y is not None:
+            data = np.hstack((X, y))
+        else:
+            data = np.array(X)
+        xs = []
+        ys = [] if y is not None else None
+        if data.shape[0] <= self.seq_length:
+            self.seq_length = data.shape[0] - 1
+        for i in range(data.shape[0] - self.seq_length):
+            if self.seq_length == 0:
+                self.seq_length = 1
+            if y is not None:
+                xs.append(data[i:(i + self.seq_length), :])
+                ys.append(data[i + self.seq_length, -1])
+            else:
+                xs.append(data[i:(i + self.seq_length), :])
+        return np.array(xs), np.array(ys)
+
 
 
 

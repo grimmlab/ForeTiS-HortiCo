@@ -18,6 +18,8 @@ class ElasticNet(_sklearn_model.SklearnModel):
         """
         # all hyperparameters defined for XGBoost are suggested for optimization
         self.standardize_X = self.suggest_hyperparam_to_optuna('standardize_X')
+        if self.standardize_X:
+            self.x_scaler = sklearn.preprocessing.StandardScaler()
 
         alpha = self.suggest_hyperparam_to_optuna('alpha')
         l1_ratio = self.suggest_hyperparam_to_optuna('l1_ratio')

@@ -15,7 +15,7 @@ class Arima(_stat_model.StatModel):
 
         See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
-        self.variance = True
+        self.conf = True
 
         self.use_exog = False
 

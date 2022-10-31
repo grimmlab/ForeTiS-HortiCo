@@ -1,4 +1,5 @@
 from sklearn import gaussian_process
+import sklearn
 import itertools
 
 from . import _sklearn_model
@@ -20,10 +21,14 @@ class Gpr(_sklearn_model.SklearnModel):
         See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
         # all hyperparameters defined for XGBoost are suggested for optimization
-        self.variance = True
+        self.conf = True
 
         self.standardize_X = self.suggest_hyperparam_to_optuna('standardize_X')
         self.standardize_y = self.suggest_hyperparam_to_optuna('normalize_y')
+        if self.standardize_X:
+            self.x_scaler = sklearn.preprocessing.StandardScaler()
+        if self.standardize_y:
+            self.y_scaler = sklearn.preprocessing.StandardScaler()
 
         kernel_key = self.suggest_hyperparam_to_optuna('kernel')
         kernel = self.kernel_dict[kernel_key]

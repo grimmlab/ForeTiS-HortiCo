@@ -41,24 +41,17 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
     :param current_model_name: name of the current model according to naming of .py file in package model
     :param batch_size: batch size for neural network models
     :param n_epochs: number of epochs for neural network models
-    :param num_monte_carlo: number of monte carlo iteration for the bayesian neural networks
     :param target_column: the target column for the prediction
     """
     def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str, test_set_size_percentage: int,
-                 current_model_name: str = None, batch_size: int = None, n_epochs: int = None,
-                 num_monte_carlo: int = None, target_column: str = None):
+                 current_model_name: str = None, batch_size: int = None, n_epochs: int = None, target_column: str = None):
         self.all_hyperparams = self.common_hyperparams()
-        # add hyperparameters commonly optimized for all torch models
-        self.target_column = target_column
         self.current_model_name = current_model_name
         super().__init__(optuna_trial=optuna_trial, datasets=datasets, featureset=featureset,
                          test_set_size_percentage=test_set_size_percentage, target_column=target_column)
         self.batch_size = \
             batch_size if batch_size is not None else 2**self.suggest_hyperparam_to_optuna('batch_size_exp')
         self.n_epochs = n_epochs if n_epochs is not None else self.suggest_hyperparam_to_optuna('n_epochs')
-        if hasattr(self, 'variance'):
-            self.num_monte_carlo = \
-                num_monte_carlo if num_monte_carlo is not None else self.suggest_hyperparam_to_optuna('num_monte_carlo')
         self.optimizer = torch.optim.Adam(params=self.model.parameters(),
                                           lr=self.suggest_hyperparam_to_optuna('learning_rate'))
         self.loss_fn = torch.nn.MSELoss()
@@ -82,7 +75,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
 
         y_true = np.array([0])
         y_pred = np.array([0])
-        self.var_artifical = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
+        self.var = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
 
         for epoch in range(self.n_epochs):
             self.train_one_epoch(train_loader=train_loader)
@@ -172,7 +165,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
         else:
             y_true = np.array([0])
             y_pred = np.array([0])
-        self.var_artifical = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
+        self.var = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
 
     def update(self, update: pd.DataFrame, period: int):
         """
@@ -188,7 +181,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
 
         y_true = update[self.target_column][-len(self.prediction):]
         y_pred = self.prediction
-        self.var_artifical = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
+        self.var = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
 
     def predict(self, X_in: pd.DataFrame) -> np.array:
         """
@@ -199,30 +192,14 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
                                          only_transform=True, predict=True)
         self.model.eval()
         predictions = None
-        if hasattr(self, 'variance'):
-            var = None
         with torch.no_grad():
             for inputs in dataloader:
                 inputs = inputs.view(1, -1)
                 inputs = inputs.to(device=self.device)
-                if hasattr(self, 'variance'):
-                    predictions_mc = []
-                    for _ in range(self.num_monte_carlo):
-                        output = self.model(inputs)
-                        predictions_mc.append(output)
-                    predictions_ = torch.stack(predictions_mc)
-                    outputs = torch.mean(predictions_, dim=0)
-                    variance = torch.var(predictions_, dim=0)
-                else:
-                    outputs = self.model(inputs)
+                outputs = self.model(inputs)
                 predictions = torch.clone(outputs) if predictions is None else torch.cat((predictions, outputs))
-                if hasattr(self, 'variance'):
-                    var = torch.clone(variance) if var is None else torch.cat((var, variance))
-        self.prediction = predictions.cpu().detach().numpy().flatten()
-        if hasattr(self, 'variance'):
-            return self.prediction, self.var_artifical, var.numpy().flatten()
-        else:
-            return self.prediction, self.var_artifical
+        self.prediction = predictions.cpu().detach().numpy()
+        return self.prediction.flatten(), self.var.flatten()
 
     def get_loss(self, outputs: torch.Tensor, targets: torch.Tensor) -> torch.Tensor:
         """
@@ -260,22 +237,10 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
         else:
             X = self.X_scaler.fit_transform(X)
 
-        if hasattr(self, 'sequential'):
-            if only_transform:
-                y = self.y_scaler.transform(y.values.reshape(-1, 1))
-            else:
-                y = self.y_scaler.fit_transform(y.values.reshape(-1, 1))
-
-        if hasattr(self, 'sequential'):
-            if predict:
-                X, _ = self.create_sequences(X, y)
-            else:
-                X, y = self.create_sequences(X, y)
+        if predict:
+            X, _ = np.array(X), None
         else:
-            if predict:
-                X, _ = np.array(X), None
-            else:
-                X, y = np.array(X), np.array(y)
+            X, y = np.array(X), np.array(y)
 
         X = torch.tensor(X.astype(np.float32))
         y = None if predict else torch.reshape(torch.from_numpy(y).float(), (-1, 1))
@@ -286,30 +251,6 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
             data = torch.utils.data.DataLoader(dataset=dataset, batch_size=self.batch_size, shuffle=shuffle,
                                                worker_init_fn=np.random.seed(0))
         return data
-
-    def create_sequences(self, X: np.array, y: np.array) -> tuple:
-        """
-        Create sequenced data according to self.seq_length
-
-        :return: sequenced data and labels
-        """
-        if y is not None:
-            data = np.hstack((X, y))
-        else:
-            data = np.array(X)
-        xs = []
-        ys = [] if y is not None else None
-        if data.shape[0] <= self.seq_length:
-            self.seq_length = data.shape[0] - 1
-        for i in range(data.shape[0] - self.seq_length):
-            if self.seq_length == 0:
-                self.seq_length = 1
-            if y is not None:
-                xs.append(data[i:(i + self.seq_length), :])
-                ys.append(data[i + self.seq_length, -1])
-            else:
-                xs.append(data[i:(i + self.seq_length), :])
-        return np.array(xs), np.array(ys)
 
     @staticmethod
     def common_hyperparams():
@@ -331,23 +272,23 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
             },
             'batch_size_exp': {
                 'datatype': 'int',
-                'lower_bound': 1, # 1
-                'upper_bound': 10 # 10
+                'lower_bound': 2,
+                'upper_bound': 10
             },
             'n_layers': {
                 'datatype': 'int',
-                'lower_bound': 1, # 1
-                'upper_bound': 10 # 10
+                'lower_bound': 1,
+                'upper_bound': 10
             },
             'learning_rate': {
                 'datatype': 'float',
-                'lower_bound': 1e-6, # 1e-6
+                'lower_bound': 1e-6,
                 'upper_bound': 1e-1,
                 'log': True
             },
             'early_stopping_patience': {
                'datatype': 'int',
-               'lower_bound': 0, # 1000
+               'lower_bound': 0,
                'upper_bound': 1000,
             }
         }
@@ -365,7 +306,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
             'relu': torch.nn.ReLU(),
             'tanh': torch.nn.Tanh(),
             'leakyrelu': torch.nn.LeakyReLU(),
-            'sigmoid' :torch.nn.Sigmoid(),
+            'sigmoid': torch.nn.Sigmoid(),
             'softmax': torch.nn.Softmax
         }
         return string_to_object_dict[string_to_get] if string_to_get is not None else None

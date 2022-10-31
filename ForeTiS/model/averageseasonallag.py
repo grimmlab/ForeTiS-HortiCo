@@ -49,8 +49,8 @@ class AverageSeasonal(_baseline_model.BaselineModel):
                             self.prediction[-len(observed_period[self.target_column]):]
         else:
             residuals = 0
-        var_artifical = np.quantile(residuals, 0.68)
-        self.var_artifical = var_artifical**2
+        var = np.quantile(residuals, 0.68)
+        self.var = var**2
 
     def update(self, update: pd.DataFrame, period: int):
         """
@@ -62,5 +62,5 @@ class AverageSeasonal(_baseline_model.BaselineModel):
         self.average = observed_period[self.target_column].mean()
 
         residuals = observed_period[self.target_column][-len(self.prediction):] - self.prediction
-        var_artifical = np.quantile(residuals, 0.68)
-        self.var_artifical = var_artifical ** 2
+        var = np.quantile(residuals, 0.68)
+        self.var = var ** 2

@@ -1,6 +1,7 @@
 import gpflow
 import itertools
 import numpy as np
+import sklearn
 
 from . import _tensorflow_model
 from gpflow.kernels import Matern52, White, RationalQuadratic, Periodic, \
@@ -19,10 +20,14 @@ class Gpr(_tensorflow_model.TensorflowModel):
 
         See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
-        self.variance = True
+        self.conf = True
 
         self.standardize_X = self.suggest_hyperparam_to_optuna('standardize_X')
         self.standardize_y = self.suggest_hyperparam_to_optuna('standardize_y')
+        if self.standardize_X:
+            self.x_scaler = sklearn.preprocessing.StandardScaler()
+        if self.standardize_y:
+            self.y_scaler = sklearn.preprocessing.StandardScaler()
 
         optimizer_dict = {'Scipy': gpflow.optimizers.Scipy()}
         optimizer_key = self.suggest_hyperparam_to_optuna('optimizer')
@@ -72,32 +77,6 @@ class Gpr(_tensorflow_model.TensorflowModel):
                 'list_of_values': [True, False]
             }
         }
-
-    # 'kernel': {
-    #     'datatype': 'categorical',
-    #     'list_of_values': ['SquaredExponential+Matern*PeriodicRationalQuadratic'],
-    # },
-    # 'noise_variance': {
-    #     'datatype': 'float',
-    #     'lower_bound': 10,
-    #     'upper_bound': 10,
-    # },
-    # 'optimizer': {
-    #     'datatype': 'categorical',
-    #     'list_of_values': ['Scipy']
-    # },
-    # 'mean_function': {
-    #     'datatype': 'categorical',
-    #     'list_of_values': ['Constant']
-    # },
-    # 'standardize_X': {
-    #     'datatype': 'categorical',
-    #     'list_of_values': [False]
-    # },
-    # 'standardize_y': {
-    #     'datatype': 'categorical',
-    #     'list_of_values': [False]
-    # }
 
     def extend_kernel_combinations(self):
         """

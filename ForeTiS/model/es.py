@@ -24,6 +24,8 @@ class Es(_stat_model.StatModel):
         seasonal = self.suggest_hyperparam_to_optuna('seasonal')
         seasonal_periods = self.suggest_hyperparam_to_optuna('seasonal_periods')
 
+        self.model_results = None
+
         if endog.eq(0).any().any() and seasonal == 'mul':
             endog += 0.01
         endog.index.freq = endog.index.inferred_freq

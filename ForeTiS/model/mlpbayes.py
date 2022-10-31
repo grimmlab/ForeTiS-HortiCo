@@ -1,8 +1,9 @@
 import torch
+import pandas as pd
+import numpy as np
 
 from . import _torch_model
 from bayesian_torch.models.dnn_to_bnn import dnn_to_bnn
-from ._model_classes import PrintLayer
 
 
 class Mlp(_torch_model.TorchModel):
@@ -24,7 +25,8 @@ class Mlp(_torch_model.TorchModel):
 
         Number of units in the first bayesian linear layer and percentage decrease after each may be fixed or optimized.
         """
-        self.variance = True
+        self.conf = True
+        self.num_monte_carlo = self.suggest_hyperparam_to_optuna('num_monte_carlo')
 
         n_layers = self.suggest_hyperparam_to_optuna('n_layers')
         model = []
@@ -117,3 +119,29 @@ class Mlp(_torch_model.TorchModel):
                 'upper_bound': 100
             }
         }
+
+    def predict(self, X_in: pd.DataFrame) -> np.array:
+        """
+        Implementation of a prediction based on input features for PyTorch models.
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
+        """
+        dataloader = self.get_dataloader(X=X_in.drop(labels=[self.target_column], axis=1), y=X_in[self.target_column],
+                                         only_transform=True, predict=True)
+        self.model.eval()
+        predictions = None
+        conf = None
+        with torch.no_grad():
+            for inputs in dataloader:
+                inputs = inputs.view(1, -1)
+                inputs = inputs.to(device=self.device)
+                predictions_mc = []
+                for _ in range(self.num_monte_carlo):
+                    output = self.model(inputs)
+                    predictions_mc.append(output)
+                predictions_ = torch.stack(predictions_mc)
+                outputs = torch.mean(predictions_, dim=0)
+                confidence = torch.var(predictions_, dim=0)
+                predictions = torch.clone(outputs) if predictions is None else torch.cat((predictions, outputs))
+                conf = torch.clone(confidence) if conf is None else torch.cat((conf, confidence))
+        self.prediction = predictions.cpu().detach().numpy()
+        return self.prediction.flatten(), self.var.flatten(), conf.numpy().flatten()

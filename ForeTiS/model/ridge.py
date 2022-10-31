@@ -17,6 +17,8 @@ class Ridge(_sklearn_model.SklearnModel):
         See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
         self.standardize_X = self.suggest_hyperparam_to_optuna('standardize_X')
+        if self.standardize_X:
+            self.x_scaler = sklearn.preprocessing.StandardScaler()
 
         alpha = self.suggest_hyperparam_to_optuna('alpha')
         params = {}

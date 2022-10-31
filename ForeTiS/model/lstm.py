@@ -97,5 +97,71 @@ class LSTM(_torch_model.TorchModel):
                 outputs = self.model(inputs)
                 predictions = torch.clone(outputs)
         self.prediction = self.y_scaler.inverse_transform(predictions.cpu().detach().numpy()).flatten()
-        return self.prediction, self.var_artifical
+        return self.prediction, self.var
+
+    def get_dataloader(self, X: np.array, y: np.array = None, only_transform: bool = None, predict: bool = False,
+                       shuffle: bool = False) -> torch.utils.data.DataLoader:
+        """
+        Get a Pytorch DataLoader using the specified data and batch size
+
+        :param X: feature matrix to use
+        :param y: optional target vector to use
+        :param only_transform: whether to only transform or not
+        :param predict: weather to use the data for predictions or not
+        :param shuffle: shuffle parameter for DataLoader
+
+        :return: Pytorch DataLoader
+        """
+        # drop last sample if last batch would only contain one sample
+        if (len(X) > self.batch_size) and (len(X) % self.batch_size == 1):
+            X = X[:-1]
+            y = y[:-1]
+
+        if only_transform:
+            X = self.X_scaler.transform(X)
+        else:
+            X = self.X_scaler.fit_transform(X)
+
+        if only_transform:
+            y = self.y_scaler.transform(y.values.reshape(-1, 1))
+        else:
+            y = self.y_scaler.fit_transform(y.values.reshape(-1, 1))
+        if predict:
+            X, _ = self.create_sequences(X, y)
+        else:
+            X, y = self.create_sequences(X, y)
+
+        X = torch.tensor(X.astype(np.float32))
+        y = None if predict else torch.reshape(torch.from_numpy(y).float(), (-1, 1))
+        dataset = X if predict else torch.utils.data.TensorDataset(X, y)
+        if predict:
+            data = dataset
+        else:
+            data = torch.utils.data.DataLoader(dataset=dataset, batch_size=self.batch_size, shuffle=shuffle,
+                                               worker_init_fn=np.random.seed(0))
+        return data
+
+    def create_sequences(self, X: np.array, y: np.array) -> tuple:
+        """
+        Create sequenced data according to self.seq_length
+
+        :return: sequenced data and labels
+        """
+        if y is not None:
+            data = np.hstack((X, y))
+        else:
+            data = np.array(X)
+        xs = []
+        ys = [] if y is not None else None
+        if data.shape[0] <= self.seq_length:
+            self.seq_length = data.shape[0] - 1
+        for i in range(data.shape[0] - self.seq_length):
+            if self.seq_length == 0:
+                self.seq_length = 1
+            if y is not None:
+                xs.append(data[i:(i + self.seq_length), :])
+                ys.append(data[i + self.seq_length, -1])
+            else:
+                xs.append(data[i:(i + self.seq_length), :])
+        return np.array(xs), np.array(ys)
 

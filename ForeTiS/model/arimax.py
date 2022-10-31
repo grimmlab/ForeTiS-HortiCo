@@ -15,9 +15,10 @@ class Arima(_stat_model.StatModel):
 
         See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
-        self.variance = True
+        self.conf = True
 
         self.use_exog = True
+        self.exog_cols_dropped = None
 
         P = self.suggest_hyperparam_to_optuna('P')
         D = self.suggest_hyperparam_to_optuna('D')

@@ -39,6 +39,7 @@ class BaseModel(abc.ABC):
                  test_set_size_percentage: int, target_column: str):
         self.optuna_trial = optuna_trial
         self.datasets = datasets
+        self.target_column = target_column
         self.n_outputs = 1
         if not hasattr(self, 'all_hyperparams'):
             self.all_hyperparams = self.define_hyperparams_to_tune()
@@ -62,8 +63,7 @@ class BaseModel(abc.ABC):
                     self.dataset = dataset
                     break
         if dim_reduction:
-            self.dataset = self.pca_transform_train_test(test_set_size_percentage=test_set_size_percentage,
-                                                         target_column=target_column)
+            self.dataset = self.pca_transform_train_test(test_set_size_percentage=test_set_size_percentage)
         self.model = self.define_model()
 
     # Methods required by each child class #
@@ -253,32 +253,29 @@ class BaseModel(abc.ABC):
             }
         }
 
-    def pca_transform_train_test(self, test_set_size_percentage: int, target_column: str) -> tuple:
+    def pca_transform_train_test(self, test_set_size_percentage: int) -> tuple:
         """
         Deliver PCA transformed train and test set
-        :param target_column: target_column to add in the end
         :return: tuple of transformed train and test dataset
         """
         if test_set_size_percentage == 2021:
-            test = self.dataset.loc['2020-01-01': '2020-12-31']
+            test = self.dataset.loc['2021-01-01': '2021-12-31']
             train_val = pd.concat([self.dataset, test]).drop_duplicates(keep=False)
         else:
-            train_val, test = train_test_split(self.dataset,
-                                               test_size=test_set_size_percentage * 0.01,
-                                               random_state=42, shuffle=False)
+            train_val, test = train_test_split(self.dataset, test_size=test_set_size_percentage * 0.01, shuffle=False)
         scaler = sklearn.preprocessing.StandardScaler()
-        train_val_stand = scaler.fit_transform(train_val.drop(target_column, axis=1))
+        train_val_stand = scaler.fit_transform(train_val.drop(self.target_column, axis=1))
         pca = sklearn.decomposition.PCA(0.95)
         train_val_transf = pca.fit_transform(train_val_stand)
-        test_stand = scaler.transform(test.drop(target_column, axis=1))
+        test_stand = scaler.transform(test.drop(self.target_column, axis=1))
         test_transf = pca.transform(test_stand)
         train_val_data = pd.DataFrame(data=train_val_transf,
                                       columns=['PC' + str(i) for i in range(train_val_transf.shape[1])],
                                       index=train_val.index)
-        train_val_data[target_column] = train_val[target_column]
+        train_val_data[self.target_column] = train_val[self.target_column]
         test_data = pd.DataFrame(data=test_transf, columns=['PC' + str(i) for i in range(test_transf.shape[1])],
                                  index=test.index)
-        test_data[target_column] = test[target_column]
+        test_data[self.target_column] = test[self.target_column]
         dataset = pd.concat([train_val_data, test_data])
         return dataset
 

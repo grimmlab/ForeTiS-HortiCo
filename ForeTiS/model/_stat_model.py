@@ -17,17 +17,12 @@ class StatModel(_base_model.BaseModel, abc.ABC):
     def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, test_set_size_percentage: int, featureset: str,
                  current_model_name: str = None, target_column: str = None):
         self.all_hyperparams = self.common_hyperparams()
-        self.target_column = target_column
         self.current_model_name = current_model_name
         super().__init__(optuna_trial=optuna_trial, datasets=datasets, featureset=featureset,
                          test_set_size_percentage=test_set_size_percentage, target_column=target_column)
         self.n_features = self.dataset.shape[1]
         self.transf = self.suggest_hyperparam_to_optuna('transf')
         self.power_transformer = sklearn.preprocessing.PowerTransformer() if self.transf == 'pw' else None
-        if hasattr(self, 'use_exog'):
-            self.exog_cols_dropped = None
-        if self.current_model_name == 'es':
-            self.model_results = None
         self.contains_zeros = False
 
     def retrain(self, retrain: pd.DataFrame):
@@ -72,7 +67,7 @@ class StatModel(_base_model.BaseModel, abc.ABC):
         else:
             y_true = np.array([0])
             y_pred = np.array([0])
-        self.var_artifical = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
+        self.var = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
 
     def update(self, update: pd.DataFrame, period: int):
         """
@@ -104,16 +99,15 @@ class StatModel(_base_model.BaseModel, abc.ABC):
 
         y_true = update[self.target_column][-len(self.prediction):]
         y_pred = self.prediction
-        self.var_artifical = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
+        self.var = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
 
     def predict(self, X_in: pd.DataFrame) -> np.array:
         """
         Implementation of a prediction based on input features for models with statsmodels-like API.
         See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
         """
-        X_in = self.get_transformed_set(df=X_in, target_column=self.target_column,
-                                        transf=self.transf, power_transformer=self.power_transformer,
-                                                    only_transform=True)
+        X_in = self.get_transformed_set(df=X_in, target_column=self.target_column, transf=self.transf,
+                                        power_transformer=self.power_transformer, only_transform=True)
         if self.current_model_name == 'es':
             if len(X_in) == 1:
                 self.prediction = self.model_results.forecast().values
@@ -127,19 +121,19 @@ class StatModel(_base_model.BaseModel, abc.ABC):
                 exog = X_in.drop(labels=[self.target_column], axis=1)
                 raw_data_functions.drop_columns(exog, self.exog_cols_dropped)
                 exog = exog.to_numpy(dtype=float)
-            if hasattr(self, 'variance'):
+            if hasattr(self, 'conf'):
                 return_conf_int = True
             self.prediction, conf_int = \
                 self.model.predict(n_periods=n_periods, exogenous=exog, return_conf_int=return_conf_int, alpha=0.05)
         if isinstance(self.prediction, pd.Series):
             self.prediction = self.prediction.to_numpy()
         self.prediction = self.get_inverse_transformed_set(self.prediction, self.transf, self.power_transformer)
-        if hasattr(self, 'variance'):
+        if hasattr(self, 'conf'):
             conf_int = self.get_inverse_transformed_set(conf_int, self.transf, self.power_transformer, is_conf=True)
-            var = (conf_int/2)**2
-            return self.prediction, self.var_artifical, var
+            conf = (conf_int/2)**2
+            return self.prediction.flatten(), self.var.flatten(), conf
         else:
-            return self.prediction, self.var_artifical
+            return self.prediction.flatten(), self.var.flatten()
 
     def train_val_loop(self, train: pd.DataFrame, val: pd.DataFrame) -> np.array:
         """

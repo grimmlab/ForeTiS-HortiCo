@@ -13,7 +13,7 @@ def run(data_dir: str, save_dir: str = None, featuresets: list = None, datasplit
         correlation_number: int = None, models: list = None, data: str = None, target_column: str = None,
         n_trials: int = 100, save_final_model: bool = False, periodical_refit_cycles: list = None,
         refit_drops: int = 0, refit_window: int = 5, intermediate_results_interval: int = None, batch_size: int = 32,
-        n_epochs: int = None, num_monte_carlo: int = None):
+        n_epochs: int = None):
 
     # Optimization Pipeline #
     helper_functions.set_all_seeds()
@@ -42,7 +42,6 @@ def run(data_dir: str, save_dir: str = None, featuresets: list = None, datasplit
                                                   refit_drops=refit_drops, refit_window=refit_window,
                                                   intermediate_results_interval=intermediate_results_interval,
                                                   batch_size=batch_size, n_epochs=n_epochs,
-                                                  num_monte_carlo=num_monte_carlo,
                                                   current_model_name=current_model_name, datasets=datasets,
                                                   config=config)
             print('### Starting Optuna Optimization for model ' + current_model_name + ' and featureset ' + featureset

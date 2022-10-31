@@ -109,6 +109,7 @@ class Dataset:
 
             dataset_raw = dataset_raw.asfreq('D')
 
+            # condense columns if specified in config file
             if 'cols_to_condense' in config[data]:
                 cols_to_condense = config[data]['cols_to_condense'].replace(" ", "").split(',')
                 condensed_col_name = config[data]['condensed_col_name']
@@ -117,6 +118,7 @@ class Dataset:
                     dataset_raw[condensed_col_name] += dataset_raw[col]
                 drop_columns(df=dataset_raw, columns=cols_to_condense)
 
+            # create lists of the column names of the specific datasets
             searchfor = features_weather_regex
             features_weather = dataset_raw.filter(regex='|'.join(searchfor), axis=1).columns.tolist()
             self.features_holidays = [self.holiday_school_column] + [self.holiday_public_column]

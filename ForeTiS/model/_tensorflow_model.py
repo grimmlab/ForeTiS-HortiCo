@@ -31,15 +31,9 @@ class TensorflowModel(_base_model.BaseModel, abc.ABC):
     :param target_column: the target column for the prediction
     """
     def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str, test_set_size_percentage: int,
-                 target_column: str = None, current_model_name: str = None):
-        self.target_column = target_column
-        self.current_model_name = current_model_name
+                 target_column: str = None):
         super().__init__(optuna_trial=optuna_trial, datasets=datasets, featureset=featureset,
                          test_set_size_percentage=test_set_size_percentage, target_column=target_column)
-        if hasattr(self, 'standardize_X') and self.standardize_X:
-            self.x_scaler = sklearn.preprocessing.StandardScaler()
-        if hasattr(self, 'standardize_y') and self.standardize_y:
-            self.y_scaler = sklearn.preprocessing.StandardScaler()
 
     def retrain(self, retrain: pd.DataFrame):
         """
@@ -67,7 +61,7 @@ class TensorflowModel(_base_model.BaseModel, abc.ABC):
         else:
             y_true = np.array([0])
             y_pred = np.array([0])
-        self.var_artifical = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
+        self.var = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
 
     def update(self, update: pd.DataFrame, period: int):
         """
@@ -92,7 +86,7 @@ class TensorflowModel(_base_model.BaseModel, abc.ABC):
 
         y_true = y_train[-len(self.prediction):]
         y_pred = self.prediction
-        self.var_artifical = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
+        self.var = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
 
     def predict(self, X_in: pd.DataFrame) -> np.array:
         """
@@ -102,13 +96,13 @@ class TensorflowModel(_base_model.BaseModel, abc.ABC):
         X_in = X_in.drop(self.target_column, axis=1).values.reshape(-1, X_in.shape[1] - 1)
         if hasattr(self, 'standardize_X') and self.standardize_X:
             X_in = self.x_scaler.transform(X_in)
-        predict, var = self.model.predict_y(Xnew=tf.convert_to_tensor(value=X_in.astype(float), dtype=tf.float64))
-        var = var.numpy()
+        predict, conf = self.model.predict_y(Xnew=tf.convert_to_tensor(value=X_in.astype(float), dtype=tf.float64))
+        conf = conf.numpy()
         self.prediction = predict.numpy()
         if hasattr(self, 'standardize_y') and self.standardize_y:
             self.prediction = self.y_scaler.inverse_transform(predict)
-            var = self.y_scaler.inverse_transform(var)
-        return self.prediction.flatten(), self.var_artifical, var[:, 0]
+            conf = self.y_scaler.inverse_transform(conf)
+        return self.prediction.flatten(), self.var.flatten(), conf[:, 0]
 
     def train_val_loop(self, train: pd.DataFrame, val: pd.DataFrame) -> np.array:
         """
