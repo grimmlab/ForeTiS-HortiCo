@@ -27,7 +27,8 @@ if __name__ == '__main__':
                         help="specify the dataset that you want to use.")
     parser.add_argument("-tc", "--target_column", type=str, default='total_turnover',
                         help="specify the target column for the prediction.")
-    parser.add_argument("-fs", "--featuresets", type=list, default=['optimize'],
+    parser.add_argument("-fs", "--featuresets", type=list, default=['dataset_weather', 'dataset_cal', 'dataset_sales',
+                                                                    'dataset_full'],
                         help="specify on which featuresets the models should be optimized: Valid arguments are: " +
                              str(helper_functions.get_list_of_featuresets()) +
                              "If optimize, the featuresets will be optimized by optuna.")
