@@ -27,11 +27,20 @@ if __name__ == '__main__':
                         help="specify the dataset that you want to use.")
     parser.add_argument("-tc", "--target_column", type=str, default='total_turnover',
                         help="specify the target column for the prediction.")
-    parser.add_argument("-fs", "--featuresets", type=list, default=['dataset_weather', 'dataset_cal', 'dataset_sales',
+    parser.add_argument("-fs", "--featuresets", type=list, nargs='+', default=['dataset_weather', 'dataset_cal', 'dataset_sales',
                                                                     'dataset_full'],
                         help="specify on which featuresets the models should be optimized: Valid arguments are: " +
                              str(helper_functions.get_list_of_featuresets()) +
                              "If optimize, the featuresets will be optimized by optuna.")
+    parser.add_argument("-sl", "--seasonal_lags", type=list, default=[1, 2],
+                        help="specify the seasonal lags to add in the feature engineering for the lagged statistics. "
+                             "Standard is [1, 2]")
+    parser.add_argument("-mod", "--models", nargs='+', type=list, default=['all'],
+                        # 'ard', 'arima', 'arimax', 'averagehistorical', 'averagemoving', 'averageseasonal', 'averageseasonallag', 'bayesridge', 'elasticnet', 'es', 'gpr', 'gprtf', 'lasso', 'lstm', 'lstmbayes', 'mlp', 'mlpbayes', 'ridge', 'xgboost'
+                        help="specify the models to optimize: 'all' or naming according to source file name. "
+                             "Multiple models can be selected by just naming multiple model names, "
+                             "e.g. --models mlp xgboost. "
+                             "The following are available: " + str(helper_functions.get_list_of_implemented_models()))
 
     # Data Engineering Params
     parser.add_argument("-wf", "--windowsize_current_statistics", type=int, default=3,
@@ -40,9 +49,6 @@ if __name__ == '__main__':
     parser.add_argument("-ws", "--windowsize_lagged_statistics", type=int, default=3,
                         help="specify the windowsize for the feature engineering of the lagged statistics. "
                              "Standard is 3")
-    parser.add_argument("-sl", "--seasonal_lags", type=list, default=[1, 2],
-                        help="specify the seasonal lags to add in the feature engineering for the lagged statistics. "
-                             "Standard is [1, 2]")
     parser.add_argument("-ce", "--cyclic_encoding", type=bool, default=True,
                         help="specify whether to do cyclic encoding or not. "
                              "Standard is True")
@@ -79,11 +85,6 @@ if __name__ == '__main__':
                              "Standard is 3")
 
     # Model and Optimization Params #
-    parser.add_argument("-mod", "--models", nargs='+', type=list, default=['all'],  # 'ard', 'arima', 'arimax', 'averagehistorical', 'averagemoving', 'averageseasonal', 'averageseasonallag', 'bayesridge', 'elasticnet', 'es', 'gpr', 'gprtf', 'lasso', 'lstm', 'lstmbayes', 'mlp', 'mlpbayes', 'ridge', 'xgboost'
-                        help="specify the models to optimize: 'all' or naming according to source file name. "
-                             "Multiple models can be selected by just naming multiple model names, "
-                             "e.g. --models mlp xgboost. "
-                             "The following are available: " + str(helper_functions.get_list_of_implemented_models()))
     parser.add_argument("-tr", "--n_trials", type=int, default=200,
                         help="specify the number of trials for the Bayesian optimization (optuna).")
     parser.add_argument("-sf", "--save_final_model", type=bool, default=True,
