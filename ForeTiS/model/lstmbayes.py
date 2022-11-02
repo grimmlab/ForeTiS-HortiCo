@@ -142,7 +142,7 @@ class LSTM(_torch_model.TorchModel):
                         predictions_mc.append(output)
                     predictions_ = torch.stack(predictions_mc)
                     outputs = torch.mean(predictions_, dim=0)
-                    confidence = torch.conf(predictions_, dim=0)
+                    confidence = torch.var(predictions_, dim=0)
                     predictions = torch.clone(outputs) if predictions is None else torch.cat((predictions, outputs))
                     conf = torch.clone(confidence) if conf is None else torch.cat((conf, confidence))
         else:

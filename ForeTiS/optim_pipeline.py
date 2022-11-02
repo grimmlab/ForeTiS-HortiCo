@@ -8,7 +8,7 @@ from ForeTiS.optimization import optuna_optim
 
 def run(data_dir: str, save_dir: str = None, featuresets: list = None, datasplit: str = 'timeseries-cv',
         test_set_size_percentage: int = 25, val_set_size_percentage: int = 20, n_splits: int = 4,
-        windowsize_current_statistics: int = 4, windowsize_lagged_statistics: int = 4, seasonal_lags: list = [1, 2],
+        windowsize_current_statistics: int = 4, windowsize_lagged_statistics: int = 4, seasonal_lags: int = None,
         cyclic_encoding: bool = False, imputation_method: str = 'None', correlation_method: str = None,
         correlation_number: int = None, models: list = None, data: str = None, target_column: str = None,
         n_trials: int = 100, save_final_model: bool = False, periodical_refit_cycles: list = None,

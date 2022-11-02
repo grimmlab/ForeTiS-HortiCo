@@ -50,7 +50,7 @@ class Dataset:
     """
 
     def __init__(self, data_dir: str, data: str, test_set_size_percentage: int, target_column: str,
-                 windowsize_current_statistics: int, windowsize_lagged_statistics: int, seasonal_lags: list,
+                 windowsize_current_statistics: int, windowsize_lagged_statistics: int, seasonal_lags: int,
                  cyclic_encoding: bool = False, imputation_method: str = 'None', correlation_number: int = None,
                  correlation_method: str = None, config: configparser.ConfigParser = None):
         self.target_column = target_column
