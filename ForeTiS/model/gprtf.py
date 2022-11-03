@@ -70,11 +70,11 @@ class Gpr(_tensorflow_model.TensorflowModel):
             },
             'standardize_X': {
                 'datatype': 'categorical',
-                'list_of_values': [True, False]
+                'list_of_values': [True]
             },
             'standardize_y': {
                 'datatype': 'categorical',
-                'list_of_values': [True, False]
+                'list_of_values': [True]
             }
         }
 
