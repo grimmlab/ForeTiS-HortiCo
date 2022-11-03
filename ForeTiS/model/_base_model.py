@@ -249,7 +249,7 @@ class BaseModel(abc.ABC):
         return {
             'pca': {
                 'datatype': 'categorical',
-                'list_of_values': [True, False]
+                'list_of_values': [False]
             }
         }
 
