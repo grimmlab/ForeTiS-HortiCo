@@ -1,4 +1,6 @@
 import torch
+from gpflow.kernels import Matern52
+import tensorflow as tf
 
 
 # Class that can be build in to print the passed data between layers for debugging
@@ -38,3 +40,9 @@ class PrepareForDropout(torch.nn.Module):
 
     def forward(self, lstm_out):
         return lstm_out[:, -1, :]
+
+
+class SafeMatern52(Matern52):
+    def euclid_dist(self, X, X2):
+        r2 = self.square_dist(X, X2)
+        return tf.sqrt(r2 + 1e-3) # or 1e-6. I find 1e-12 is too small

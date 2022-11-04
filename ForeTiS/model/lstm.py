@@ -2,7 +2,6 @@ import torch
 import numpy as np
 import pandas as pd
 import sklearn
-import optuna
 
 from . import _torch_model
 from ._model_classes import GetOutputZero, PrepareForlstm, PrepareForDropout

@@ -160,7 +160,7 @@ class LSTM(_torch_model.TorchModel):
                 predictions = torch.clone(outputs)
                 conf = torch.clone(confidence)
         self.prediction = self.y_scaler.inverse_transform(predictions.cpu().detach().numpy()).flatten()
-        conf = self.y_scaler.inverse_transform(conf)
+        conf = self.y_scaler.inverse_transform(conf.cpu().detach().numpy())
         return self.prediction, self.var, conf.flatten()
 
     def get_dataloader(self, X: np.array, y: np.array = None, only_transform: bool = None, predict: bool = False,

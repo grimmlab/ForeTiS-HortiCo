@@ -6,6 +6,7 @@ import sklearn
 from . import _tensorflow_model
 from gpflow.kernels import Matern52, White, RationalQuadratic, Periodic, \
     SquaredExponential, Polynomial
+from ._model_classes import SafeMatern52
 
 class Gpr(_tensorflow_model.TensorflowModel):
     """
@@ -83,16 +84,16 @@ class Gpr(_tensorflow_model.TensorflowModel):
         Function extending kernels list with combinations based on base_kernels
         """
         kernels = []
-        base_kernels = ['SquaredExponential', 'Matern', 'WhiteKernel', 'RationalQuadratic', 'Polynomial',
-                        'PeriodicSquaredExponential', 'PeriodicMatern52', 'PeriodicRationalQuadratic']
+        base_kernels = ['SquaredExponential', 'SafeMatern52', 'WhiteKernel', 'RationalQuadratic', 'Polynomial',
+                        'PeriodicSquaredExponential', 'PeriodicRationalQuadratic'] # , 'PeriodicSafeMatern52'
         kernel_dict = {
             'SquaredExponential': SquaredExponential(),
             'WhiteKernel': White(),
-            'Matern': Matern52(),
+            'SafeMatern52': SafeMatern52(),
             'RationalQuadratic': RationalQuadratic(),
             'Polynomial': Polynomial(),
             'PeriodicSquaredExponential': Periodic(SquaredExponential(), period=52),
-            'PeriodicMatern52': Periodic(Matern52(), period=52),
+            # 'PeriodicSafeMatern52': Periodic(SafeMatern52(), period=52),
             'PeriodicRationalQuadratic': Periodic(RationalQuadratic(), period=52)
         }
         kernels.extend(base_kernels)

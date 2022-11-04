@@ -144,4 +144,5 @@ class Mlp(_torch_model.TorchModel):
                 predictions = torch.clone(outputs) if predictions is None else torch.cat((predictions, outputs))
                 conf = torch.clone(confidence) if conf is None else torch.cat((conf, confidence))
         self.prediction = predictions.cpu().detach().numpy()
-        return self.prediction.flatten(), self.var.flatten(), conf.numpy().flatten()
+        conf = conf.cpu().detach().numpy()
+        return self.prediction.flatten(), self.var.flatten(), conf.flatten()

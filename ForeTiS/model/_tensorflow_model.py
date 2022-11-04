@@ -71,10 +71,8 @@ class TensorflowModel(_base_model.BaseModel, abc.ABC):
         x_train = update.drop(self.target_column, axis=1).values.reshape(-1, update.shape[1] - 1)
         y_train = update[self.target_column].values.reshape(-1, 1)
         if hasattr(self, 'standardize_X') and self.standardize_X:
-            self.x_scaler = sklearn.preprocessing.StandardScaler()
             x_train = self.x_scaler.fit_transform(x_train)
         if hasattr(self, 'standardize_y') and self.standardize_y:
-            self.y_scaler = sklearn.preprocessing.StandardScaler()
             y_train = self.y_scaler.fit_transform(y_train)
 
         self.model.data = (tf.convert_to_tensor(value=x_train.astype(float), dtype=tf.float64),
