@@ -45,4 +45,4 @@ class PrepareForDropout(torch.nn.Module):
 class SafeMatern52(Matern52):
     def euclid_dist(self, X, X2):
         r2 = self.square_dist(X, X2)
-        return tf.sqrt(r2 + 1e-3) # or 1e-6. I find 1e-12 is too small
+        return tf.sqrt(r2 + 1e-6) # or 1e-6. I find 1e-12 is too small
