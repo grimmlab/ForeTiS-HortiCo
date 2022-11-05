@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="gprtf changing matern kernel">
+    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="gprtf debug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/gprtf.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/gprtf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/run.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +165,7 @@
       <workItem from="1667579884921" duration="794000" />
       <workItem from="1667582066405" duration="1994000" />
       <workItem from="1667639182868" duration="1401000" />
-      <workItem from="1667664565652" duration="3272000" />
+      <workItem from="1667664565652" duration="4700000" />
     </task>
     <task id="LOCAL-00001" summary="readthedocs">
       <created>1665063091660</created>
@@ -400,7 +398,14 @@
       <option name="project" value="LOCAL" />
       <updated>1667580035701</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="gprtf debug">
+      <created>1667668133872</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1667668133872</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -423,7 +428,8 @@
     <MESSAGE value="standardize ist default for gprtf" />
     <MESSAGE value="debugging gprtf and lstmbayes" />
     <MESSAGE value="gprtf changing matern kernel" />
-    <option name="LAST_COMMIT_MESSAGE" value="gprtf changing matern kernel" />
+    <MESSAGE value="gprtf debug" />
+    <option name="LAST_COMMIT_MESSAGE" value="gprtf debug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
