@@ -6,7 +6,6 @@ import sklearn
 from . import _tensorflow_model
 from gpflow.kernels import Matern52, White, RationalQuadratic, Periodic, \
     SquaredExponential, Polynomial
-from ._model_classes import SafeMatern52
 
 class Gpr(_tensorflow_model.TensorflowModel):
     """
@@ -35,7 +34,7 @@ class Gpr(_tensorflow_model.TensorflowModel):
         self.optimizer = optimizer_dict[optimizer_key]
 
         mean_function_dict = {'Constant': gpflow.mean_functions.Constant(),
-                              'None': None}
+                              None: None}
         mean_function_key = self.suggest_hyperparam_to_optuna('mean_function')
         mean_function = mean_function_dict[mean_function_key]
         kernel_key = self.suggest_hyperparam_to_optuna('kernel')
@@ -67,15 +66,15 @@ class Gpr(_tensorflow_model.TensorflowModel):
             },
             'mean_function': {
                 'datatype': 'categorical',
-                'list_of_values': ['None', 'Constant']
+                'list_of_values': [None, 'Constant']
             },
             'standardize_X': {
                 'datatype': 'categorical',
-                'list_of_values': [True]
+                'list_of_values': [True, False]
             },
             'standardize_y': {
                 'datatype': 'categorical',
-                'list_of_values': [True]
+                'list_of_values': [True, False]
             }
         }
 
@@ -85,7 +84,7 @@ class Gpr(_tensorflow_model.TensorflowModel):
         """
         kernels = []
         base_kernels = ['SquaredExponential', 'Matern52', 'WhiteKernel', 'RationalQuadratic', 'Polynomial',
-                        'PeriodicSquaredExponential', 'PeriodicRationalQuadratic'] # , 'PeriodicMatern52'
+                        'PeriodicSquaredExponential', 'PeriodicMatern52', 'PeriodicRationalQuadratic']
         kernel_dict = {
             'SquaredExponential': SquaredExponential(),
             'WhiteKernel': White(),
@@ -93,7 +92,7 @@ class Gpr(_tensorflow_model.TensorflowModel):
             'RationalQuadratic': RationalQuadratic(),
             'Polynomial': Polynomial(),
             'PeriodicSquaredExponential': Periodic(SquaredExponential(), period=52),
-            # 'PeriodicMatern52': Periodic(Matern52(), period=52),
+            'PeriodicMatern52': Periodic(Matern52(), period=52),
             'PeriodicRationalQuadratic': Periodic(RationalQuadratic(), period=52)
         }
         kernels.extend(base_kernels)
