@@ -156,7 +156,7 @@ class LSTM(_torch_model.TorchModel):
                     predictions_mc.append(output)
                 predictions_ = torch.stack(predictions_mc)
                 outputs = torch.mean(predictions_, dim=0)
-                confidence = torch.conf(predictions_, dim=0)
+                confidence = torch.var(predictions_, dim=0)
                 predictions = torch.clone(outputs)
                 conf = torch.clone(confidence)
         self.prediction = self.y_scaler.inverse_transform(predictions.cpu().detach().numpy()).flatten()
