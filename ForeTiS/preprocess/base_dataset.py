@@ -119,8 +119,7 @@ class Dataset:
                 drop_columns(df=dataset_raw, columns=cols_to_condense)
 
             # create lists of the column names of the specific datasets
-            searchfor = features_weather_regex
-            features_weather = dataset_raw.filter(regex='|'.join(searchfor), axis=1).columns.tolist()
+            features_weather = dataset_raw.filter(regex='|'.join(features_weather_regex), axis=1).columns.tolist()
             self.features_holidays = [self.holiday_school_column] + [self.holiday_public_column]
             self.features = [self.target_column] + features_weather + self.features_holidays
             self.features_weather_sales = [self.target_column] + features_weather
