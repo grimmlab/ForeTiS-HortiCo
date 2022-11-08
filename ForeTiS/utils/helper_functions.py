@@ -82,6 +82,7 @@ def set_all_seeds(seed: int=0):
     torch.backends.cudnn.benchmark = False
     tf.random.set_seed(seed)
 
+
 def get_folds(datasplit: str, n_splits: int):
     """
     Get the folds for the optuna optimization
@@ -91,7 +92,7 @@ def get_folds(datasplit: str, n_splits: int):
 
     :return: number of folds
     """
-    if datasplit == "timeseries-cv" or datasplit == "cv":
+    if datasplit == "cv":
         folds = n_splits
     elif datasplit == "train-val-test":
         folds = 1
@@ -101,23 +102,30 @@ def get_folds(datasplit: str, n_splits: int):
 
 def get_indexes(df: pd.DataFrame, n_splits: str, datasplit: str):
     """
-    Get the indexes for timeseries-cv
+    Get the indexes for cv
 
     :param df: data that should be splited
-    :param n_splits: number of splits for the timeseries-cv
+    :param n_splits: number of splits for the cv
     :param datasplit: splitting method
 
     :return: train and test indexes
     """
-    if datasplit == 'timeseries-cv':
-        splitter = TimeSeriesSplit(n_splits=n_splits)
-    if datasplit == 'cv':
-        splitter = ShuffleSplit(n_splits=n_splits, test_size=0.2, random_state=0)
     train_indexes = []
     test_indexes = []
-    for train_index, test_index in splitter.split(df):
-        train_indexes.append(train_index)
-        test_indexes.append(test_index)
+    if datasplit == 'timeseries-cv':
+        year_list = df.index.year.unique().tolist()
+
+        for idx, yr in enumerate(year_list[:-1]):
+            train_yr = year_list[:idx + 1]
+            test_yr = [year_list[idx + 1]]
+
+            train_indexes.append(np.array(list(range(len(df.loc[df.index.year.isin(train_yr), :].index)))))
+            test_indexes.append(np.array(list(range(len(df.loc[df.index.year.isin(test_yr), :].index))))+len(train_indexes[idx]))
+    if datasplit == 'cv':
+        splitter = ShuffleSplit(n_splits=n_splits, test_size=0.2, random_state=0)
+        for train_index, test_index in splitter.split(df):
+            train_indexes.append(train_index)
+            test_indexes.append(test_index)
 
     return train_indexes, test_indexes
 

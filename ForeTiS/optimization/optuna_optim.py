@@ -139,13 +139,10 @@ class OptunaOptim:
             test = self.dataset.loc['2021-01-01': '2021-12-31']
             train_val = pd.concat([self.dataset, test]).drop_duplicates(keep=False)
             train_val.index.freq = train_val.index.inferred_freq
-            smallest_split_length = train_val.shape[0] / self.n_splits
-        else:
-            smallest_split_length = (100 - self.test_set_size_percentage) * 0.01 * self.dataset.shape[0] / self.n_splits
         if self.datasplit == 'cv' and self.current_model_name == 'es':
             print('Exponential Smoothing depends on continuous time series. Will set datasplit to timeseries-cv.')
             self.datasplit = 'timeseries-cv'
-        elif self.datasplit == 'timeseries-cv' and smallest_split_length < 2 * self.datasets.seasonal_periods:
+        elif self.datasplit == 'timeseries-cv' and len(self.dataset) < 4 * self.datasets.seasonal_periods:
             print('First timeseries-cv split has less than 2 seasonal cycles. Will set datasplit to train-val-test.')
             self.datasplit = 'train-val-test'
 
@@ -163,7 +160,10 @@ class OptunaOptim:
         objective_values = []
         validation_results = pd.DataFrame(index=range(0, self.dataset.shape[0]))
 
-        folds = helper_functions.get_folds(datasplit=self.datasplit, n_splits=self.user_input_params["n_splits"])
+        if self.datasplit == 'timeseries-cv':
+            folds = len(train_val.index.year.unique()) - 1
+        else:
+            folds = helper_functions.get_folds(datasplit=self.datasplit, n_splits=self.user_input_params["n_splits"])
         for fold in range(folds):
             fold_name = "fold_" + str(fold)
             if not self.test_set_size_percentage == 2021:
