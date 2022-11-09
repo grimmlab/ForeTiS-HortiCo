@@ -52,7 +52,8 @@ class LSTM(_torch_model.TorchModel):
             "posterior_mu_init": self.suggest_hyperparam_to_optuna('posterior_mu_init'),
             "posterior_rho_init": self.suggest_hyperparam_to_optuna('posterior_rho_init'),
             "type": self.suggest_hyperparam_to_optuna('type'),
-            "moped_enable": self.suggest_hyperparam_to_optuna('moped_enable')
+            "moped_enable": self.suggest_hyperparam_to_optuna('moped_enable'),
+            "moped_delta": self.suggest_hyperparam_to_optuna('moped_delta')
         }
         model = torch.nn.Sequential(*model)
         dnn_to_bnn(model, bnn_prior_parameters)
@@ -77,22 +78,22 @@ class LSTM(_torch_model.TorchModel):
                 'upper_bound': 104
             },
             'prior_mu': {
-                'datatype': 'int',
+                'datatype': 'float',
                 'lower_bound': 0.0,
                 'upper_bound': 1.0
             },
             'prior_sigma': {
-                'datatype': 'int',
+                'datatype': 'float',
                 'lower_bound': 0.0,
                 'upper_bound': 1.0
             },
             'posterior_mu_init': {
-                'datatype': 'int',
+                'datatype': 'float',
                 'lower_bound': 0.0,
                 'upper_bound': 1.0
             },
             'posterior_rho_init': {
-                'datatype': 'int',
+                'datatype': 'float',
                 'lower_bound': -3.0,
                 'upper_bound': 3.0
             },
@@ -102,12 +103,17 @@ class LSTM(_torch_model.TorchModel):
             },
             'moped_enable': {
                 'datatype': 'categorical',
-                'list_of_values': [False]
+                'list_of_values': [False, True]
             },
             'num_monte_carlo': {
                 'datatype': 'int',
                 'lower_bound': 1,
                 'upper_bound': 100
+            },
+            'moped_delta': {
+                'datatype': 'float',
+                'lower_bound': 0.0,
+                'upper_bound': 1.0
             }
         }
 

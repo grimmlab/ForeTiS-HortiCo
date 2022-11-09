@@ -263,7 +263,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
             'dropout': {
                 'datatype': 'float',
                 'lower_bound': 0,
-                'upper_bound': 0.9, # 0.9
+                'upper_bound': 0.9,
                 'step': 0.1
             },
             'act_function': {
@@ -307,6 +307,6 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
             'tanh': torch.nn.Tanh(),
             'leakyrelu': torch.nn.LeakyReLU(),
             'sigmoid': torch.nn.Sigmoid(),
-            'softmax': torch.nn.Softmax
+            'softmax': torch.nn.Softmax()
         }
         return string_to_object_dict[string_to_get] if string_to_get is not None else None
