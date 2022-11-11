@@ -2,7 +2,7 @@ from sklearn import gaussian_process
 import sklearn
 import itertools
 
-from . import _sklearn_model
+from ForeTiS.model import _sklearn_model
 from sklearn.gaussian_process.kernels import DotProduct, WhiteKernel, Matern, RationalQuadratic, ExpSineSquared, RBF, \
     ConstantKernel
 

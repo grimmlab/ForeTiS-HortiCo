@@ -161,7 +161,13 @@ class OptunaOptim:
         validation_results = pd.DataFrame(index=range(0, self.dataset.shape[0]))
 
         if self.datasplit == 'timeseries-cv':
-            folds = len(train_val.index.year.unique()) - 1
+            year_list = train_val.index.year.unique().tolist()
+            train_len = 2
+            if len(year_list) > 9:
+                year_list = year_list[-9:]
+            if len(year_list) > 6:
+                train_len += len(year_list) - 6
+            folds = len(year_list) - train_len
         else:
             folds = helper_functions.get_folds(datasplit=self.datasplit, n_splits=self.user_input_params["n_splits"])
         for fold in range(folds):

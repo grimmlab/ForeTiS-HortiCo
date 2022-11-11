@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def add_lagged_statistics(seasonal_periods: int, windowsize_lagged_statistics: int, seasonal_lags: list,
+def add_lagged_statistics(seasonal_periods: int, windowsize_lagged_statistics: int, seasonal_lags: int,
                           df: pd.DataFrame, features_sales: list, correlations: list):
     """
     Function adding lagged and seasonal-lagged features to dataset
@@ -13,19 +13,18 @@ def add_lagged_statistics(seasonal_periods: int, windowsize_lagged_statistics: i
     :param features_sales: sales features
     :param correlations: calculated correlations
     """
-    if 0 not in seasonal_lags:
-        for seasonal_lag in seasonal_lags:
-            if correlations is not None:
-                df['stat_correlations_seaslag' + str(seasonal_lag) + '_sum'] = \
-                    df[correlations].shift(seasonal_lag * seasonal_periods).sum(axis=1)
-            for feature in features_sales:
-                # separate function as different window sizes might be interesting compared to non-seasonal
-                # statistics shift by 1+seasonal_period so rolling stats value is calculated without current value
-                df['stat_' + feature + '_seaslag' + str(seasonal_lag)] = \
-                    df[feature].shift(seasonal_lag * seasonal_periods)
-                df['stat_' + feature + '_seaslag' + str(seasonal_lag) + '_rolling_mean' +
-                        str(windowsize_lagged_statistics)] = df[feature].shift(seasonal_lag * seasonal_periods - 1).\
-                    rolling(windowsize_lagged_statistics).mean().round(13)
+    for seasonal_lag in range(seasonal_lags):
+        if correlations is not None:
+            df['stat_correlations_seaslag' + str(seasonal_lag) + '_sum'] = \
+                df[correlations].shift(seasonal_lag * seasonal_periods).sum(axis=1)
+        for feature in features_sales:
+            # separate function as different window sizes might be interesting compared to non-seasonal
+            # statistics shift by 1+seasonal_period so rolling stats value is calculated without current value
+            df['stat_' + feature + '_seaslag' + str(seasonal_lag)] = \
+                df[feature].shift(seasonal_lag * seasonal_periods)
+            df['stat_' + feature + '_seaslag' + str(seasonal_lag) + '_rolling_mean' +
+                    str(windowsize_lagged_statistics)] = df[feature].shift(seasonal_lag * seasonal_periods - 1).\
+                rolling(windowsize_lagged_statistics).mean().round(13)
     else:
         print('No seasonal lags defined!')
 

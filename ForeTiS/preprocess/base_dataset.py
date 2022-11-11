@@ -21,7 +21,6 @@ class Dataset:
         - data (*str*): the dataset that you want to use
         - windowsize_current_statistics (*int*): the windowsize for the feature engineering of the current statistic
         - windowsize_lagged_statistics (*int*): the windowsize for the feature engineering of the lagged statistics
-        - seasonal_lags (*int*): the seasonal lags to add in the feature engineering for the lagged statistics
         - cyclic_encoding (*bool*): whether to do cyclic encoding or not
         - correlation_method (*str*): the used method to calculate the correlations
         - correlation_number (*int*): the number of with the focus product correlating products
@@ -41,7 +40,6 @@ class Dataset:
     :param target_column: the target column for the prediction
     :param windowsize_current_statistics: the windowsize for the feature engineering of the current statistic
     :param windowsize_lagged_statistics: the windowsize for the feature engineering of the lagged statistics
-    :param seasonal_lags: the seasonal lags to add in the feature engineering for the lagged statistics
     :param cyclic_encoding: whether to do cyclic encoding or not
     :param imputation_method: the imputation method to use. Options are: 'mean' , 'knn' , 'iterative'
     :param correlation_number: the number of with the focus product correlating products
@@ -50,15 +48,14 @@ class Dataset:
     """
 
     def __init__(self, data_dir: str, data: str, test_set_size_percentage: int, target_column: str,
-                 windowsize_current_statistics: int, windowsize_lagged_statistics: int, seasonal_lags: int,
-                 cyclic_encoding: bool = False, imputation_method: str = 'None', correlation_number: int = None,
-                 correlation_method: str = None, config: configparser.ConfigParser = None):
+                 windowsize_current_statistics: int, windowsize_lagged_statistics: int, cyclic_encoding: bool = False,
+                 imputation_method: str = 'None', correlation_number: int = None, correlation_method: str = None,
+                 config: configparser.ConfigParser = None):
         self.target_column = target_column
         self.data_dir = data_dir
         self.data = data
         self.windowsize_current_statistics = windowsize_current_statistics
         self.windowsize_lagged_statistics = windowsize_lagged_statistics
-        self.seasonal_lags = seasonal_lags
         self.cyclic_encoding = cyclic_encoding
         self.correlation_method = correlation_method
         self.correlation_number = correlation_number
@@ -249,6 +246,14 @@ class Dataset:
 
         :return: Data with added features and resampling
         """
+        # check if dataset is long enough for the given number of seasonal lags
+        if len(df.index.year.unique().tolist()) < 7:
+            seasonal_lags = 0
+        elif len(df.index.year.unique().tolist()) == 7:
+            seasonal_lags = 1
+        else:
+            seasonal_lags = 2
+
         print('--Adding calendar dataset--')
         FeatureAdder.add_calendar_features(df=df, holiday_public_column=self.holiday_public_column,
                                            holiday_school_column=self.holiday_school_column,
@@ -258,14 +263,10 @@ class Dataset:
 
         if not self.resample_weekly:
             print('-Adding statistical dataset-')
-            # check if dataset is long enough for the given number of saesonal lags
-            if max(self.seasonal_lags)*2 >= df.shape[0]/self.seasonal_periods:
-                raise Exception('Dataset not long enough for the given number of seasonal lags. '
-                                'Try less seasonal lags.')
             FeatureAdder.add_statistical_features(seasonal_periods=self.seasonal_periods,
                                                   windowsize_current_statistics=self.windowsize_current_statistics,
                                                   windowsize_lagged_statistics=self.windowsize_lagged_statistics,
-                                                  seasonal_lags=self.seasonal_lags, df=df,
+                                                  seasonal_lags=seasonal_lags, df=df,
                                                   resample_weekly=self.resample_weekly,
                                                   features_weather_sales=self.features_weather_sales,
                                                   features_sales=self.features_sales,
@@ -294,14 +295,10 @@ class Dataset:
 
             # statistical feature extraction on dataset
             print('-Adding statistical dataset-')
-            if self.seasonal_lags:
-                if max(self.seasonal_lags)*2 >= df.shape[0]/self.seasonal_periods:
-                    raise Exception('Dataset not long enough for the given number of seasonal lags. '
-                                    'Try less seasonal lags.')
             FeatureAdder.add_statistical_features(seasonal_periods=self.seasonal_periods,
                                                   windowsize_current_statistics=self.windowsize_current_statistics,
                                                   windowsize_lagged_statistics=self.windowsize_lagged_statistics,
-                                                  seasonal_lags=self.seasonal_lags, df=df,
+                                                  seasonal_lags=seasonal_lags, df=df,
                                                   resample_weekly=self.resample_weekly,
                                                   features_weather_sales=self.features_weather_sales,
                                                   features_sales=self.features_sales,

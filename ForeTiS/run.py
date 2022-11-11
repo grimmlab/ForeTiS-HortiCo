@@ -27,14 +27,10 @@ if __name__ == '__main__':
                         help="specify the dataset that you want to use.")
     parser.add_argument("-tc", "--target_column", type=str, default='total_turnover',
                         help="specify the target column for the prediction.")
-    parser.add_argument("-fs", "--featuresets", nargs='+', default=['dataset_weather', 'dataset_cal',
-                                                                    'dataset_sales', 'dataset_full'],
+    parser.add_argument("-fs", "--featuresets", nargs='+', default=['dataset_full_corr'],
                         help="specify on which featuresets the models should be optimized: Valid arguments are: " +
                              str(helper_functions.get_list_of_featuresets()) +
                              "If optimize, the featuresets will be optimized by optuna.")
-    parser.add_argument("-sl", "--seasonal_lags", type=int, nargs='*', default=[1, 2],
-                        help="specify the seasonal lags to add in the feature engineering for the lagged statistics. "
-                             "Standard is [1, 2]")
     parser.add_argument("-mod", "--models", nargs='+', default=['all'],
                         # 'ard', 'arima', 'arimax', 'averagehistorical', 'averagemoving', 'averageseasonal', 'averageseasonallag', 'bayesridge', 'elasticnet', 'es', 'gpr', 'gprtf', 'lasso', 'lstm', 'lstmbayes', 'mlp', 'mlpbayes', 'ridge', 'xgboost'
                         help="specify the models to optimize: 'all' or naming according to source file name. "

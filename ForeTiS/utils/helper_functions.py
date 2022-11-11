@@ -6,7 +6,7 @@ import torch
 import tensorflow as tf
 import random
 import numpy as np
-from sklearn.model_selection import TimeSeriesSplit, ShuffleSplit
+from sklearn.model_selection import ShuffleSplit
 import ForeTiS.model
 
 
@@ -112,15 +112,21 @@ def get_indexes(df: pd.DataFrame, n_splits: str, datasplit: str):
     """
     train_indexes = []
     test_indexes = []
+    train_len = 2
     if datasplit == 'timeseries-cv':
         year_list = df.index.year.unique().tolist()
+        if len(year_list) > 9:
+            year_list = year_list[-9:]
+        if len(year_list) > 6:
+            train_len += len(year_list) - 6
 
-        for idx, yr in enumerate(year_list[:-1]):
-            train_yr = year_list[:idx + 1]
-            test_yr = [year_list[idx + 1]]
+        for idx in range(len(year_list) - train_len):
+            train_yr = year_list[idx:idx + train_len]
+            test_yr = [year_list[idx + train_len]]
 
             train_indexes.append(np.array(list(range(len(df.loc[df.index.year.isin(train_yr), :].index)))))
-            test_indexes.append(np.array(list(range(len(df.loc[df.index.year.isin(test_yr), :].index))))+len(train_indexes[idx]))
+            test_indexes.append(np.array(list(range(len(df.loc[df.index.year.isin(test_yr), :].index)))) +
+                                len(train_indexes[idx]))
     if datasplit == 'cv':
         splitter = ShuffleSplit(n_splits=n_splits, test_size=0.2, random_state=0)
         for train_index, test_index in splitter.split(df):
