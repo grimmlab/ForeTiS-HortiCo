@@ -7,10 +7,10 @@ from ForeTiS.optimization import optuna_optim
 
 
 def run(data_dir: str, save_dir: str = None, featuresets: list = None, datasplit: str = 'timeseries-cv',
-        test_set_size_percentage: int = 25, val_set_size_percentage: int = 20, n_splits: int = 4,
+        test_set_size_percentage: int = 25, val_set_size_percentage: int = 20, n_splits: int = 4, data: str = None,
         windowsize_current_statistics: int = 4, windowsize_lagged_statistics: int = 4,  cyclic_encoding: bool = False,
         imputation_method: str = 'None', correlation_method: str = None, correlation_number: int = None,
-        models: list = None, data: str = None, target_column: str = None, n_trials: int = 100,
+        models: list = None, target_column: str = None, n_trials: int = 100, pca_transform: bool =False,
         save_final_model: bool = False, periodical_refit_cycles: list = None, refit_drops: int = 0,
         refit_window: int = 5, intermediate_results_interval: int = None, batch_size: int = 32, n_epochs: int = None):
 
@@ -32,9 +32,9 @@ def run(data_dir: str, save_dir: str = None, featuresets: list = None, datasplit
         for featureset in featuresets:
             optuna_run = optuna_optim.OptunaOptim(save_dir=save_dir, data=data, featureset=featureset,
                                                   datasplit=datasplit, target_column=target_column, n_trials=n_trials,
-                                                  test_set_size_percentage=test_set_size_percentage,
+                                                  test_set_size_percentage=test_set_size_percentage, models=models,
                                                   val_set_size_percentage=val_set_size_percentage, n_splits=n_splits,
-                                                  models=models, save_final_model=save_final_model,
+                                                  save_final_model=save_final_model, pca_transform=pca_transform,
                                                   periodical_refit_cycles=periodical_refit_cycles,
                                                   refit_drops=refit_drops, refit_window=refit_window,
                                                   intermediate_results_interval=intermediate_results_interval,

@@ -3,8 +3,6 @@ import optuna
 import joblib
 import pandas as pd
 import numpy as np
-import sklearn
-from sklearn.model_selection import train_test_split
 
 
 class BaseModel(abc.ABC):
@@ -29,26 +27,32 @@ class BaseModel(abc.ABC):
     :param optuna_trial: Trial of optuna for optimization
     :param datasets: all datasets that are available
     :param featureset: on which featuresets the models should be optimized
-    :param test_set_size_percentage: the size of the test set in percentage
     :param target_column: the target column for the prediction
 
     """
 
     # Constructor super class #
-    def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str,
-                 test_set_size_percentage: int, target_column: str):
+    def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str, pca_transform: bool,
+                 target_column: str):
+
         self.optuna_trial = optuna_trial
         self.datasets = datasets
         self.target_column = target_column
         self.n_outputs = 1
+
         if not hasattr(self, 'all_hyperparams'):
             self.all_hyperparams = self.define_hyperparams_to_tune()
         else:
             # update in case common hyperparams are already defined
             self.all_hyperparams.update(self.define_hyperparams_to_tune())
-        self.all_hyperparams.update(self.dim_reduction())
-        dim_reduction = self.suggest_hyperparam_to_optuna('pca')
-        del self.all_hyperparams['pca']
+
+        if pca_transform:
+            self.all_hyperparams.update(self.dim_reduction())
+            self.dim_reduction = self.suggest_hyperparam_to_optuna('pca')
+            del self.all_hyperparams['pca']
+        else:
+            self.dim_reduction = False
+
         if featureset == 'optimize':
             self.all_hyperparams.update(self.dataset_hyperparam())
             dataset_name = self.suggest_hyperparam_to_optuna('dataset')
@@ -62,8 +66,7 @@ class BaseModel(abc.ABC):
                 if dataset.name == featureset:
                     self.dataset = dataset
                     break
-        if dim_reduction:
-            self.dataset = self.pca_transform_train_test(test_set_size_percentage=test_set_size_percentage)
+
         self.model = self.define_model()
 
     # Methods required by each child class #
@@ -225,6 +228,7 @@ class BaseModel(abc.ABC):
             )
         return suggested_value
 
+
     def suggest_all_hyperparams_to_optuna(self) -> dict:
         """
         Some models accept a dictionary with the model parameters.
@@ -249,35 +253,9 @@ class BaseModel(abc.ABC):
         return {
             'pca': {
                 'datatype': 'categorical',
-                'list_of_values': [False]
+                'list_of_values': [True, False]
             }
         }
-
-    def pca_transform_train_test(self, test_set_size_percentage: int) -> tuple:
-        """
-        Deliver PCA transformed train and test set
-        :return: tuple of transformed train and test dataset
-        """
-        if test_set_size_percentage == 2021:
-            test = self.dataset.loc['2021-01-01': '2021-12-31']
-            train_val = pd.concat([self.dataset, test]).drop_duplicates(keep=False)
-        else:
-            train_val, test = train_test_split(self.dataset, test_size=test_set_size_percentage * 0.01, shuffle=False)
-        scaler = sklearn.preprocessing.StandardScaler()
-        train_val_stand = scaler.fit_transform(train_val.drop(self.target_column, axis=1))
-        pca = sklearn.decomposition.PCA(0.95)
-        train_val_transf = pca.fit_transform(train_val_stand)
-        test_stand = scaler.transform(test.drop(self.target_column, axis=1))
-        test_transf = pca.transform(test_stand)
-        train_val_data = pd.DataFrame(data=train_val_transf,
-                                      columns=['PC' + str(i) for i in range(train_val_transf.shape[1])],
-                                      index=train_val.index)
-        train_val_data[self.target_column] = train_val[self.target_column]
-        test_data = pd.DataFrame(data=test_transf, columns=['PC' + str(i) for i in range(test_transf.shape[1])],
-                                 index=test.index)
-        test_data[self.target_column] = test[self.target_column]
-        dataset = pd.concat([train_val_data, test_data])
-        return dataset
 
     def save_model(self, path: str, filename: str):
         """

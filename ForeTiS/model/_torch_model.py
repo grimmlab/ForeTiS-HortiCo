@@ -43,12 +43,13 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
     :param n_epochs: number of epochs for neural network models
     :param target_column: the target column for the prediction
     """
-    def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str, test_set_size_percentage: int,
-                 current_model_name: str = None, batch_size: int = None, n_epochs: int = None, target_column: str = None):
+    def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str, pca_transform: bool = None,
+                 current_model_name: str = None, batch_size: int = None, n_epochs: int = None,
+                 target_column: str = None):
         self.all_hyperparams = self.common_hyperparams()
         self.current_model_name = current_model_name
         super().__init__(optuna_trial=optuna_trial, datasets=datasets, featureset=featureset,
-                         test_set_size_percentage=test_set_size_percentage, target_column=target_column)
+                         target_column=target_column, pca_transform=pca_transform)
         self.batch_size = \
             batch_size if batch_size is not None else 2**self.suggest_hyperparam_to_optuna('batch_size_exp')
         self.n_epochs = n_epochs if n_epochs is not None else self.suggest_hyperparam_to_optuna('n_epochs')

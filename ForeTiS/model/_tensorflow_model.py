@@ -26,14 +26,12 @@ class TensorflowModel(_base_model.BaseModel, abc.ABC):
     :param optuna_trial: Trial of optuna for optimization
     :param datasets: all datasets that are available
     :param featureset: on which featuresets the models should be optimized
-    :param test_set_size_percentage: the size of the test set in percentage
-    :param current_model_name: name of the current model according to naming of .py file in package model
     :param target_column: the target column for the prediction
     """
-    def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str, test_set_size_percentage: int,
-                 target_column: str = None):
+    def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str, target_column: str = None,
+                 pca_transform: bool = None):
         super().__init__(optuna_trial=optuna_trial, datasets=datasets, featureset=featureset,
-                         test_set_size_percentage=test_set_size_percentage, target_column=target_column)
+                         target_column=target_column, pca_transform=pca_transform)
 
     def retrain(self, retrain: pd.DataFrame):
         """

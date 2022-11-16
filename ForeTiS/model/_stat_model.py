@@ -14,12 +14,12 @@ class StatModel(_base_model.BaseModel, abc.ABC):
     Parent class based on BaseModel for all models with a statsmodels-like API to share functionalities.
     See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
     """
-    def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, test_set_size_percentage: int, featureset: str,
-                 current_model_name: str = None, target_column: str = None):
+    def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str,
+                 current_model_name: str = None, target_column: str = None, pca_transform: bool = None):
         self.all_hyperparams = self.common_hyperparams()
         self.current_model_name = current_model_name
         super().__init__(optuna_trial=optuna_trial, datasets=datasets, featureset=featureset,
-                         test_set_size_percentage=test_set_size_percentage, target_column=target_column)
+                         target_column=target_column, pca_transform=pca_transform)
         self.n_features = self.dataset.shape[1]
         self.transf = self.suggest_hyperparam_to_optuna('transf')
         self.power_transformer = sklearn.preprocessing.PowerTransformer() if self.transf == 'pw' else None

@@ -53,7 +53,8 @@ class OptunaOptim:
                  val_set_size_percentage: int, n_splits: int, models: list, n_trials: int, save_final_model: bool,
                  batch_size: int, n_epochs: int, current_model_name: str, datasets: base_dataset.Dataset,
                  periodical_refit_cycles: list, refit_drops: int, refit_window: int, target_column: str,
-                 intermediate_results_interval: int = 50, config: configparser.ConfigParser = None):
+                 intermediate_results_interval: int = 50, pca_transform: bool = False,
+                 config: configparser.ConfigParser = None):
         self.current_model_name = current_model_name
         self.datasets = datasets
         self.base_path = save_dir + '/results/' + current_model_name + '/' + \
@@ -70,6 +71,7 @@ class OptunaOptim:
         self.n_splits = n_splits
         self.datasplit = datasplit
         self.seasonal_periods = config[data].getint('seasonal_periods')
+        self.pca_transform = pca_transform
         self.user_input_params = locals()  # distribute all handed over params in whole class
 
     def create_new_study(self) -> optuna.study.Study:
@@ -122,8 +124,8 @@ class OptunaOptim:
                 early_stopping_points = []  # log early stopping point at each fold for torch models
         try:
             model: _base_model.BaseModel = helper_functions.get_mapping_name_to_class()[self.current_model_name](
-                 test_set_size_percentage=self.test_set_size_percentage, target_column=self.target_column,
-                 datasets=self.datasets,  featureset=self.featureset, optuna_trial=trial, **additional_attributes_dict)
+                 target_column=self.target_column, datasets=self.datasets,  featureset=self.featureset,
+                 optuna_trial=trial, pca_transform=self.pca_transform, **additional_attributes_dict)
         except Exception as exc:
             print(traceback.format_exc())
             print(exc)
@@ -182,6 +184,9 @@ class OptunaOptim:
             else:
                 train, val = train_test_split(
                     train_val, test_size=self.user_input_params["val_set_size_percentage"] * 0.01, shuffle=False)
+
+            if model.dim_reduction:
+                train, val = self.pca_transform_train_test(train, val)
 
             # load the unfitted model to prevent information leak between folds
             model = _model_functions.load_model(
@@ -319,6 +324,30 @@ class OptunaOptim:
         """
         past_params = [trial.params for trial in self.study.trials[:-1]]
         return current_params in past_params
+
+    def pca_transform_train_test(self, train: pd.DataFrame, test: pd.DataFrame) -> tuple:
+        """
+        Deliver PCA transformed train and test set
+
+        :param train: data for the training
+        :param test: data for the testing
+
+        :return: tuple of transformed train and test dataset
+        """
+        scaler = sklearn.preprocessing.StandardScaler()
+        train_stand = scaler.fit_transform(train.drop(self.target_column, axis=1))
+        pca = sklearn.decomposition.PCA(0.95)
+        train_transf = pca.fit_transform(train_stand)
+        test_stand = scaler.transform(test.drop(self.target_column, axis=1))
+        test_transf = pca.transform(test_stand)
+        train_data = pd.DataFrame(data=train_transf,
+                                  columns=['PC' + str(i) for i in range(train_transf.shape[1])],
+                                  index=train.index)
+        train_data[self.target_column] = train[self.target_column]
+        test_data = pd.DataFrame(data=test_transf, columns=['PC' + str(i) for i in range(test_transf.shape[1])],
+                                 index=test.index)
+        test_data[self.target_column] = test[self.target_column]
+        return train_data, test_data
 
     def generate_results_on_test(self) -> dict:
         """

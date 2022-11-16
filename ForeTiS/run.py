@@ -27,7 +27,7 @@ if __name__ == '__main__':
                         help="specify the dataset that you want to use.")
     parser.add_argument("-tc", "--target_column", type=str, default='total_turnover',
                         help="specify the target column for the prediction.")
-    parser.add_argument("-fs", "--featuresets", nargs='+', default=['dataset_full_corr'],
+    parser.add_argument("-fs", "--featuresets", nargs='+', default=['dataset_full'],
                         help="specify on which featuresets the models should be optimized: Valid arguments are: " +
                              str(helper_functions.get_list_of_featuresets()) +
                              "If optimize, the featuresets will be optimized by optuna.")
@@ -102,6 +102,10 @@ if __name__ == '__main__':
     parser.add_argument("-iri", "--intermediate_results_interval", type=int, default=None,
                         help="specify the number of trials after which intermediate results will be calculated. "
                              "Standard is None")
+    parser.add_argument("-pca", "--pca_transform", type=bool, default=False,
+                        help="specify whether pca dimensionality reduction will be performed or not. When True is passed,"
+                             "it will be optimized."
+                             "Standard is False")
 
     # Only relevant for Neural Networks #
     parser.add_argument("-bs", "--batch_size", type=int, default=None,
