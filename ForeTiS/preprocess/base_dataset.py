@@ -101,8 +101,7 @@ class Dataset:
                     dataset_raw['total_turnover'] = dataset_raw[turnovers].sum(axis=1)
                     dataset_raw.drop(turnovers, axis=1, inplace=True)
                 elif 'amount' in self.target_column:
-                    self.correlations = \
-                        self.get_corr(df=dataset_raw, test_set_size_percentage=test_set_size_percentage).index.tolist()
+                    self.correlations = self.get_corr(df=dataset_raw).index.tolist()
 
             dataset_raw = dataset_raw.asfreq('D')
 
@@ -203,24 +202,30 @@ class Dataset:
             elif column in self.features_holidays:
                 df[column].fillna('no', inplace=True)
 
-    def get_corr(self, df: pd.DataFrame, test_set_size_percentage: int) -> pd.Series:
+    def get_corr(self, df: pd.DataFrame) -> pd.Series:
         """
         Calculate the correlations
 
         :param df: DataFrame on which the correlations should be calculated
-        :param test_set_size_percentage: the size of the test set in percentage
 
         :return: pd.Series with the top correlations
         """
-        if test_set_size_percentage == 2021:
-            test = df.loc['2021-01-01': '2021-12-31']
-            train_val = pd.concat([df, test]).drop_duplicates(keep=False)
+        train_year_list = df.index.year.unique().tolist()
+        train_val_len = 2
+        if len(train_year_list) > 10:
+            train_year_list = train_year_list[-10:]
+        if len(train_year_list) == 5:
+            train_val_len += 1
+        elif 4 < len(train_year_list) < 9:
+            train_val_len += 2
         else:
-            train_val, _ = train_test_split(df, test_size=test_set_size_percentage * 0.01, random_state=42,
-                                            shuffle=False)
+            train_val_len += 3
+        train_year_list = train_year_list[:-train_val_len]
+
+        train = df.loc[df.index.year.isin(train_year_list), :]
 
         # filter only sold items
-        data_amount = train_val.filter(regex="amount")
+        data_amount = train.filter(regex="amount")
         data_amount_rs = data_amount.resample('W').sum()
 
         # Arranging and cutting data frames

@@ -349,6 +349,26 @@ class OptunaOptim:
         test_data[self.target_column] = test[self.target_column]
         return train_data, test_data
 
+    def load_retrain_model(self, path: str, filename: str, retrain: pd.DataFrame, early_stopping_point: int = None,
+                           test: pd.DataFrame = None) -> tuple:
+        """
+        Load and retrain persisted model
+        :param path: path where the model is saved
+        :param filename: filename of the model
+        :param retrain: data for retraining
+        :param test: data for testing
+        :param early_stopping_point: optional early stopping point relevant for some models
+        :return: model instance
+        """
+        model = _model_functions.load_model(path=path, filename=filename)
+        if early_stopping_point is not None:
+            model.early_stopping_point = early_stopping_point
+        model.prediction = None
+        if model.dim_reduction:
+            retrain, test = self.pca_transform_train_test(retrain, test)
+        model.retrain(retrain=retrain)
+        return model, test
+
     def generate_results_on_test(self) -> dict:
         """
         Generate the results on the testing data
@@ -371,9 +391,9 @@ class OptunaOptim:
         start_process_time = time.process_time()
         start_realclock_time = time.time()
 
-        final_model = _model_functions.load_retrain_model(
+        final_model, test = self.load_retrain_model(
             path=self.save_path, filename=prefix + 'unfitted_model_trial' + str(self.study.best_trial.number),
-            retrain=retrain, early_stopping_point=self.early_stopping_point)
+            retrain=retrain, test=test, early_stopping_point=self.early_stopping_point)
         if len(self.study.trials) == self.user_input_params["n_trials"] and self.user_input_params["save_final_model"]:
             final_model.save_model(path=self.save_path, filename='final_retrained_model')
 
@@ -418,34 +438,40 @@ class OptunaOptim:
                     y_pred_test_conf = list()
 
                 X_train_val_manip = retrain.tail(self.user_input_params['refit_window']*self.seasonal_periods).copy()
+                X_test_manip = test.copy()
                 if hasattr(model, 'sequential'):
-                    x_test = model.X_scaler.transform(test.drop(labels=[self.target_column], axis=1))
-                    y_test = model.y_scaler.transform(test[self.target_column].values.reshape(-1, 1))
+                    x_test = model.X_scaler.transform(X_test_manip.drop(labels=[self.target_column], axis=1))
+                    y_test = model.y_scaler.transform(X_test_manip[self.target_column].values.reshape(-1, 1))
                     x_test, _ = model.create_sequences(x_test, y_test)
 
                 for i in range(0, test_len):
                     if hasattr(model, 'sequential'):
                         if hasattr(final_model, 'conf'):
                             y_pred_test_pred, y_pred_test_pred_var_artifical, y_pred_test_pred_conf \
-                                = model.predict(X_in=x_test[i])
+                                = model.predict(X_in=X_test_manip[0])
                             y_pred_test_conf.append(y_pred_test_pred_conf)
                         else:
-                            y_pred_test_pred, y_pred_test_pred_var_artifical = model.predict(X_in=x_test[i])
+                            y_pred_test_pred, y_pred_test_pred_var_artifical = model.predict(X_in=x_test[0])
                         y_pred_test.append(y_pred_test_pred)
                         y_pred_test_var.append(y_pred_test_pred_var_artifical)
                     else:
                         if hasattr(final_model, 'conf'):
                             y_pred_test_pred, y_pred_test_pred_var_artifical, y_pred_test_pred_conf \
-                                = model.predict(X_in=test.iloc[[i]])
+                                = model.predict(X_in=X_test_manip.iloc[[0]])
                             y_pred_test_conf.extend(y_pred_test_pred_conf)
                         else:
-                            y_pred_test_pred, y_pred_test_pred_var_artifical = model.predict(X_in=test.iloc[[i]])
+                            y_pred_test_pred, y_pred_test_pred_var_artifical = \
+                                model.predict(X_in=X_test_manip.iloc[[0]])
                         y_pred_test.append(y_pred_test_pred)
                         y_pred_test_var.append(y_pred_test_pred_var_artifical)
 
                     if (i+1) % period == 0:
                         X_train_val_manip = pd.concat([X_train_val_manip[self.user_input_params["refit_drops"]:],
-                                                       test[i+1 - period:i+1]])
+                                                       X_test_manip[0:period]])
+                        X_test_manip = X_test_manip[period:]
+                        if model.dim_reduction:
+                            X_train_val_manip, X_test_manip = \
+                                self.pca_transform_train_test(X_train_val_manip, X_test_manip)
                         model.update(update=X_train_val_manip, period=period)
 
                 y_pred_test = np.array(y_pred_test).flatten()
