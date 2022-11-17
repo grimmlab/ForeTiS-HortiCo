@@ -85,6 +85,7 @@ class Dataset:
             else:
                 raise Exception('Dataset was already preprocessed, but with another target column. '
                                 'Please check target column again.')
+
         else:
             print('---Start preprocessing data---')
 

@@ -36,7 +36,7 @@ def custom_resampler(arraylike: pd.Series, target_column: str):
 
     :return: sum or mean of arraylike or 1
     """
-    if arraylike.name == target_column:
+    if arraylike.name == target_column or 'amount' in arraylike.name:
         return np.sum(arraylike)
     else:
         return np.mean(arraylike)
