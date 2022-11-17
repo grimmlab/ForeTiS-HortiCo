@@ -99,7 +99,7 @@ class Dataset:
                     for column in dataset_raw.columns:
                         if 'turnover' in column:
                             turnovers.append(column)
-                    dataset_raw['total_turnover'] = dataset_raw[turnovers].sum(axis=1)
+                    dataset_raw['total_turnover'] = dataset_raw[turnovers].sum(axis=1).div(100)
                     dataset_raw.drop(turnovers, axis=1, inplace=True)
                 elif 'amount' in self.target_column:
                     self.correlations = self.get_corr(df=dataset_raw).index.tolist()
