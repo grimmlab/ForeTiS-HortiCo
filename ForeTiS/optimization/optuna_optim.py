@@ -222,10 +222,17 @@ class OptunaOptim:
                         validation_results.at[0:len(train) - model.seq_length - 1, fold_name + '_train_pred'] = \
                             model.predict(X_in=train)[0]
                     except:
+                        # model.predict(X_in=train)[0] has one element less than train (e.g. due to batch size)
                         validation_results.at[0:len(train) - model.seq_length - 2, fold_name + '_train_pred'] = \
                             model.predict(X_in=train)[0]
                 else:
-                    validation_results.at[0:len(train) - 1, fold_name + '_train_pred'] = model.predict(X_in=train)[0]
+                    try:
+                        validation_results.at[0:len(train) - 1, fold_name + '_train_pred'] = \
+                            model.predict(X_in=train)[0]
+                    except:
+                        # model.predict(X_in=train)[0] has one element less than train (e.g. due to batch size)
+                        validation_results.at[0:len(train) - 2, fold_name + '_train_pred'] = \
+                            model.predict(X_in=train)[0]
 
                 validation_results.at[0:len(val) - 1, fold_name + '_val_true'] = \
                     val.loc[:, [self.target_column]].values.reshape(-1)
