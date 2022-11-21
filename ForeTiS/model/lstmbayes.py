@@ -75,7 +75,7 @@ class LSTM(_torch_model.TorchModel):
             'seq_length': {
                 'datatype': 'int',
                 'lower_bound': 1,
-                'upper_bound': 104
+                'upper_bound': 52
             },
             'prior_mu': {
                 'datatype': 'float',
@@ -224,10 +224,8 @@ class LSTM(_torch_model.TorchModel):
         xs = []
         ys = [] if y is not None else None
         if data.shape[0] <= self.seq_length:
-            self.seq_length = data.shape[0] - 1
+            raise ValueError('data shorter that sequence length!')
         for i in range(data.shape[0] - self.seq_length):
-            if self.seq_length == 0:
-                self.seq_length = 1
             if y is not None:
                 xs.append(data[i:(i + self.seq_length), :])
                 ys.append(data[i + self.seq_length, -1])

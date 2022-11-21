@@ -32,7 +32,7 @@ if __name__ == '__main__':
                              str(helper_functions.get_list_of_featuresets()) +
                              "If optimize, the featuresets will be optimized by optuna.")
     parser.add_argument("-mod", "--models", nargs='+', default=['all'],
-                        # 'ard', 'arima', 'arimax', 'averagehistorical', 'averagemoving', 'averageseasonal', 'averageseasonallag', 'bayesridge', 'elasticnet', 'es', 'gpr', 'gprtf', 'lasso', 'lstm', 'lstmbayes', 'mlp', 'mlpbayes', 'ridge', 'xgboost'
+                        # 'mlp', 'mlpbayes', 'lstm', 'lstmbayes', 'ard', 'arima', 'arimax', 'averagehistorical', 'averagemoving', 'averageseasonal', 'averageseasonallag', 'bayesridge', 'elasticnet', 'es', 'gpr', 'gprtf', 'lasso', 'ridge', 'xgboost'
                         help="specify the models to optimize: 'all' or naming according to source file name. "
                              "Multiple models can be selected by just naming multiple model names, "
                              "e.g. --models mlp xgboost. "

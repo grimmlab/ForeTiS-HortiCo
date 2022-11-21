@@ -218,8 +218,12 @@ class OptunaOptim:
                 objective_values.append(objective_value)
                 validation_results.at[0:len(train) - 1, fold_name + '_train_true'] = train[self.target_column]
                 if 'lstm' in self.current_model_name:
-                    validation_results.at[0:len(train) - model.seq_length - 1, fold_name + '_train_pred'] = \
-                        model.predict(X_in=train)[0]
+                    try:
+                        validation_results.at[0:len(train) - model.seq_length - 1, fold_name + '_train_pred'] = \
+                            model.predict(X_in=train)[0]
+                    except:
+                        validation_results.at[0:len(train) - model.seq_length - 2, fold_name + '_train_pred'] = \
+                            model.predict(X_in=train)[0]
                 else:
                     validation_results.at[0:len(train) - 1, fold_name + '_train_pred'] = model.predict(X_in=train)[0]
 
