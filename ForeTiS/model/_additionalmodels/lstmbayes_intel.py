@@ -3,9 +3,9 @@ import sklearn
 import pandas as pd
 import numpy as np
 
-from . import _torch_model
-from ._model_classes import GetOutputZero, PrepareForlstm, PrepareForDropout
-from blitz.modules import BayesianLSTM, BayesianLinear
+from ForeTiS.model import _torch_model
+from ForeTiS.model._model_classes import GetOutputZero, PrepareForlstm, PrepareForDropout
+from bayesian_torch.models.dnn_to_bnn import dnn_to_bnn
 
 
 class LSTM(_torch_model.TorchModel):
@@ -38,34 +38,26 @@ class LSTM(_torch_model.TorchModel):
         n_feature = self.dataset.shape[1]
         lstm_hidden_dim = self.suggest_hyperparam_to_optuna('lstm_hidden_dim')
 
-        bias = self.suggest_hyperparam_to_optuna('bias')
-        prior_sigma_1 = self.suggest_hyperparam_to_optuna('prior_sigma_1')
-        prior_sigma_2 = self.suggest_hyperparam_to_optuna('prior_sigma_2')
-        prior_pi = self.suggest_hyperparam_to_optuna('prior_pi')
-        posterior_mu_init = self.suggest_hyperparam_to_optuna('posterior_mu_init')
-        posterior_rho_init = self.suggest_hyperparam_to_optuna('posterior_rho_init')
-        freeze = self.suggest_hyperparam_to_optuna('freeze')
-        peephole = self.suggest_hyperparam_to_optuna('peephole')
-
         model.append(PrepareForlstm())
-        for layer in range(n_layers):
-            if layer == 0:
-                model.append(BayesianLSTM(in_features=n_feature, out_features=lstm_hidden_dim, bias=bias,
-                                          prior_sigma_1=prior_sigma_1, prior_sigma_2=prior_sigma_2, prior_pi=prior_pi,
-                                          posterior_mu_init=posterior_mu_init, posterior_rho_init=posterior_rho_init,
-                                          freeze=freeze, peephole=peephole))
-                model.append(GetOutputZero())
-            else:
-                model.append(BayesianLSTM(in_features=lstm_hidden_dim, out_features=lstm_hidden_dim, bias=bias,
-                                          prior_sigma_1=prior_sigma_1, prior_sigma_2=prior_sigma_2, prior_pi=prior_pi,
-                                          posterior_mu_init=posterior_mu_init, posterior_rho_init=posterior_rho_init,
-                                          freeze=freeze, peephole=peephole))
-                model.append(GetOutputZero())
+        model.append(torch.nn.LSTM(input_size=n_feature, hidden_size=lstm_hidden_dim, num_layers=n_layers,
+                                   dropout=p))
+        model.append(GetOutputZero())
         model.append(PrepareForDropout())
         model.append(torch.nn.Dropout(p))
-        model.append(BayesianLinear(in_features=lstm_hidden_dim, out_features=self.n_outputs))
+        model.append(torch.nn.Linear(in_features=lstm_hidden_dim, out_features=self.n_outputs))
 
-        return torch.nn.Sequential(*model)
+        bnn_prior_parameters = {
+            "prior_mu": self.suggest_hyperparam_to_optuna('prior_mu'),
+            "prior_sigma": self.suggest_hyperparam_to_optuna('prior_sigma'),
+            "posterior_mu_init": self.suggest_hyperparam_to_optuna('posterior_mu_init'),
+            "posterior_rho_init": self.suggest_hyperparam_to_optuna('posterior_rho_init'),
+            "type": self.suggest_hyperparam_to_optuna('type'),
+            "moped_enable": self.suggest_hyperparam_to_optuna('moped_enable'),
+            "moped_delta": self.suggest_hyperparam_to_optuna('moped_delta')
+        }
+        model = torch.nn.Sequential(*model)
+        dnn_to_bnn(model, bnn_prior_parameters)
+        return model
 
 
     def define_hyperparams_to_tune(self) -> dict:
@@ -85,21 +77,12 @@ class LSTM(_torch_model.TorchModel):
                 'lower_bound': 1,
                 'upper_bound': 52
             },
-            'bias': {
-                'datatype': 'categorical',
-                'list_of_values': [True, False]
-            },
-            'prior_sigma_1': {
+            'prior_mu': {
                 'datatype': 'float',
                 'lower_bound': 0.0,
                 'upper_bound': 1.0
             },
-            'prior_sigma_2': {
-                'datatype': 'float',
-                'lower_bound': 0.0,
-                'upper_bound': 1.0
-            },
-            'prior_pi': {
+            'prior_sigma': {
                 'datatype': 'float',
                 'lower_bound': 0.0,
                 'upper_bound': 1.0
@@ -114,13 +97,18 @@ class LSTM(_torch_model.TorchModel):
                 'lower_bound': -3.0,
                 'upper_bound': 3.0
             },
-            'freeze': {
+            'type': {
                 'datatype': 'categorical',
-                'list_of_values': [True ]
+                'list_of_values': ['Flipout', 'Reparameterization']
+            # },
+            # 'moped_enable': {
+            #     'datatype': 'categorical',
+            #     'list_of_values': [False, True]
             },
-            'peephole': {
-                'datatype': 'categorical',
-                'list_of_values': [True, False]
+            'moped_delta': {
+                'datatype': 'float',
+                'lower_bound': 0.0,
+                'upper_bound': 1.0
             },
             'num_monte_carlo': {
                 'datatype': 'int',

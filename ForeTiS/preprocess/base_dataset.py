@@ -327,6 +327,12 @@ class Dataset:
         # drop missing values after adding statistical features (e.g. due to lagged features)
         df.dropna(inplace=True)
 
+        # drop years that are too far in the past
+        year_list = df.index.year.unique().tolist()
+        if len(year_list) > 9:
+            year_list = year_list[-9:]
+            df = df.loc[df.index.year.isin(year_list), :]
+
         if hasattr(self, 'correlations'):
             for column in df.columns:
                 if re.search('stat_correlations.*', column):

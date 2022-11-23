@@ -6,7 +6,7 @@ import torch.nn
 import torch.utils.data
 import copy
 import sklearn
-from bayesian_torch.models.dnn_to_bnn import get_kl_loss
+from blitz.losses import kl_divergence_from_nn
 
 from . import _base_model
 
@@ -122,7 +122,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
             self.optimizer.zero_grad()
             outputs = self.model(inputs)
             if 'bayes' in self.current_model_name:
-                kl = get_kl_loss(self.model)
+                kl = kl_divergence_from_nn(self.model)
             loss = self.get_loss(outputs=outputs, targets=targets) + kl / self.batch_size
             loss.backward()
             self.optimizer.step()

@@ -141,6 +141,9 @@ class OptunaOptim:
             test = self.dataset.loc['2021-01-01': '2021-12-31']
             train_val = pd.concat([self.dataset, test]).drop_duplicates(keep=False)
             train_val.index.freq = train_val.index.inferred_freq
+        else:
+            train_val, _ = train_test_split(
+                self.dataset, test_size=self.user_input_params["test_set_size_percentage"] * 0.01, shuffle=False)
         if self.datasplit == 'cv' and self.current_model_name == 'es':
             print('Exponential Smoothing depends on continuous time series. Will set datasplit to timeseries-cv.')
             self.datasplit = 'timeseries-cv'
@@ -165,21 +168,16 @@ class OptunaOptim:
         if self.datasplit == 'timeseries-cv':
             year_list = train_val.index.year.unique().tolist()
             train_len = 2
-            if len(year_list) > 9:
-                year_list = year_list[-9:]
-            if len(year_list) > 6:
-                train_len += len(year_list) - 6
+            if len(year_list) > 5:
+                train_len += len(year_list) - 5
             folds = len(year_list) - train_len
+            train_indexes, val_indexes = helper_functions.get_indexes(
+                df=train_val, n_splits=self.user_input_params["n_splits"], datasplit=self.datasplit)
         else:
             folds = helper_functions.get_folds(datasplit=self.datasplit, n_splits=self.user_input_params["n_splits"])
         for fold in range(folds):
             fold_name = "fold_" + str(fold)
-            if not self.test_set_size_percentage == 2021:
-                train_val, _ = train_test_split(
-                    self.dataset, test_size=self.user_input_params["test_set_size_percentage"] * 0.01, shuffle=False)
             if self.datasplit == "timeseries-cv" or self.datasplit == "cv":
-                train_indexes, val_indexes = helper_functions.get_indexes(
-                    df=train_val, n_splits=self.user_input_params["n_splits"], datasplit=self.datasplit)
                 train, val = train_val.iloc[train_indexes[fold]], train_val.iloc[val_indexes[fold]]
             else:
                 train, val = train_test_split(
@@ -394,7 +392,6 @@ class OptunaOptim:
         if self.test_set_size_percentage == 2021:
             test = self.dataset.loc['2021-01-01': '2021-12-31']
             retrain = self.dataset.loc[self.dataset.index[0]: '2020-12-31']
-            # retrain = pd.concat([self.dataset, test]).drop_duplicates(keep=False)
         else:
             retrain, test = train_test_split(
                 self.dataset, test_size=self.user_input_params["test_set_size_percentage"] * 0.01, shuffle=False)
@@ -567,12 +564,13 @@ class OptunaOptim:
         if self.current_model_name in ['xgboost']:
             feature_importances = model.model.feature_importances_
             sorted_idx = feature_importances.argsort()[::-1]
-            feat_import_df['feature_period_' + str(period)] = self.dataset.columns[sorted_idx]
+            feat_import_df['feature_period_' + str(period)] = \
+                self.dataset.drop(self.target_column, axis=1).columns[sorted_idx]
             feat_import_df['feature_importance'] = feature_importances[sorted_idx]
         else:
             coef = model.model.coef_.flatten()
             sorted_idx = coef.argsort()[::-1]
-            feat_import_df['feature_period_' + str(period)] = self.dataset.columns[sorted_idx]
+            feat_import_df['feature_period_' + str(period)] = self.dataset.drop(self.target_column, axis=1).columns[sorted_idx]
             feat_import_df['coefficients'] = coef[sorted_idx]
 
         return feat_import_df

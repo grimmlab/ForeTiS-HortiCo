@@ -115,18 +115,24 @@ def get_indexes(df: pd.DataFrame, n_splits: str, datasplit: str):
     train_len = 2
     if datasplit == 'timeseries-cv':
         year_list = df.index.year.unique().tolist()
-        if len(year_list) > 9:
-            year_list = year_list[-9:]
-        if len(year_list) > 6:
-            train_len += len(year_list) - 6
+        if len(year_list) > 5:
+            train_len += len(year_list) - 5
 
         for idx in range(len(year_list) - train_len):
             train_yr = year_list[idx:idx + train_len]
             test_yr = [year_list[idx + train_len]]
 
-            train_indexes.append(np.array(list(range(len(df.loc[df.index.year.isin(train_yr), :].index)))))
-            test_indexes.append(np.array(list(range(len(df.loc[df.index.year.isin(test_yr), :].index)))) +
-                                len(train_indexes[idx]))
+            train_df_index = df.loc[df.index.year.isin(train_yr), :].index
+            train_df_indexes = []
+            test_df_index = df.loc[df.index.year.isin(test_yr), :].index
+            test_df_indexes = []
+
+            for i in range(len(train_df_index)):
+                train_df_indexes.append(df.index.get_loc(train_df_index[i]))
+            train_indexes.append(np.array(train_df_indexes))
+            for i in range(len(test_df_index)):
+                test_df_indexes.append(df.index.get_loc(test_df_index[i]))
+            test_indexes.append(np.array(test_df_indexes))
     if datasplit == 'cv':
         splitter = ShuffleSplit(n_splits=n_splits, test_size=0.2, random_state=0)
         for train_index, test_index in splitter.split(df):

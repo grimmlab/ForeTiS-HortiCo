@@ -2,8 +2,8 @@ import torch
 import pandas as pd
 import numpy as np
 
-from . import _torch_model
-from blitz.modules import BayesianLinear
+from ForeTiS.model import _torch_model
+from bayesian_torch.models.dnn_to_bnn import dnn_to_bnn
 
 
 class Mlp(_torch_model.TorchModel):
@@ -37,20 +37,8 @@ class Mlp(_torch_model.TorchModel):
         p = self.suggest_hyperparam_to_optuna('dropout')
         perc_decrease = self.suggest_hyperparam_to_optuna('perc_decrease_per_layer')
         batch_norm = self.suggest_hyperparam_to_optuna('batch_norm')
-
-        bias = self.suggest_hyperparam_to_optuna('bias')
-        prior_sigma_1 = self.suggest_hyperparam_to_optuna('prior_sigma_1')
-        prior_sigma_2 = self.suggest_hyperparam_to_optuna('prior_sigma_2')
-        prior_pi = self.suggest_hyperparam_to_optuna('prior_pi')
-        posterior_mu_init = self.suggest_hyperparam_to_optuna('posterior_mu_init')
-        posterior_rho_init = self.suggest_hyperparam_to_optuna('posterior_rho_init')
-        freeze = self.suggest_hyperparam_to_optuna('freeze')
-
         for layer in range(n_layers):
-            model.append(BayesianLinear(in_features=in_features, out_features=out_features, bias=bias,
-                                        prior_sigma_1=prior_sigma_1, prior_sigma_2=prior_sigma_2, prior_pi=prior_pi,
-                                        posterior_mu_init=posterior_mu_init, posterior_rho_init=posterior_rho_init,
-                                        freeze=freeze))
+            model.append(torch.nn.Linear(in_features=in_features, out_features=out_features))
             if act_function is not None:
                 model.append(act_function)
             if batch_norm:
@@ -58,12 +46,20 @@ class Mlp(_torch_model.TorchModel):
             model.append(torch.nn.Dropout(p))
             in_features = out_features
             out_features = int(in_features * (1-perc_decrease))
-        model.append(BayesianLinear(in_features=in_features, out_features=out_features, bias=bias,
-                                    prior_sigma_1=prior_sigma_1, prior_sigma_2=prior_sigma_2, prior_pi=prior_pi,
-                                    posterior_mu_init=posterior_mu_init, posterior_rho_init=posterior_rho_init,
-                                    freeze=freeze))
+        model.append(torch.nn.Linear(in_features=in_features, out_features=self.n_outputs))
 
-        return torch.nn.Sequential(*model)
+        bnn_prior_parameters = {
+            "prior_mu": self.suggest_hyperparam_to_optuna('prior_mu'),
+            "prior_sigma": self.suggest_hyperparam_to_optuna('prior_sigma'),
+            "posterior_mu_init": self.suggest_hyperparam_to_optuna('posterior_mu_init'),
+            "posterior_rho_init": self.suggest_hyperparam_to_optuna('posterior_rho_init'),
+            "type": self.suggest_hyperparam_to_optuna('type'),
+            "moped_enable": self.suggest_hyperparam_to_optuna('moped_enable'),
+            "moped_delta": self.suggest_hyperparam_to_optuna('moped_delta')
+        }
+        model = torch.nn.Sequential(*model)
+        dnn_to_bnn(model, bnn_prior_parameters)
+        return model
 
     def define_hyperparams_to_tune(self) -> dict:
         """
@@ -90,21 +86,12 @@ class Mlp(_torch_model.TorchModel):
                 'datatype': 'categorical',
                 'list_of_values': [True, False]
             },
-            'bias': {
-                'datatype': 'categorical',
-                'list_of_values': [True, False]
-            },
-            'prior_sigma_1': {
+            'prior_mu': {
                 'datatype': 'float',
                 'lower_bound': 0.0,
                 'upper_bound': 1.0
             },
-            'prior_sigma_2': {
-                'datatype': 'float',
-                'lower_bound': 0.0,
-                'upper_bound': 1.0
-            },
-            'prior_pi': {
+            'prior_sigma': {
                 'datatype': 'float',
                 'lower_bound': 0.0,
                 'upper_bound': 1.0
@@ -119,14 +106,23 @@ class Mlp(_torch_model.TorchModel):
                 'lower_bound': -3.0,
                 'upper_bound': 3.0
             },
-            'freeze': {
+            'type': {
                 'datatype': 'categorical',
-                'list_of_values': [True, False]
+                'list_of_values': ['Flipout', 'Reparameterization']
+            },
+            'moped_enable': {
+                'datatype': 'categorical',
+                'list_of_values': [False, True]
             },
             'num_monte_carlo': {
                 'datatype': 'int',
                 'lower_bound': 1,
                 'upper_bound': 100
+            },
+            'moped_delta': {
+                'datatype': 'float',
+                'lower_bound': 0.0,
+                'upper_bound': 1.0
             }
         }
 
