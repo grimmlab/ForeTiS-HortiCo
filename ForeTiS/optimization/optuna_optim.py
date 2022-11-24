@@ -137,8 +137,8 @@ class OptunaOptim:
 
         # set the datasplit
         self.dataset = model.dataset
-        if self.test_set_size_percentage == 2021:
-            test = self.dataset.loc['2021-01-01': '2021-12-31']
+        if self.test_set_size_percentage == 'yearly':
+            test = self.dataset.loc[str(self.datasets.test_year) + '-01-01': str(self.datasets.test_year) + '-12-31']
             train_val = pd.concat([self.dataset, test]).drop_duplicates(keep=False)
             train_val.index.freq = train_val.index.inferred_freq
         else:
@@ -389,9 +389,9 @@ class OptunaOptim:
         print("## Retrain best model and test ##")
         # Retrain on full train + val data with best hyperparams and apply on test
         prefix = '' if len(self.study.trials) == self.user_input_params["n_trials"] else '/temp/'
-        if self.test_set_size_percentage == 2021:
-            test = self.dataset.loc['2021-01-01': '2021-12-31']
-            retrain = self.dataset.loc[self.dataset.index[0]: '2020-12-31']
+        if self.test_set_size_percentage == 'yearly':
+            test = self.dataset.loc[str(self.test_year) + '-01-01': str(self.test_year) + '-12-31']
+            retrain = self.dataset.loc[self.dataset.index[0]: str(self.test_year - 1) + '-12-31']
         else:
             retrain, test = train_test_split(
                 self.dataset, test_size=self.user_input_params["test_set_size_percentage"] * 0.01, shuffle=False)

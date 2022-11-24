@@ -54,41 +54,6 @@ def get_one_hot_encoded_df(df: pd.DataFrame, columns_to_encode: list) -> pd.Data
     return pd.get_dummies(df, columns=columns_to_encode)
 
 
-def impute_dataset_train_test(df: pd.DataFrame = None, test_set_size_percentage: float = 20,
-                              imputation_method: str = None) -> pd.DataFrame:
-    """
-    Get imputed dataset as well as train and test set (fitted to train set)
-
-    :param df: dataset to impute
-    :param test_set_size_percentage: the size of the test set in percentage
-    :param imputation_method: specify the used method if imputation is applied
-
-    :return: imputed dataset, train and test set
-    """
-    cols_to_impute = df.loc[:, df.isna().any()].select_dtypes(exclude=['string', 'object']).columns.tolist()
-    if len(cols_to_impute) == 0:
-        return df
-    cols_to_add = [col for col in df.columns.tolist() if col not in cols_to_impute]
-
-    if test_set_size_percentage == 2021:
-        test = df.loc['2021-01-01': '2021-12-31']
-        train_val = pd.concat([df, test]).drop_duplicates(keep=False)
-    else:
-        train_val, _ = train_test_split(df, test_size=test_set_size_percentage * 0.01, random_state=42, shuffle=False)
-
-    if imputation_method == 'mean':
-        imputer = get_simple_imputer(df=train_val.filter(cols_to_impute))
-    if imputation_method == 'knn':
-        imputer = get_knn_imputer(df=train_val.filter(cols_to_impute))
-    if imputation_method == 'iterative':
-        imputer = get_iter_imputer(df=train_val.filter(cols_to_impute))
-    data = imputer.transform(X=df.filter(cols_to_impute))
-    dataset_imp = pd.concat([pd.DataFrame(data=data,
-                                          columns=cols_to_impute, index=df.index), df[cols_to_add]],
-                            axis=1, sort=False)
-    return dataset_imp
-
-
 def get_simple_imputer(df: pd.DataFrame, strategy: str = 'mean') -> sklearn.impute.SimpleImputer:
     """
     Get simple imputer for each column according to specified strategy

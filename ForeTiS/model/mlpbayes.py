@@ -58,7 +58,7 @@ class Mlp(_torch_model.TorchModel):
             model.append(torch.nn.Dropout(p))
             in_features = out_features
             out_features = int(in_features * (1-perc_decrease))
-        model.append(BayesianLinear(in_features=in_features, out_features=out_features, bias=bias,
+        model.append(BayesianLinear(in_features=in_features, out_features=self.n_outputs, bias=bias,
                                     prior_sigma_1=prior_sigma_1, prior_sigma_2=prior_sigma_2, prior_pi=prior_pi,
                                     posterior_mu_init=posterior_mu_init, posterior_rho_init=posterior_rho_init,
                                     freeze=freeze))

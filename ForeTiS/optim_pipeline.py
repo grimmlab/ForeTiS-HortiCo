@@ -7,11 +7,11 @@ from ForeTiS.optimization import optuna_optim
 
 
 def run(data_dir: str, save_dir: str = None, featuresets: list = None, datasplit: str = 'timeseries-cv',
-        test_set_size_percentage: int = 25, val_set_size_percentage: int = 20, n_splits: int = 4, data: str = None,
+        test_set_size_percentage=None, val_set_size_percentage: int = 20, n_splits: int = 4, test_year: int = None,
         windowsize_current_statistics: int = 4, windowsize_lagged_statistics: int = 4,  cyclic_encoding: bool = False,
         imputation_method: str = 'None', correlation_method: str = None, correlation_number: int = None,
         models: list = None, target_column: str = None, n_trials: int = 100, pca_transform: bool =False,
-        save_final_model: bool = False, periodical_refit_cycles: list = None, refit_drops: int = 0,
+        save_final_model: bool = False, periodical_refit_cycles: list = None, refit_drops: int = 0, data: str = None,
         refit_window: int = 5, intermediate_results_interval: int = None, batch_size: int = 32, n_epochs: int = None):
 
     # Optimization Pipeline #
@@ -26,7 +26,7 @@ def run(data_dir: str, save_dir: str = None, featuresets: list = None, datasplit
                                     windowsize_current_statistics=windowsize_current_statistics,
                                     windowsize_lagged_statistics=windowsize_lagged_statistics,
                                     imputation_method=imputation_method, correlation_method=correlation_method,
-                                    correlation_number=correlation_number, config=config)
+                                    correlation_number=correlation_number, config=config, test_year=test_year)
     print('### Dataset is loaded ###')
     for current_model_name in models_to_optimize:
         for featureset in featuresets:

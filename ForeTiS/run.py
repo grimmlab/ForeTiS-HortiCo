@@ -15,6 +15,14 @@ if __name__ == '__main__':
     """
     warnings.simplefilter(action='ignore', category=FutureWarning)
     warnings.simplefilter(action='ignore', category=ExperimentalWarning)
+
+
+    def str_or_int(arg):
+        if type(arg) == str:
+            return str(arg)
+        else:
+            return int(arg)
+
     # User Input #
     parser = argparse.ArgumentParser()
     # Input Params #
@@ -23,7 +31,7 @@ if __name__ == '__main__':
     parser.add_argument("-sd", "--save_dir", type=str, default='docs/source/tutorials/tutorial_data',
                         help="Provide the full path of the directory in which you want to save your results. "
                              "Default is same as data_dir.")
-    parser.add_argument("-data", "--data", type=str, default='offenloch',
+    parser.add_argument("-data", "--data", type=str, default='fleurop_total_turnover',
                         help="specify the dataset that you want to use.")
     parser.add_argument("-tc", "--target_column", type=str, default='total_turnover',
                         help="specify the target column for the prediction.")
@@ -31,14 +39,15 @@ if __name__ == '__main__':
                         help="specify on which featuresets the models should be optimized: Valid arguments are: " +
                              str(helper_functions.get_list_of_featuresets()) +
                              "If optimize, the featuresets will be optimized by optuna.")
-    parser.add_argument("-mod", "--models", nargs='+', default=['lstmbayes'],
+    parser.add_argument("-mod", "--models", nargs='+', default=['mlpbayes'],
                         # 'mlp', 'mlpbayes', 'lstm', 'lstmbayes', 'ard', 'arima', 'arimax', 'averagehistorical', 'averagemoving', 'averageseasonal', 'averageseasonallag', 'bayesridge', 'elasticnet', 'es', 'gpr', 'gprtf', 'lasso', 'ridge', 'xgboost'
                         help="specify the models to optimize: 'all' or naming according to source file name. "
                              "Multiple models can be selected by just naming multiple model names, "
                              "e.g. --models mlp xgboost. "
                              "The following are available: " + str(helper_functions.get_list_of_implemented_models()))
     parser.add_argument("-ty", "--test_year", type=int, default=2021,
-                        help="specify the year that should be used as test set. "
+                        help="Only relevant when the test size percentage is 'yearly':"
+                             "specify the year that should be used as test set. "
                              "Standard is 2021")
 
     # Data Engineering Params
@@ -70,7 +79,7 @@ if __name__ == '__main__':
     parser.add_argument("-split", "--datasplit", type=str, default='timeseries-cv',
                         help="specify the data split method to use: 'timeseries-cv' | 'train-val-test' | 'cv'. "
                              "Standard is timeseries-cv")
-    parser.add_argument("-testperc", "--test_set_size_percentage", type=int, default=2021,
+    parser.add_argument("-testperc", "--test_set_size_percentage", type=str_or_int, default='yearly',
                         help="specify the size of the test set in percentage. "
                              "Also 2021 can be passed, then the year 2021 will be used as test set. "
                              "Standard is 2021")
