@@ -16,3 +16,4 @@ joblib==1.2.0
 tables==3.7.0
 bayesian_torch
 nbsphinx
+blitz-bayesian-pytorch

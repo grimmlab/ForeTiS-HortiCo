@@ -12,4 +12,5 @@ tensorflow-probability==0.18
 joblib==1.2.0
 tables==3.7.0
 bayesian_torch
+blitz-bayesian-pytorch
 
