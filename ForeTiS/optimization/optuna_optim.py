@@ -72,6 +72,7 @@ class OptunaOptim:
         self.datasplit = datasplit
         self.seasonal_periods = config[data].getint('seasonal_periods')
         self.pca_transform = pca_transform
+        self.best_trials = []
         self.user_input_params = locals()  # distribute all handed over params in whole class
 
     def create_new_study(self) -> optuna.study.Study:
@@ -256,10 +257,12 @@ class OptunaOptim:
             # persist results
             validation_results.to_csv(self.save_path + 'temp/validation_results_trial' + str(trial.number) + '.csv',
                                       sep=',', decimal='.', float_format='%.10f', index=False)
-            # delete previous results
-            for file in os.listdir(self.save_path + 'temp/'):
-                if 'trial' + str(trial.number) not in file:
-                    os.remove(self.save_path + 'temp/' + file)
+            self.best_trials.append(trial.number)
+            print()
+            # # delete previous results
+            # for file in os.listdir(self.save_path + 'temp/'):
+            #     if 'trial' + str(trial.number) not in file:
+            #         os.remove(self.save_path + 'temp/' + file)
         else:
             # delete unfitted model
             os.remove(self.save_path + 'temp/' + 'unfitted_model_trial' + str(trial.number))
@@ -377,9 +380,11 @@ class OptunaOptim:
         model.retrain(retrain=retrain)
         return model, test
 
-    def generate_results_on_test(self) -> dict:
+    def generate_results_on_test(self, best_trial) -> dict:
         """
         Generate the results on the testing data
+
+        :param best_trial: the best trial of the optimization
 
         :return: evaluation metrics dictionary
         """
@@ -399,7 +404,7 @@ class OptunaOptim:
         start_realclock_time = time.time()
 
         final_model, test = self.load_retrain_model(
-            path=self.save_path, filename=prefix + 'unfitted_model_trial' + str(self.study.best_trial.number),
+            path=self.save_path, filename=prefix + 'unfitted_model_trial' + str(self.study.best_trial_copy.number),
             retrain=retrain, test=test, early_stopping_point=self.early_stopping_point)
         if len(self.study.trials) == self.user_input_params["n_trials"] and self.user_input_params["save_final_model"]:
             final_model.save_model(path=self.save_path, filename='final_retrained_model')
@@ -497,7 +502,7 @@ class OptunaOptim:
                                                  'refitting_cycle': period,
                                                  'process_time_s': time.process_time() - start_process_time,
                                                  'real_time_s': time.time() - start_realclock_time,
-                                                 'params': self.study.best_trial.params, 'note': 'successful'})
+                                                 'params': self.study.best_trial_copy.params, 'note': 'successful'})
 
             # Evaluate and save results
             if 'lstm' in self.current_model_name:
@@ -592,6 +597,7 @@ class OptunaOptim:
         self.current_best_val_result = None
         # Start optimization run
         self.study.optimize(lambda trial: self.objective(trial=trial), n_trials=self.user_input_params["n_trials"])
+        self.study.best_trial_copy = self.study.best_trial
         helper_functions.set_all_seeds()
         # Calculate runtime metrics after finishing optimization
         runtime_metrics = self.calc_runtime_stats()
@@ -601,21 +607,38 @@ class OptunaOptim:
         print("  Finished trials: ", len(self.study.trials))
         print("  Pruned trials: ", len(self.study.get_trials(states=(optuna.trial.TrialState.PRUNED,))))
         print("  Completed trials: ", len(self.study.get_trials(states=(optuna.trial.TrialState.COMPLETE,))))
-        print("  Best Trial: ", self.study.best_trial.number)
-        print("  Value: ", self.study.best_trial.value)
+        print("  Best Trial: ", self.study.best_trial_copy.number)
+        print("  Value: ", self.study.best_trial_copy.value)
         print("  Params: ")
-        for key, value in self.study.best_trial.params.items():
+        for key, value in self.study.best_trial_copy.params.items():
             print("    {}: {}".format(key, value))
 
         # Move validation results and models of best trial
-        files_to_keep = glob.glob(self.save_path + 'temp/' + '*trial' + str(self.study.best_trial.number) + '*')
+        files_to_keep = glob.glob(self.save_path + 'temp/' + '*trial' + str(self.study.best_trial_copy.number) + '*')
         for file in files_to_keep:
             shutil.copyfile(file, self.save_path + file.split('/')[-1])
         shutil.rmtree(self.save_path + 'temp/')
 
         # Retrain on full train + val data with best hyperparams and apply on test
-        final_eval_scores = self.generate_results_on_test()
-        overall_results['Test'] = {'best_params': self.study.best_trial.params, 'eval_metrics': final_eval_scores,
-                                   'runtime_metrics': runtime_metrics}
+        for best_trial, retry in enumerate(self.best_trials):
+            try:
+                final_eval_scores = self.generate_results_on_test(best_trial)
+            except ValueError as exc:
+                print(traceback.format_exc())
+                print(exc)
+                print('Testing failed. Will try again with second best model. The statistics of this study are:')
+                print("  Finished trials: ", len(self.study.trials))
+                print("  Pruned trials: ", len(self.study.get_trials(states=(optuna.trial.TrialState.PRUNED,))))
+                print("  Completed trials: ", len(self.study.get_trials(states=(optuna.trial.TrialState.COMPLETE,))))
+                print("  Best Trial: ", self.study.best_trial_copy.number)
+                print("  Value: ", self.study.best_trial_copy.value)
+                print("  Params: ")
+                for key, value in self.study.best_trial_copy.params.items():
+                    print("    {}: {}".format(key, value))
+                self.study.best_trial_copy = [trial for trial in self.study.trials if trial.number == best_trial][0]
+                continue
+            break
+        overall_results['Test'] = {'best_params': self.study.best_trial_copy.params, 'eval_metrics': final_eval_scores,
+                                   'runtime_metrics': runtime_metrics, 'retries': retry}
 
         return overall_results
