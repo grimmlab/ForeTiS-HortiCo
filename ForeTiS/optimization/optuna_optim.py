@@ -147,7 +147,7 @@ class OptunaOptim:
         if self.datasplit == 'cv' and self.current_model_name == 'es':
             print('Exponential Smoothing depends on continuous time series. Will set datasplit to timeseries-cv.')
             self.datasplit = 'timeseries-cv'
-        elif self.datasplit == 'timeseries-cv' and len(self.dataset) < 4 * self.datasets.seasonal_periods:
+        elif self.datasplit == 'timeseries-cv' and len(self.dataset.index.year.unique().tolist()) < 4:
             print('First timeseries-cv split has less than 2 seasonal cycles. Will set datasplit to train-val-test.')
             self.datasplit = 'train-val-test'
 
@@ -240,7 +240,7 @@ class OptunaOptim:
                                                                         prefix=fold_name + '_').items():
                     validation_results.at[0, metric] = value
 
-            except (RuntimeError, TypeError, ValueError, np.linalg.LinAlgError) as exc:
+            except (RuntimeError, TypeError, ValueError, IndexError, np.linalg.LinAlgError) as exc:
                 print(traceback.format_exc())
                 print(exc)
                 print('Trial failed. Error in optim loop.')
@@ -390,8 +390,8 @@ class OptunaOptim:
         # Retrain on full train + val data with best hyperparams and apply on test
         prefix = '' if len(self.study.trials) == self.user_input_params["n_trials"] else '/temp/'
         if self.test_set_size_percentage == 'yearly':
-            test = self.dataset.loc[str(self.test_year) + '-01-01': str(self.test_year) + '-12-31']
-            retrain = self.dataset.loc[self.dataset.index[0]: str(self.test_year - 1) + '-12-31']
+            test = self.dataset.loc[str(self.datasets.test_year) + '-01-01': str(self.datasets.test_year) + '-12-31']
+            retrain = self.dataset.loc[self.dataset.index[0]: str(self.datasets.test_year - 1) + '-12-31']
         else:
             retrain, test = train_test_split(
                 self.dataset, test_size=self.user_input_params["test_set_size_percentage"] * 0.01, shuffle=False)

@@ -273,8 +273,8 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
             },
             'batch_size_exp': {
                 'datatype': 'int',
-                'lower_bound': 2,
-                'upper_bound': 10
+                'lower_bound': 1,
+                'upper_bound': 5
             },
             'n_layers': {
                 'datatype': 'int',

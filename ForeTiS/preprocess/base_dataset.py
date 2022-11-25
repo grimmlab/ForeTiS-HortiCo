@@ -98,7 +98,7 @@ class Dataset:
 
             # sum up the turnovers if the data is from the API
             if self.group == 'API':
-                if 'turnover' in self.target_column and 'total_turnover' not in self.target_column:
+                if 'turnover' in self.target_column and 'total_turnover' not in dataset_raw:
                     turnovers = []
                     for column in dataset_raw.columns:
                         if 'turnover' in column:
