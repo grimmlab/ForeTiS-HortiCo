@@ -138,8 +138,7 @@ class OptunaOptim:
         # set the datasplit
         self.dataset = model.dataset
         if self.test_set_size_percentage == 'yearly':
-            test = self.dataset.loc[str(self.datasets.test_year) + '-01-01': str(self.datasets.test_year) + '-12-31']
-            train_val = pd.concat([self.dataset, test]).drop_duplicates(keep=False)
+            train_val = self.dataset.loc[: str(self.datasets.test_year-1) + '-12-31']
             train_val.index.freq = train_val.index.inferred_freq
         else:
             train_val, _ = train_test_split(
