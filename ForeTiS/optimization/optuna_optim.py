@@ -616,7 +616,7 @@ class OptunaOptim:
             shutil.copyfile(file, self.save_path + file.split('/')[-1])
 
         # Retrain on full train + val data with best hyperparams and apply on test
-        for retry, best_trial in enumerate(self.best_trials):
+        for retry, best_trial in enumerate(self.best_trials[1:]):
             try:
                 final_eval_scores = self.generate_results_on_test()
             except ValueError as exc:

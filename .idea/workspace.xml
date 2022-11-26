@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="added retries if testing failes">
+    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="added retries">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ForeTiS/optimization/optuna_optim.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/optimization/optuna_optim.py" afterDir="false" />
     </list>
@@ -191,14 +191,7 @@
       <workItem from="1669356605250" duration="5685000" />
       <workItem from="1669386731835" duration="10243000" />
       <workItem from="1669398521638" duration="2594000" />
-      <workItem from="1669453445029" duration="988000" />
-    </task>
-    <task id="LOCAL-00006" summary="readthedocs">
-      <created>1665070512814</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1665070512814</updated>
+      <workItem from="1669453445029" duration="2967000" />
     </task>
     <task id="LOCAL-00007" summary="readthedocs">
       <created>1665070957802</created>
@@ -536,7 +529,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669396597586</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="added retries">
+      <created>1669455109630</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1669455109631</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -576,7 +576,8 @@
     <MESSAGE value="some debugging" />
     <MESSAGE value="debugged the yearly trainval-test split" />
     <MESSAGE value="added retries if testing failes" />
-    <option name="LAST_COMMIT_MESSAGE" value="added retries if testing failes" />
+    <MESSAGE value="added retries" />
+    <option name="LAST_COMMIT_MESSAGE" value="added retries" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -610,11 +611,6 @@
           <url>file://$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py</url>
           <line>425</line>
           <option name="timeStamp" value="103" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ForeTiS/optimization/optuna_optim.py</url>
-          <line>620</line>
-          <option name="timeStamp" value="104" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ForeTiS/optimization/optuna_optim.py</url>
