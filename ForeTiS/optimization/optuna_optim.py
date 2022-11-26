@@ -257,8 +257,7 @@ class OptunaOptim:
             # persist results
             validation_results.to_csv(self.save_path + 'temp/validation_results_trial' + str(trial.number) + '.csv',
                                       sep=',', decimal='.', float_format='%.10f', index=False)
-            self.best_trials.append(trial.number)
-            print()
+            self.best_trials.insert(0, trial.number)
             # # delete previous results
             # for file in os.listdir(self.save_path + 'temp/'):
             #     if 'trial' + str(trial.number) not in file:
@@ -380,11 +379,9 @@ class OptunaOptim:
         model.retrain(retrain=retrain)
         return model, test
 
-    def generate_results_on_test(self, best_trial) -> dict:
+    def generate_results_on_test(self) -> dict:
         """
         Generate the results on the testing data
-
-        :param best_trial: the best trial of the optimization
 
         :return: evaluation metrics dictionary
         """
@@ -617,15 +614,15 @@ class OptunaOptim:
         files_to_keep = glob.glob(self.save_path + 'temp/' + '*trial' + str(self.study.best_trial_copy.number) + '*')
         for file in files_to_keep:
             shutil.copyfile(file, self.save_path + file.split('/')[-1])
-        shutil.rmtree(self.save_path + 'temp/')
 
         # Retrain on full train + val data with best hyperparams and apply on test
-        for best_trial, retry in enumerate(self.best_trials):
+        for retry, best_trial in enumerate(self.best_trials):
             try:
-                final_eval_scores = self.generate_results_on_test(best_trial)
+                final_eval_scores = self.generate_results_on_test()
             except ValueError as exc:
                 print(traceback.format_exc())
                 print(exc)
+                self.study.best_trial_copy = [trial for trial in self.study.trials if trial.number == best_trial][0]
                 print('Testing failed. Will try again with second best model. The statistics of this study are:')
                 print("  Finished trials: ", len(self.study.trials))
                 print("  Pruned trials: ", len(self.study.get_trials(states=(optuna.trial.TrialState.PRUNED,))))
@@ -635,8 +632,13 @@ class OptunaOptim:
                 print("  Params: ")
                 for key, value in self.study.best_trial_copy.params.items():
                     print("    {}: {}".format(key, value))
-                self.study.best_trial_copy = [trial for trial in self.study.trials if trial.number == best_trial][0]
+
+                files_to_keep = glob.glob(
+                    self.save_path + 'temp/' + '*trial' + str(self.study.best_trial_copy.number) + '*')
+                for file in files_to_keep:
+                    shutil.copyfile(file, self.save_path + file.split('/')[-1])
                 continue
+            shutil.rmtree(self.save_path + 'temp/')
             break
         overall_results['Test'] = {'best_params': self.study.best_trial_copy.params, 'eval_metrics': final_eval_scores,
                                    'runtime_metrics': runtime_metrics, 'retries': retry}
