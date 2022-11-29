@@ -109,8 +109,7 @@ class Dataset:
                     self.correlations = self.get_corr(df=dataset_raw).index.tolist()
 
             dataset_raw = dataset_raw.asfreq('D')
-            dates_to_drop = dataset_raw.loc[str(self.test_year + 1) + '-01-01': str(self.test_year + 1) + '-12-31']
-            dataset_raw = pd.concat([dataset_raw, dates_to_drop]).drop_duplicates(keep=False)
+            dataset_raw = dataset_raw.loc[: str(self.test_year) + '-12-31']
 
             # condense columns if specified in config file
             if 'cols_to_condense' in config[data]:
@@ -336,6 +335,7 @@ class Dataset:
                 drop_columns(df=df, columns=['cal_date_weekday'])
             if 'cal_date_weekday_sin' in df.columns:
                 drop_columns(df=df, columns=['cal_date_weekday_sin', 'cal_date_weekday_cos'])
+            df = df.loc[:str(self.test_year) + '-12-31']
             print('-Weekly resampled data-')
 
             # statistical feature extraction on dataset

@@ -33,7 +33,7 @@ if __name__ == '__main__':
                              "Default is same as data_dir.")
     parser.add_argument("-data", "--data", type=str, default=None,
                         help="specify the dataset that you want to use.")
-    parser.add_argument("-tc", "--target_column", type=str, default='total_turnover',
+    parser.add_argument("-tc", "--target_column", type=str, default=None,
                         help="specify the target column for the prediction.")
     parser.add_argument("-fs", "--featuresets", nargs='+', default=['dataset_full', 'dataset_weather', 'dataset_cal',
                                                                     'dataset_sales'],
@@ -95,7 +95,7 @@ if __name__ == '__main__':
                              "Standard is 3")
 
     # Model and Optimization Params #
-    parser.add_argument("-tr", "--n_trials", type=int, default=200,
+    parser.add_argument("-tr", "--n_trials", type=int, default=1,
                         help="specify the number of trials for the Bayesian optimization (optuna).")
     parser.add_argument("-sf", "--save_final_model", type=bool, default=True,
                         help="specify whether to save the final model to hard drive or not "

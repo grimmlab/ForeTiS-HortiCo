@@ -82,7 +82,7 @@ class OptunaOptim:
         :return: a new optuna study instance
         """
         study_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + '_' + '-MODEL' + self.current_model_name\
-                     + '-TRIALS' + str(self.user_input_params["n_trials"])
+                     + '-TRIALS' + str(self.user_input_params["n_trials"]) + '-FEATURESET' + self.featureset
         storage = optuna.storages.RDBStorage(
             "sqlite:///" + self.save_path + 'Optuna_DB-' + study_name + ".db", heartbeat_interval=60, grace_period=120,
             failed_trial_callback=optuna.storages.RetryFailedTrialCallback(max_retry=3))
@@ -258,10 +258,6 @@ class OptunaOptim:
             validation_results.to_csv(self.save_path + 'temp/validation_results_trial' + str(trial.number) + '.csv',
                                       sep=',', decimal='.', float_format='%.10f', index=False)
             self.best_trials.insert(0, trial.number)
-            # # delete previous results
-            # for file in os.listdir(self.save_path + 'temp/'):
-            #     if 'trial' + str(trial.number) not in file:
-            #         os.remove(self.save_path + 'temp/' + file)
         else:
             # delete unfitted model
             os.remove(self.save_path + 'temp/' + 'unfitted_model_trial' + str(trial.number))
@@ -616,13 +612,14 @@ class OptunaOptim:
             shutil.copyfile(file, self.save_path + file.split('/')[-1])
 
         # Retrain on full train + val data with best hyperparams and apply on test
-        for retry, best_trial in enumerate(self.best_trials[1:]):
+        for retry in range(len(self.best_trials)):
             try:
                 final_eval_scores = self.generate_results_on_test()
             except ValueError as exc:
                 print(traceback.format_exc())
                 print(exc)
-                self.study.best_trial_copy = [trial for trial in self.study.trials if trial.number == best_trial][0]
+                self.study.best_trial_copy = \
+                    [trial for trial in self.study.trials if trial.number == self.best_trials[retry + 1]][0]
                 print('Testing failed. Will try again with second best model. The statistics of this study are:')
                 print("  Finished trials: ", len(self.study.trials))
                 print("  Pruned trials: ", len(self.study.get_trials(states=(optuna.trial.TrialState.PRUNED,))))
