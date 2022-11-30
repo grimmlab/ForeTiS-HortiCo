@@ -57,11 +57,11 @@ class OptunaOptim:
                  config: configparser.ConfigParser = None):
         self.current_model_name = current_model_name
         self.datasets = datasets
+        self.featureset = featureset
         self.base_path = save_dir + '/results/' + current_model_name + '/' + \
-                         datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + '/'
+                         datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + '_' + self.featureset + '/'
         if not os.path.exists(self.base_path):
             os.makedirs(self.base_path)
-        self.featureset = featureset
         self.save_path = self.base_path
         self.study = None
         self.current_best_val_result = None
@@ -411,7 +411,8 @@ class OptunaOptim:
         final_results.at[0:len(retrain) - 1, 'y_true_retrain'] = retrain[self.target_column].values.flatten()
         final_results.at[0:len(test) - 1, 'y_true_test'] = test[self.target_column].values.flatten()
 
-        feature_importance = pd.DataFrame(index=range(0, 0))
+        if self.current_model_name in ['ard', 'bayesridge', 'elasticnet', 'lasso', 'ridge', 'xgboost']:
+            feature_importance = pd.DataFrame(index=range(0, 0))
 
         for count, period in enumerate(self.user_input_params["periodical_refit_cycles"]):
             test_len = test.shape[0]
@@ -504,10 +505,9 @@ class OptunaOptim:
                                                              prefix='test_refitting_period_' + str(period) + '_',
                                                              current_model_name=self.current_model_name)
 
-            feat_import_df = None
             if self.current_model_name in ['ard', 'bayesridge', 'elasticnet', 'lasso', 'ridge', 'xgboost']:
                 feat_import_df = self.get_feature_importance(model=model, period=period)
-            feature_importance = pd.concat([feature_importance, feat_import_df], axis=1)
+                feature_importance = pd.concat([feature_importance, feat_import_df], axis=1)
 
             print('## Results on test set with refitting period: ' + str(period) + ' ##')
             print(eval_scores)
@@ -533,7 +533,10 @@ class OptunaOptim:
 
         if len(self.study.trials) == self.user_input_params["n_trials"]:
             results_filename = 'final_model_test_results.csv'
-            feat_import_filename = 'final_model_feature_importances.csv'
+            if self.current_model_name in ['ard', 'bayesridge', 'elasticnet', 'lasso', 'ridge', 'xgboost']:
+                feature_importance.to_csv(
+                    self.save_path + 'final_model_feature_importances.csv', sep=',', decimal='.', float_format='%.10f',
+                    index=False)
         else:
             results_filename = '/temp/intermediate_after_' + str(len(self.study.trials) - 1) + '_test_results.csv'
             feat_import_filename = \
@@ -542,9 +545,6 @@ class OptunaOptim:
                             self.save_path + '/temp/intermediate_after_' + str(len(self.study.trials) - 1) + '_' +
                             self.current_model_name + '_runtime_overview.csv', )
         final_results.to_csv(self.save_path + results_filename, sep=',', decimal='.', float_format='%.10f', index=False)
-        if feature_importance is not None:
-            feature_importance.to_csv(
-                self.save_path + feat_import_filename, sep=',', decimal='.', float_format='%.10f', index=False)
 
         return final_eval_scores
 
