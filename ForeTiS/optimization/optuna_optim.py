@@ -148,7 +148,7 @@ class OptunaOptim:
             print('Exponential Smoothing depends on continuous time series. Will set datasplit to timeseries-cv.')
             self.datasplit = 'timeseries-cv'
         elif self.datasplit == 'timeseries-cv' and len(self.dataset.index.year.unique().tolist()) < 4:
-            print('First timeseries-cv split has less than 2 seasonal cycles. Will set datasplit to train-val-test.')
+            print('Timeseries is shorter than 4 years. Will set datasplit to train-val-test.')
             self.datasplit = 'train-val-test'
 
         # save the unfitted model
@@ -450,11 +450,11 @@ class OptunaOptim:
                     y_test = model.y_scaler.transform(X_test_manip[self.target_column].values.reshape(-1, 1))
                     x_test, _ = model.create_sequences(x_test, y_test)
 
-                for i in range(0, test_len):
+                for i in range(test_len):
                     if hasattr(model, 'sequential'):
                         if hasattr(final_model, 'conf'):
                             y_pred_test_pred, y_pred_test_pred_var_artifical, y_pred_test_pred_conf \
-                                = model.predict(X_in=X_test_manip[0])
+                                = model.predict(X_in=x_test[0])
                             y_pred_test_conf.append(y_pred_test_pred_conf)
                         else:
                             y_pred_test_pred, y_pred_test_pred_var_artifical = model.predict(X_in=x_test[0])
@@ -471,14 +471,20 @@ class OptunaOptim:
                         y_pred_test.append(y_pred_test_pred)
                         y_pred_test_var.append(y_pred_test_pred_var_artifical)
 
+                    X_train_val_manip = pd.concat([X_train_val_manip, X_test_manip.iloc[[0]]])
+                    X_test_manip = X_test_manip.iloc[1:]
+                    if hasattr(model, 'sequential'):
+                        x_test = x_test[1:]
                     if (i+1) % period == 0:
-                        X_train_val_manip = pd.concat([X_train_val_manip[self.user_input_params["refit_drops"]:],
-                                                       X_test_manip[0:period]])
-                        X_test_manip = X_test_manip[period:]
+                        X_train_val_manip = X_train_val_manip[self.user_input_params["refit_drops"]:]
                         if model.dim_reduction:
                             X_train_val_manip, X_test_manip = \
                                 self.pca_transform_train_test(X_train_val_manip, X_test_manip)
                         model.update(update=X_train_val_manip, period=period)
+                        if hasattr(model, 'sequential'):
+                            x_test = model.X_scaler.transform(X_test_manip.drop(labels=[self.target_column], axis=1))
+                            y_test = model.y_scaler.transform(X_test_manip[self.target_column].values.reshape(-1, 1))
+                            x_test, _ = model.create_sequences(x_test, y_test)
 
                 y_pred_test = np.array(y_pred_test).flatten()
                 y_pred_test_var = np.array(y_pred_test_var).flatten()

@@ -53,7 +53,7 @@ class StatModel(_base_model.BaseModel, abc.ABC):
                 self.exog_cols_dropped = retrain_exog.columns[retrain_exog.isna().any()].tolist()
                 raw_data_functions.drop_columns(retrain_exog, self.exog_cols_dropped)
                 retrain_exog = retrain_exog.to_numpy(dtype=float)
-                self.model.fit(y=retrain[self.target_column], exogenous=retrain_exog, trend=self.trend)
+                self.model.fit(y=retrain[self.target_column], X=retrain_exog, trend=self.trend)
             else:
                 self.model.fit(y=retrain[self.target_column], trend=self.trend)
 
@@ -93,7 +93,7 @@ class StatModel(_base_model.BaseModel, abc.ABC):
                 raw_data_functions.drop_columns(exog, self.exog_cols_dropped)
                 exog = exog.tail(period)
                 exog = exog.to_numpy(dtype=float)
-                self.model.update(y=update[self.target_column].tail(period), exogenous=exog)
+                self.model.update(y=update[self.target_column].tail(period), X=exog)
             else:
                 self.model.update(y=update[self.target_column].tail(period))
 
@@ -124,7 +124,7 @@ class StatModel(_base_model.BaseModel, abc.ABC):
             if hasattr(self, 'conf'):
                 return_conf_int = True
             self.prediction, conf_int = \
-                self.model.predict(n_periods=n_periods, exogenous=exog, return_conf_int=return_conf_int, alpha=0.05)
+                self.model.predict(n_periods=n_periods, X=exog, return_conf_int=return_conf_int, alpha=0.05)
         if isinstance(self.prediction, pd.Series):
             self.prediction = self.prediction.to_numpy()
         self.prediction = self.get_inverse_transformed_set(self.prediction, self.transf, self.power_transformer)

@@ -90,7 +90,7 @@ if __name__ == '__main__':
                              "define the size of the validation set in percentage. "
                              "Standard is 20")
     parser.add_argument("-splits", "--n_splits", type=int, default=3,
-                        help="Only relevant for datasplit methods 'timeseries-cv' and 'cv': define the number of "
+                        help="Only relevant for datasplit method 'cv': define the number of "
                              "splits to use for 'timeseries-cv' or 'cv'. "
                              "Standard is 3")
 
@@ -101,7 +101,7 @@ if __name__ == '__main__':
                         help="specify whether to save the final model to hard drive or not "
                              "(caution: some models may use a lot of disk space, "
                              "unfitted models that can be retrained are already saved by default).")
-    parser.add_argument("-prc", "--periodical_refit_cycles", type=list, default=['complete', 0, 1, 2, 4, 8],
+    parser.add_argument("-prc", "--periodical_refit_cycles", type=list, default=['complete', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                         help="specify with which periods periodical refitting will be done. "
                              "0 means no periodical refitting, "
                              "complete means no periodical refitting and the whole train dataset will be used for "

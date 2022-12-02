@@ -152,7 +152,7 @@ class LSTM(_torch_model.TorchModel):
             data = np.array(X)
         xs = []
         ys = [] if y is not None else None
-        if data.shape[0] <= self.seq_length:
+        if data.shape[0] < self.seq_length:
             raise ValueError('data shorter that sequence length!')
         for i in range(data.shape[0] - self.seq_length):
             if y is not None:

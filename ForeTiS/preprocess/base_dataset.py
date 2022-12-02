@@ -18,7 +18,7 @@ class Dataset:
     **Attributes**
 
         - target_column (*str*): the target column for the prediction
-        - data_dir (*str*): data directory where the phenotype and genotype matrix are stored
+        - data_dir (*str*): data directory where the data is stored
         - data (*str*): the dataset that you want to use
         - windowsize_current_statistics (*int*): the windowsize for the feature engineering of the current statistic
         - windowsize_lagged_statistics (*int*): the windowsize for the feature engineering of the lagged statistics
@@ -36,7 +36,7 @@ class Dataset:
         - special_days (*list<str>*): the special days in your data
         - resample_weekly (*bool*): whether to resample weekly or not
 
-    :param data_dir: data directory where the phenotype and genotype matrix are stored
+    :param data_dir: data directory where the data is stored
     :param data: the dataset that you want to use
     :param test_set_size_percentage: size of the test set relevant for cv-test and train-val-test
     :param target_column: the target column for the prediction
