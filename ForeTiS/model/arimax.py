@@ -42,33 +42,33 @@ class Arima(_stat_model.StatModel):
         return {
             'p': {
                 'datatype': 'int',
-                'lower_bound': 1,
-                'upper_bound': 1
+                'lower_bound': 0,
+                'upper_bound': 3
             },
             'd': {
                 'datatype': 'int',
-                'lower_bound': 1,
+                'lower_bound': 0,
                 'upper_bound': 1
             },
             'q': {
                 'datatype': 'int',
                 'lower_bound': 0,
-                'upper_bound': 0
+                'upper_bound': 3
             },
             'P': {
                 'datatype': 'int',
-                'lower_bound': 1,
-                'upper_bound': 1
+                'lower_bound': 0,
+                'upper_bound': 3
             },
             'D': {
                 'datatype': 'int',
                 'lower_bound': 0,
-                'upper_bound': 0
+                'upper_bound': 1
             },
             'Q': {
                 'datatype': 'int',
-                'lower_bound': 1,
-                'upper_bound': 1
+                'lower_bound': 0,
+                'upper_bound': 3
             },
             'seasonal_periods': {
                 'datatype': 'categorical',

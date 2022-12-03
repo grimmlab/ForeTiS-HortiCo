@@ -116,7 +116,7 @@ class LSTM(_torch_model.TorchModel):
             },
             'freeze': {
                 'datatype': 'categorical',
-                'list_of_values': [True ]
+                'list_of_values': [True]
             },
             'peephole': {
                 'datatype': 'categorical',
