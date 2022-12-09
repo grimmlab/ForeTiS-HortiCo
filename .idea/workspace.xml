@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="adjusted hyperparams for statsmodels">
+    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="updated optuna version">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/docker_requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/docker_requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/preprocess/StatisticalFeatures.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/preprocess/StatisticalFeatures.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -209,14 +208,7 @@
       <workItem from="1670349235083" duration="602000" />
       <workItem from="1670350740343" duration="13000" />
       <workItem from="1670490581461" duration="5365000" />
-      <workItem from="1670566920883" duration="668000" />
-    </task>
-    <task id="LOCAL-00013" summary="readthedocs">
-      <created>1665124869444</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1665124869444</updated>
+      <workItem from="1670566920883" duration="8418000" />
     </task>
     <task id="LOCAL-00014" summary="readthedocs">
       <created>1665125557860</created>
@@ -554,7 +546,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670063652242</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="updated optuna version">
+      <created>1670567602900</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1670567602901</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -572,7 +571,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="debugging gprtf and lstmbayes" />
     <MESSAGE value="gprtf changing matern kernel" />
     <MESSAGE value="gprtf debug" />
     <MESSAGE value="lstmbayes debug" />
@@ -597,7 +595,8 @@
     <MESSAGE value="debugged FeatureAdder.py" />
     <MESSAGE value="debugged periodical refitting" />
     <MESSAGE value="adjusted hyperparams for statsmodels" />
-    <option name="LAST_COMMIT_MESSAGE" value="adjusted hyperparams for statsmodels" />
+    <MESSAGE value="updated optuna version" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated optuna version" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -622,6 +621,56 @@
           <line>398</line>
           <option name="timeStamp" value="124" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py</url>
+          <line>342</line>
+          <option name="timeStamp" value="130" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py</url>
+          <line>351</line>
+          <option name="timeStamp" value="131" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py</url>
+          <line>374</line>
+          <option name="timeStamp" value="132" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py</url>
+          <line>394</line>
+          <option name="timeStamp" value="133" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py</url>
+          <line>401</line>
+          <option name="timeStamp" value="134" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py</url>
+          <line>416</line>
+          <option name="timeStamp" value="135" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py</url>
+          <line>420</line>
+          <option name="timeStamp" value="136" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py</url>
+          <line>429</line>
+          <option name="timeStamp" value="137" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py</url>
+          <line>439</line>
+          <option name="timeStamp" value="138" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiS/preprocess/StatisticalFeatures.py</url>
+          <line>45</line>
+          <option name="timeStamp" value="144" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -633,7 +682,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ForeTiS$ForeTiS_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1670237938939" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ForeTiS$ForeTiS_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1670583123840" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/HorticulturalSalesPrediction$HorticulturalSalesPrediction_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1666270498365" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

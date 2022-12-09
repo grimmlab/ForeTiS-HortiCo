@@ -23,7 +23,7 @@ def add_lagged_statistics(seasonal_periods: int, windowsize_lagged_statistics: i
                     df[correlations].shift(seasonal_lag * seasonal_periods).sum(axis=1)
             for feature in features_sales:
                 # separate function as different window sizes might be interesting compared to non-seasonal
-                # statistics shift by 1+seasonal_period so rolling stats value is calculated without current value
+                # statistics shift by -1 so rolling stats value is calculated as the mean of the time period
                 df['stat_' + feature + '_seaslag' + str(seasonal_lag)] = \
                     df[feature].shift(seasonal_lag * seasonal_periods)
                 df['stat_' + feature + '_seaslag' + str(seasonal_lag) + '_rolling_mean' +
@@ -44,7 +44,7 @@ def add_current_statistics(seasonal_periods: int, windowsize_current_statistics:
     if seasonal_periods <= windowsize_current_statistics:
         return
     if correlations is not None:
-        df['stat_correlations_lag' + str(1) + '_sum'] = df[correlations].sum(axis=1)
+        df['stat_correlations_lag' + str(1) + '_sum'] = df[correlations].shift(1).sum(axis=1)
     # separate function as different window sizes might be interesting compared to non-seasonal statistics
     for feature in features_weather_sales:
         df['stat_' + feature + '_lag' + str(1)] = df[feature].shift(1)
