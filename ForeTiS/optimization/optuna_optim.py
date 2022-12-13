@@ -240,7 +240,7 @@ class OptunaOptim:
                                                                         prefix=fold_name + '_').items():
                     validation_results.at[0, metric] = value
 
-            except (RuntimeError, TypeError, ValueError, IndexError, np.linalg.LinAlgError) as exc:
+            except (RuntimeError, TypeError, ValueError, IndexError, NameError, np.linalg.LinAlgError) as exc:
                 print(traceback.format_exc())
                 print(exc)
                 print('Trial failed. Error in optim loop.')
