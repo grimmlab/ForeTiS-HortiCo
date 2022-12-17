@@ -86,14 +86,16 @@ class LSTM(_torch_model.TorchModel):
                 for inputs in dataloader:
                     inputs = inputs.view(1, self.seq_length, -1)
                     inputs = inputs.to(device=self.device)
-                    outputs = self.model(inputs)
+                    with torch.autocast(device_type=self.device.type):
+                        outputs = self.model(inputs)
                     predictions = torch.clone(outputs) if predictions is None else torch.cat((predictions, outputs))
         else:
             inputs = X_in.reshape(1, self.seq_length, -1)
             with torch.no_grad():
                 inputs = torch.tensor(inputs.astype(np.float32))
                 inputs = inputs.to(device=self.device)
-                outputs = self.model(inputs)
+                with torch.autocast(device_type=self.device.type):
+                    outputs = self.model(inputs)
                 predictions = torch.clone(outputs)
         self.prediction = self.y_scaler.inverse_transform(predictions.cpu().detach().numpy()).flatten()
         return self.prediction, self.var

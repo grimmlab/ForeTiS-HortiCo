@@ -73,13 +73,14 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
         self.model.to(device=self.device)
         best_loss = None
         epochs_wo_improvement = 0
+        scaler = torch.cuda.amp.GradScaler(enabled=False if self.device.type == 'cpu' else True)
 
         y_true = np.array([0])
         y_pred = np.array([0])
         self.var = sklearn.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
 
         for epoch in range(self.n_epochs):
-            self.train_one_epoch(train_loader=train_loader)
+            self.train_one_epoch(train_loader=train_loader, scaler=scaler)
             val_loss = self.validate_one_epoch(val_loader=val_loader)
             if best_loss is None or val_loss < best_loss:
                 best_loss = val_loss
@@ -109,7 +110,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
                                          only_transform=True)
         return train_loader, val_loader, val
 
-    def train_one_epoch(self, train_loader: torch.utils.data.DataLoader):
+    def train_one_epoch(self, train_loader: torch.utils.data.DataLoader, scaler):
         """
         Train one epoch
 
@@ -119,13 +120,15 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
         self.model.train()
         for inputs, targets in train_loader:
             inputs, targets = inputs.to(device=self.device), targets.to(device=self.device)
-            self.optimizer.zero_grad()
-            outputs = self.model(inputs)
-            if 'bayes' in self.current_model_name:
-                kl = kl_divergence_from_nn(self.model)
-            loss = self.get_loss(outputs=outputs, targets=targets) + kl / self.batch_size
-            loss.backward()
-            self.optimizer.step()
+            self.optimizer.zero_grad(set_to_none=True)
+            with torch.autocast(device_type=self.device.type):
+                outputs = self.model(inputs)
+                if 'bayes' in self.current_model_name:
+                    kl = kl_divergence_from_nn(self.model)
+                loss = self.get_loss(outputs=outputs, targets=targets) + kl / self.batch_size
+            scaler.scale(loss).backward()
+            scaler.step(self.optimizer)
+            scaler.update()
 
     def validate_one_epoch(self, val_loader: torch.utils.data.DataLoader) -> float:
         """
@@ -140,8 +143,9 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
         with torch.no_grad():
             for inputs, targets in val_loader:
                 inputs, targets = inputs.to(device=self.device), targets.to(device=self.device)
-                outputs = self.model(inputs)
-                total_loss += self.get_loss(outputs=outputs, targets=targets).item()
+                with torch.autocast(device_type=self.device.type):
+                    outputs = self.model(inputs)
+                    total_loss += self.get_loss(outputs=outputs, targets=targets).item()
         return total_loss / len(val_loader.dataset)
 
     def retrain(self, retrain: pd.DataFrame):
@@ -153,8 +157,9 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
                                              y=retrain[self.target_column], only_transform=False)
         n_epochs_to_retrain = self.n_epochs if self.early_stopping_point is None else self.early_stopping_point
         self.model.to(device=self.device)
+        scaler = torch.cuda.amp.GradScaler(enabled=False if self.device.type == 'cpu' else True)
         for epoch in range(n_epochs_to_retrain):
-            self.train_one_epoch(retrain_loader)
+            self.train_one_epoch(train_loader=retrain_loader, scaler=scaler)
 
         if self.prediction is not None:
             if len(retrain[self.target_column]) > len(self.prediction):
@@ -177,8 +182,9 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
                                             y=update[self.target_column], only_transform=False)
         n_epochs_to_retrain = self.n_epochs if self.early_stopping_point is None else self.early_stopping_point
         self.model.to(device=self.device)
+        scaler = torch.cuda.amp.GradScaler(enabled=False if self.device.type == 'cpu' else True)
         for epoch in range(n_epochs_to_retrain):
-            self.train_one_epoch(update_loader)
+            self.train_one_epoch(update_loader, scaler=scaler)
 
         y_true = update[self.target_column][-len(self.prediction):]
         y_pred = self.prediction
@@ -197,7 +203,8 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
             for inputs in dataloader:
                 inputs = inputs.view(1, -1)
                 inputs = inputs.to(device=self.device)
-                outputs = self.model(inputs)
+                with torch.autocast(device_type=self.device.type):
+                    outputs = self.model(inputs)
                 predictions = torch.clone(outputs) if predictions is None else torch.cat((predictions, outputs))
         self.prediction = predictions.cpu().detach().numpy()
         return self.prediction.flatten(), self.var.flatten()
@@ -264,28 +271,26 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
             'dropout': {
                 'datatype': 'float',
                 'lower_bound': 0,
-                'upper_bound': 0.9,
+                'upper_bound': 0.5,
                 'step': 0.1
             },
             'act_function': {
                 'datatype': 'categorical',
-                'list_of_values': [None, 'relu', 'tanh', 'leakyrelu', 'sigmoid', 'softmax']
+                'list_of_values': ['relu', 'tanh'] # , None, 'leakyrelu', 'sigmoid', 'softmax'
             },
             'batch_size_exp': {
                 'datatype': 'int',
-                'lower_bound': 1,
-                'upper_bound': 5
+                'lower_bound': 3,
+                'upper_bound': 6
             },
             'n_layers': {
                 'datatype': 'int',
                 'lower_bound': 1,
-                'upper_bound': 10
+                'upper_bound': 5
             },
             'learning_rate': {
-                'datatype': 'float',
-                'lower_bound': 1e-6,
-                'upper_bound': 1e-1,
-                'log': True
+                'datatype': 'categorical',
+                'list_of_values': [1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1]
             },
             'early_stopping_patience': {
                'datatype': 'int',
