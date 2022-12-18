@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="debugged train-val loop">
+    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="accelerate nns">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/docker_requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/docker_requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ForeTiS/model/_torch_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/_torch_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/lstm.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/lstm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/lstmbayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/lstmbayes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ForeTiS/model/mlp.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/mlp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/mlpbayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/mlpbayes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ForeTiS/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,14 +220,9 @@
       <workItem from="1671008064869" duration="5138000" />
       <workItem from="1671087536818" duration="4130000" />
       <workItem from="1671170472528" duration="8507000" />
-      <workItem from="1671271879748" duration="1846000" />
-    </task>
-    <task id="LOCAL-00016" summary="readthedocs">
-      <created>1665763271778</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1665763271778</updated>
+      <workItem from="1671271879748" duration="2627000" />
+      <workItem from="1671351714584" duration="1424000" />
+      <workItem from="1671367116235" duration="1740000" />
     </task>
     <task id="LOCAL-00017" summary="readthedocs">
       <created>1666283112525</created>
@@ -568,7 +560,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670914581661</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="accelerate nns">
+      <created>1671277206066</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1671277206066</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -586,7 +585,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="lstmbayes debug" />
     <MESSAGE value="changed timeseries-cv" />
     <MESSAGE value="adjusted bayes neural nets" />
     <MESSAGE value="adjusted timeseries cv" />
@@ -611,7 +609,8 @@
     <MESSAGE value="updated optuna version" />
     <MESSAGE value="debugged StatisticalFeatures.py" />
     <MESSAGE value="debugged train-val loop" />
-    <option name="LAST_COMMIT_MESSAGE" value="debugged train-val loop" />
+    <MESSAGE value="accelerate nns" />
+    <option name="LAST_COMMIT_MESSAGE" value="accelerate nns" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -642,7 +641,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ForeTiS$ForeTiS_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1671208604971" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ForeTiS$ForeTiS_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1671368368495" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/HorticulturalSalesPrediction$HorticulturalSalesPrediction_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1666270498365" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
