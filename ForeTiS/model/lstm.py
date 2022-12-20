@@ -28,14 +28,13 @@ class LSTM(_torch_model.TorchModel):
         self.sequential = True
         self.seq_length = self.suggest_hyperparam_to_optuna('seq_length')
         model = []
-        n_layers = self.suggest_hyperparam_to_optuna('n_layers')
         p = self.suggest_hyperparam_to_optuna('dropout')
         n_feature = self.dataset.shape[1]
         lstm_hidden_dim = self.suggest_hyperparam_to_optuna('lstm_hidden_dim')
 
         model.append(PrepareForlstm())
-        model.append(torch.nn.LSTM(input_size=n_feature, hidden_size=lstm_hidden_dim, num_layers=n_layers,
-                                   dropout=p))
+        model.append(torch.nn.LSTM(input_size=n_feature, hidden_size=lstm_hidden_dim,
+                                   num_layers=self.suggest_hyperparam_to_optuna('n_lstm_layers'), dropout=p))
         model.append(GetOutputZero())
         model.append(PrepareForDropout())
         model.append(torch.nn.Dropout(p))
@@ -53,12 +52,17 @@ class LSTM(_torch_model.TorchModel):
             'lstm_hidden_dim': {
                 'datatype': 'int',
                 'lower_bound': 5,
-                'upper_bound': 100,
+                'upper_bound': 100
             },
             'seq_length': {
                 'datatype': 'int',
                 'lower_bound': 1,
                 'upper_bound': 52
+            },
+            'n_lstm_layers': {
+                'datatype': 'int',
+                'lower_bound': 1,
+                'upper_bound': 3
             }
         }
 
@@ -86,7 +90,7 @@ class LSTM(_torch_model.TorchModel):
                 for inputs in dataloader:
                     inputs = inputs.view(1, self.seq_length, -1)
                     inputs = inputs.to(device=self.device)
-                    with torch.autocast(device_type=self.device.type):
+                    with torch.autocast(device_type=self.device.type, enabled=self.enabled):
                         outputs = self.model(inputs)
                     predictions = torch.clone(outputs) if predictions is None else torch.cat((predictions, outputs))
         else:
@@ -94,7 +98,7 @@ class LSTM(_torch_model.TorchModel):
             with torch.no_grad():
                 inputs = torch.tensor(inputs.astype(np.float32))
                 inputs = inputs.to(device=self.device)
-                with torch.autocast(device_type=self.device.type):
+                with torch.autocast(device_type=self.device.type, enabled=self.enabled):
                     outputs = self.model(inputs)
                 predictions = torch.clone(outputs)
         self.prediction = self.y_scaler.inverse_transform(predictions.cpu().detach().numpy()).flatten()

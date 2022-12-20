@@ -67,7 +67,7 @@ def get_mapping_name_to_class() -> dict:
                     modules_mapped[file_name] = cls
     return modules_mapped
 
-def set_all_seeds(seed: int=0):
+def set_all_seeds(seed: int=42):
     """
     Set all seeds of libs with a specific function for reproducibility of results
 

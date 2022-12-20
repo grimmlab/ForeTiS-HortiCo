@@ -37,11 +37,11 @@ class Mlp(_torch_model.TorchModel):
                 model.append(act_function)
             if batch_norm:
                 model.append(torch.nn.BatchNorm1d(num_features=out_features))
-            model.append(torch.nn.Dropout(p))
+            model.append(torch.nn.Dropout(p=p))
             in_features = out_features
             out_features = int(in_features * (1-perc_decrease))
         model.append(torch.nn.Linear(in_features=in_features, out_features=self.n_outputs))
-        model.append(torch.nn.Dropout(p))
+
         return torch.nn.Sequential(*model)
 
     def define_hyperparams_to_tune(self) -> dict:
@@ -55,7 +55,7 @@ class Mlp(_torch_model.TorchModel):
                 # Number of units in the first linear layer in relation to the number of inputs
                 'datatype': 'float',
                 'lower_bound': 0.1,
-                'upper_bound': 5,
+                'upper_bound': 0.95,
                 'step': 0.05
             },
             'perc_decrease_per_layer': {

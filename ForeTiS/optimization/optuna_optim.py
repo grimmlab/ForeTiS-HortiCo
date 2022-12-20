@@ -626,7 +626,7 @@ class OptunaOptim:
                 print(exc)
                 self.study.best_trial_copy = \
                     [trial for trial in self.study.trials if trial.number == self.best_trials[retry + 1]][0]
-                print('Testing failed. Will try again with second best model. The statistics of this study are:')
+                print('Testing failed. Will try again with next best model. The statistics of this study are:')
                 print("  Finished trials: ", len(self.study.trials))
                 print("  Pruned trials: ", len(self.study.get_trials(states=(optuna.trial.TrialState.PRUNED,))))
                 print("  Completed trials: ", len(self.study.get_trials(states=(optuna.trial.TrialState.COMPLETE,))))

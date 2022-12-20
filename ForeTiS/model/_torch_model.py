@@ -61,6 +61,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
         self.early_stopping_point = None
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.X_scaler = sklearn.preprocessing.StandardScaler()
+        self.enabled = True
 
     def train_val_loop(self, train: pd.DataFrame, val: pd.DataFrame) -> np.array:
         """
@@ -121,7 +122,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
         for inputs, targets in train_loader:
             inputs, targets = inputs.to(device=self.device), targets.to(device=self.device)
             self.optimizer.zero_grad(set_to_none=True)
-            with torch.autocast(device_type=self.device.type):
+            with torch.autocast(device_type=self.device.type, enabled=self.enabled):
                 outputs = self.model(inputs)
                 if 'bayes' in self.current_model_name:
                     kl = kl_divergence_from_nn(self.model)
@@ -143,7 +144,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
         with torch.no_grad():
             for inputs, targets in val_loader:
                 inputs, targets = inputs.to(device=self.device), targets.to(device=self.device)
-                with torch.autocast(device_type=self.device.type):
+                with torch.autocast(device_type=self.device.type, enabled=self.enabled):
                     outputs = self.model(inputs)
                     total_loss += self.get_loss(outputs=outputs, targets=targets).item()
         return total_loss / len(val_loader.dataset)
@@ -183,6 +184,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
         n_epochs_to_retrain = self.n_epochs if self.early_stopping_point is None else self.early_stopping_point
         self.model.to(device=self.device)
         scaler = torch.cuda.amp.GradScaler(enabled=False if self.device.type == 'cpu' else True)
+        self.enabled = False
         for epoch in range(n_epochs_to_retrain):
             self.train_one_epoch(update_loader, scaler=scaler)
 
@@ -203,7 +205,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
             for inputs in dataloader:
                 inputs = inputs.view(1, -1)
                 inputs = inputs.to(device=self.device)
-                with torch.autocast(device_type=self.device.type):
+                with torch.autocast(device_type=self.device.type, enabled=self.enabled):
                     outputs = self.model(inputs)
                 predictions = torch.clone(outputs) if predictions is None else torch.cat((predictions, outputs))
         self.prediction = predictions.cpu().detach().numpy()

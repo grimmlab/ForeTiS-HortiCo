@@ -33,7 +33,6 @@ class LSTM(_torch_model.TorchModel):
         self.sequential = True
         self.seq_length = self.suggest_hyperparam_to_optuna('seq_length')
         model = []
-        n_layers = self.suggest_hyperparam_to_optuna('n_layers')
         p = self.suggest_hyperparam_to_optuna('dropout')
         n_feature = self.dataset.shape[1]
         lstm_hidden_dim = self.suggest_hyperparam_to_optuna('lstm_hidden_dim')
@@ -48,7 +47,7 @@ class LSTM(_torch_model.TorchModel):
         peephole = self.suggest_hyperparam_to_optuna('peephole')
 
         model.append(PrepareForlstm())
-        for layer in range(n_layers):
+        for layer in range(self.suggest_hyperparam_to_optuna('n_lstm_layers')):
             if layer == 0:
                 model.append(BayesianLSTM(in_features=n_feature, out_features=lstm_hidden_dim, bias=bias,
                                           prior_sigma_1=prior_sigma_1, prior_sigma_2=prior_sigma_2, prior_pi=prior_pi,
@@ -84,6 +83,11 @@ class LSTM(_torch_model.TorchModel):
                 'datatype': 'int',
                 'lower_bound': 1,
                 'upper_bound': 52
+            },
+            'n_lstm_layers': {
+                'datatype': 'int',
+                'lower_bound': 1,
+                'upper_bound': 3
             },
             'bias': {
                 'datatype': 'categorical',
@@ -156,7 +160,7 @@ class LSTM(_torch_model.TorchModel):
                     inputs = inputs.to(device=self.device)
                     predictions_mc = []
                     for _ in range(self.num_monte_carlo):
-                        with torch.autocast(device_type=self.device.type):
+                        with torch.autocast(device_type=self.device.type, enabled=self.enabled):
                             output = self.model(inputs)
                         predictions_mc.append(output)
                     predictions_ = torch.stack(predictions_mc)
@@ -171,7 +175,7 @@ class LSTM(_torch_model.TorchModel):
                 inputs = inputs.to(device=self.device)
                 predictions_mc = []
                 for _ in range(self.num_monte_carlo):
-                    with torch.autocast(device_type=self.device.type):
+                    with torch.autocast(device_type=self.device.type, enabled=self.enabled):
                         output = self.model(inputs)
                     predictions_mc.append(output)
                 predictions_ = torch.stack(predictions_mc)
