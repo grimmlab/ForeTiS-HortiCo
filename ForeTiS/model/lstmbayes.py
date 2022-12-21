@@ -160,8 +160,8 @@ class LSTM(_torch_model.TorchModel):
                     inputs = inputs.to(device=self.device)
                     predictions_mc = []
                     for _ in range(self.num_monte_carlo):
-                        with torch.autocast(device_type=self.device.type, enabled=self.enabled):
-                            output = self.model(inputs)
+                        # with torch.autocast(device_type=self.device.type, enabled=self.enabled):
+                        output = self.model(inputs)
                         predictions_mc.append(output)
                     predictions_ = torch.stack(predictions_mc)
                     outputs = torch.mean(predictions_, dim=0)
@@ -175,8 +175,8 @@ class LSTM(_torch_model.TorchModel):
                 inputs = inputs.to(device=self.device)
                 predictions_mc = []
                 for _ in range(self.num_monte_carlo):
-                    with torch.autocast(device_type=self.device.type, enabled=self.enabled):
-                        output = self.model(inputs)
+                    # with torch.autocast(device_type=self.device.type, enabled=self.enabled):
+                    output = self.model(inputs)
                     predictions_mc.append(output)
                 predictions_ = torch.stack(predictions_mc)
                 outputs = torch.mean(predictions_, dim=0)

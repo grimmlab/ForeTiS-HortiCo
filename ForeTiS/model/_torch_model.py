@@ -205,8 +205,8 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
             for inputs in dataloader:
                 inputs = inputs.view(1, -1)
                 inputs = inputs.to(device=self.device)
-                with torch.autocast(device_type=self.device.type, enabled=self.enabled):
-                    outputs = self.model(inputs)
+                # with torch.autocast(device_type=self.device.type, enabled=self.enabled):
+                outputs = self.model(inputs)
                 predictions = torch.clone(outputs) if predictions is None else torch.cat((predictions, outputs))
         self.prediction = predictions.cpu().detach().numpy()
         return self.prediction.flatten(), self.var.flatten()
