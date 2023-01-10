@@ -50,7 +50,7 @@ class Dataset:
     :param test_year: the year that should be used as test set
     """
 
-    def __init__(self, data_dir: str, data: str, test_set_size_percentage: int, target_column: str,
+    def __init__(self, data_dir: str, data: str, config_type: str, test_set_size_percentage: int, target_column: str,
                  windowsize_current_statistics: int, windowsize_lagged_statistics: int, cyclic_encoding: bool = False,
                  imputation_method: str = 'None', correlation_number: int = None, correlation_method: str = None,
                  config: configparser.ConfigParser = None, test_year: int = None):
@@ -64,16 +64,16 @@ class Dataset:
         self.correlation_number = correlation_number
         self.test_year = test_year
 
-        self.datatype = config[data]['datatype']
-        self.date_column = config[data]['date_column']
-        self.group = config[data]['group']
-        self.seasonal_periods = config[data].getint('seasonal_periods')
-        self.imputation = config[data].getboolean('imputation')
-        self.holiday_school_column = config[data]['holiday_school_column']
-        self.holiday_public_column = config[data]['holiday_public_column']
-        self.special_days = config[data]['special_days'].replace(" ", "").replace("_", " ").split(',')
-        self.resample_weekly = config[data].getboolean('resample_weekly')
-        features_weather_regex = config[data]['features_weather_regex'].replace(" ", "").split(',')
+        self.datatype = config[config_type]['datatype']
+        self.date_column = config[config_type]['date_column']
+        self.group = config[config_type]['group']
+        self.seasonal_periods = config[config_type].getint('seasonal_periods')
+        self.imputation = config[config_type].getboolean('imputation')
+        self.holiday_school_column = config[config_type]['holiday_school_column']
+        self.holiday_public_column = config[config_type]['holiday_public_column']
+        self.special_days = config[config_type]['special_days'].replace(" ", "").replace("_", " ").split(',')
+        self.resample_weekly = config[config_type].getboolean('resample_weekly')
+        features_weather_regex = config[config_type]['features_weather_regex'].replace(" ", "").split(',')
 
         #  check if data is already preprocessed. If not, preprocess the data
         if os.path.exists(os.path.join(data_dir, data + '.h5')):
@@ -112,9 +112,9 @@ class Dataset:
             dataset_raw = dataset_raw.loc[: str(self.test_year) + '-12-31']
 
             # condense columns if specified in config file
-            if 'cols_to_condense' in config[data]:
-                cols_to_condense = config[data]['cols_to_condense'].replace(" ", "").split(',')
-                condensed_col_name = config[data]['condensed_col_name']
+            if 'cols_to_condense' in config[config_type]:
+                cols_to_condense = config[config_type]['cols_to_condense'].replace(" ", "").split(',')
+                condensed_col_name = config[config_type]['condensed_col_name']
                 dataset_raw[condensed_col_name] = 0
                 for col in cols_to_condense:
                     dataset_raw[condensed_col_name] += dataset_raw[col]

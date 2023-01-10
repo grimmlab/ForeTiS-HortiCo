@@ -5,7 +5,7 @@ from . import _stat_model
 
 class Es(_stat_model.StatModel):
     """
-    Implementation of a class for a Exponential Smoothin (ES) model.
+    Implementation of a class for an Exponential Smoothing (ES) model.
     See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the attributes.
     """
 

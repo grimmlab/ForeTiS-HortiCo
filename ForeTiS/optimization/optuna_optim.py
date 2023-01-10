@@ -49,11 +49,11 @@ class OptunaOptim:
     :param intermediate_results_interval: number of trials after which intermediate results will be saved
     """
 
-    def __init__(self, save_dir: str, data: str, featureset: str, datasplit: str, test_set_size_percentage: int,
-                 val_set_size_percentage: int, n_splits: int, models: list, n_trials: int, save_final_model: bool,
-                 batch_size: int, n_epochs: int, current_model_name: str, datasets: base_dataset.Dataset,
-                 periodical_refit_cycles: list, refit_drops: int, refit_window: int, target_column: str,
-                 intermediate_results_interval: int = 50, pca_transform: bool = False,
+    def __init__(self, save_dir: str, data: str, config_type: str, featureset: str, datasplit: str,
+                 test_set_size_percentage: int, val_set_size_percentage: int, n_splits: int, models: list,
+                 n_trials: int, save_final_model: bool, batch_size: int, n_epochs: int, current_model_name: str,
+                 datasets: base_dataset.Dataset, periodical_refit_cycles: list, refit_drops: int, refit_window: int,
+                 target_column: str, intermediate_results_interval: int = 50, pca_transform: bool = False,
                  config: configparser.ConfigParser = None):
         self.current_model_name = current_model_name
         self.datasets = datasets
@@ -70,7 +70,7 @@ class OptunaOptim:
         self.test_set_size_percentage = test_set_size_percentage
         self.n_splits = n_splits
         self.datasplit = datasplit
-        self.seasonal_periods = config[data].getint('seasonal_periods')
+        self.seasonal_periods = config[config_type].getint('seasonal_periods')
         self.pca_transform = pca_transform
         self.best_trials = []
         self.user_input_params = locals()  # distribute all handed over params in whole class

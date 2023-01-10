@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="debug nns">
+    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="fixed lstmbayes.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/lstmbayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/lstmbayes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/dataset_specific_config.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/dataset_specific_config.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/es.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/es.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/optim_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/optim_pipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/optimization/optuna_optim.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/optimization/optuna_optim.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ForeTiS/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/run.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -237,14 +241,10 @@
       <workItem from="1672852461007" duration="107000" />
       <workItem from="1672906156900" duration="9487000" />
       <workItem from="1672933042309" duration="607000" />
-      <workItem from="1672997885939" duration="2159000" />
-    </task>
-    <task id="LOCAL-00020" summary="readthedocs">
-      <created>1666339408119</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1666339408119</updated>
+      <workItem from="1672997885939" duration="2220000" />
+      <workItem from="1673247967194" duration="5000" />
+      <workItem from="1673248712893" duration="9275000" />
+      <workItem from="1673347113765" duration="959000" />
     </task>
     <task id="LOCAL-00021" summary="readthedocs">
       <created>1666362131029</created>
@@ -582,7 +582,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671635659425</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="fixed lstmbayes.py">
+      <created>1673025041326</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1673025041326</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -600,7 +607,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="adjusted bayes neural nets" />
     <MESSAGE value="adjusted timeseries cv" />
     <MESSAGE value="pca on train data" />
     <MESSAGE value="correlations on train data" />
@@ -625,7 +631,8 @@
     <MESSAGE value="debugged train-val loop" />
     <MESSAGE value="accelerate nns" />
     <MESSAGE value="debug nns" />
-    <option name="LAST_COMMIT_MESSAGE" value="debug nns" />
+    <MESSAGE value="fixed lstmbayes.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed lstmbayes.py" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -634,11 +641,6 @@
           <url>file://$USER_HOME$/.local/lib/python3.10/site-packages/blitz/modules/lstm_bayesian_layer.py</url>
           <line>243</line>
           <option name="timeStamp" value="78" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py</url>
-          <line>266</line>
-          <option name="timeStamp" value="162" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py</url>
