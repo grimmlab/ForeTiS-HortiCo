@@ -31,7 +31,7 @@ if __name__ == '__main__':
     parser.add_argument("-sd", "--save_dir", type=str, default='docs/source/tutorials/tutorial_data',
                         help="Provide the full path of the directory in which you want to save your results. "
                              "Default is same as data_dir.")
-    parser.add_argument("-data", "--data", type=str, default='offenloch',
+    parser.add_argument("-data", "--data", type=str, default=None,
                         help="specify the dataset that you want to use.")
     parser.add_argument("-con", "--config_type", type=str, default='api',
                         help="specify the config type that you want to use.")
@@ -41,7 +41,7 @@ if __name__ == '__main__':
                         help="specify on which featuresets the models should be optimized: Valid arguments are: " +
                              str(helper_functions.get_list_of_featuresets()) +
                              "If optimize, the featuresets will be optimized by optuna.")
-    parser.add_argument("-mod", "--models", nargs='+', default=['evars-gpr'],
+    parser.add_argument("-mod", "--models", nargs='+', default=['all'],
                         # gprtf xgboost mlp mlpbayes lstm lstmbayes ard arima arimax es averagehistorical averagemoving averageseasonal averageseasonallag bayesridge elasticnet lasso ridge
                         # gprtf xgboost ard arima arimax es averagehistorical averagemoving averageseasonal averageseasonallag bayesridge elasticnet lasso ridge mlp mlpbayes lstm lstmbayes
                         help="specify the models to optimize: 'all' or naming according to source file name. "
@@ -96,7 +96,7 @@ if __name__ == '__main__':
                              "Standard is 3")
 
     # Model and Optimization Params #
-    parser.add_argument("-tr", "--n_trials", type=int, default=10,
+    parser.add_argument("-tr", "--n_trials", type=int, default=200,
                         help="specify the number of trials for the Bayesian optimization (optuna).")
     parser.add_argument("-sf", "--save_final_model", type=bool, default=True,
                         help="specify whether to save the final model to hard drive or not "
