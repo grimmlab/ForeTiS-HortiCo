@@ -4,45 +4,66 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="deleted retailer names">
-      <change afterPath="$PROJECT_DIR$/ForeTiS/model/evars-gpr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ForeTiS.iml" beforeDir="false" />
+    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="renamed to ForeTiS-Hortico">
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_additionalmodels/gpr.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/_additionalmodels/gpr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_additionalmodels/lstmbayes_intel.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/_additionalmodels/lstmbayes_intel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_additionalmodels/mlpbayes_intel.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/_additionalmodels/mlpbayes_intel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_base_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/_base_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_baseline_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/_baseline_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_sklearn_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/_sklearn_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_stat_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/_stat_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_template_sklearn_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/_template_sklearn_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_template_tensorflow_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/_template_tensorflow_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_template_torch_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/_template_torch_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_tensorflow_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/_tensorflow_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_torch_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/_torch_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/ard.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/ard.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/arima.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/arima.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/arimax.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/arimax.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/averagehistorical.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/averagehistorical.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/averagemoving.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/averagemoving.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/averageseasonal.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/averageseasonal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/averageseasonallag.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/averageseasonallag.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/bayesridge.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/bayesridge.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/elasticnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/elasticnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/es.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/es.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/gprtf.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/gprtf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/lasso.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/lasso.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/lstm.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/lstm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/lstmbayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/lstmbayes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/mlp.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/mlp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/mlpbayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/mlpbayes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/ridge.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/ridge.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/model/xgboost.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/model/xgboost.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/optim_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/optim_pipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/optimization/optuna_optim.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/optimization/optuna_optim.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiS/utils/helper_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiS/utils/helper_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/.idea/HorticulturalSalesPrediction_new_2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/.idea/HorticulturalSalesPrediction_new_2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/evaluation/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/evaluation/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/evaluation/eval_metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/evaluation/eval_metrics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_additionalmodels/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_additionalmodels/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_additionalmodels/gpr.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_additionalmodels/gpr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_additionalmodels/lstmbayes_intel.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_additionalmodels/lstmbayes_intel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_additionalmodels/mlpbayes_intel.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_additionalmodels/mlpbayes_intel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_base_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_base_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_baseline_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_baseline_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_model_classes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_model_classes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_model_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_model_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_sklearn_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_sklearn_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_stat_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_stat_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_template_sklearn_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_template_sklearn_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_template_tensorflow_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_template_tensorflow_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_template_torch_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_template_torch_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_tensorflow_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_tensorflow_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/_torch_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/_torch_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/ard.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/ard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/arima.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/arima.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/arimax.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/arimax.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/averagehistorical.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/averagehistorical.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/averagemoving.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/averagemoving.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/averageseasonal.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/averageseasonal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/averageseasonallag.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/averageseasonallag.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/bayesridge.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/bayesridge.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/elasticnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/elasticnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/es.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/es.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/evars-gpr.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/evars-gpr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/gprtf.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/gprtf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/lasso.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/lasso.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/lstm.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/lstm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/lstmbayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/lstmbayes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/mlp.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/mlp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/mlpbayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/mlpbayes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/ridge.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/ridge.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/model/xgboost.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/model/xgboost.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/optim_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/optim_pipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/optimization/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/optimization/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/optimization/optuna_optim.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/optimization/optuna_optim.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/preprocess/DateCalenderFeatures.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/preprocess/DateCalenderFeatures.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/preprocess/FeatureAdder.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/preprocess/FeatureAdder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/preprocess/StatisticalFeatures.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/preprocess/StatisticalFeatures.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/preprocess/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/preprocess/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/preprocess/base_dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/preprocess/raw_data_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/preprocess/raw_data_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/utils/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/utils/check_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/utils/check_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiS/utils/helper_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortico/utils/helper_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/source/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/docs/source/conf.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -77,7 +98,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/josef/Schreibtisch/01_HorticulturalSalesPrediction/ForeTiS",
+    "last_opened_file_path": "/home/josef/Schreibtisch/01_HorticulturalSalesPrediction/ForeTiS-Hortico",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -109,8 +130,41 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="ForeTiS.run" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="ForeTiS" />
+    <configuration default="true" type="DjangoTestsConfigurationType">
+      <module name="ForeTiS-Hortico" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="TARGET" value="" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
+      <module name="ForeTiS-Hortico" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ForeTiSHortico.run" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="ForeTiS-Hortico" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -122,7 +176,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="ForeTiS.run" />
+      <option name="SCRIPT_NAME" value="ForeTiSHortico.run" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -132,7 +186,7 @@
       <method v="2" />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <module name="ForeTiS" />
+      <module name="ForeTiS-Hortico" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -151,6 +205,84 @@
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.FlaskServer">
+      <module name="ForeTiS-Hortico" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="ForeTiS-Hortico" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Docutils task">
+      <module name="ForeTiS-Hortico" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Sphinx task">
+      <module name="ForeTiS-Hortico" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <module name="ForeTiS-Hortico" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
       <method v="2" />
     </configuration>
   </component>
@@ -290,14 +422,8 @@
       <workItem from="1673895235377" duration="27000" />
       <workItem from="1673938056353" duration="1041000" />
       <workItem from="1674211903876" duration="4305000" />
-      <workItem from="1674227228201" duration="1065000" />
-    </task>
-    <task id="LOCAL-00022" summary="readthedocs">
-      <created>1666688706477</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1666688706477</updated>
+      <workItem from="1674227228201" duration="1410000" />
+      <workItem from="1674228664990" duration="3140000" />
     </task>
     <task id="LOCAL-00023" summary="readthedocs">
       <created>1667199357522</created>
@@ -635,7 +761,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673348163756</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="renamed to ForeTiS-Hortico">
+      <created>1674228456884</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1674228456884</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -653,7 +786,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="pca on train data" />
     <MESSAGE value="correlations on train data" />
     <MESSAGE value="adjusted resampling to correlations" />
     <MESSAGE value="turnover in euro" />
@@ -678,7 +810,8 @@
     <MESSAGE value="debug nns" />
     <MESSAGE value="fixed lstmbayes.py" />
     <MESSAGE value="deleted retailer names" />
-    <option name="LAST_COMMIT_MESSAGE" value="deleted retailer names" />
+    <MESSAGE value="renamed to ForeTiS-Hortico" />
+    <option name="LAST_COMMIT_MESSAGE" value="renamed to ForeTiS-Hortico" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -689,14 +822,19 @@
           <option name="timeStamp" value="78" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ForeTiS/preprocess/base_dataset.py</url>
+          <url>file://$PROJECT_DIR$/ForeTiSHortico/preprocess/base_dataset.py</url>
           <line>447</line>
           <option name="timeStamp" value="168" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ForeTiS/model/evars-gpr.py</url>
+          <url>file://$PROJECT_DIR$/ForeTiSHortico/model/evars-gpr.py</url>
           <line>191</line>
           <option name="timeStamp" value="171" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiSHortico/utils/helper_functions.py</url>
+          <line>55</line>
+          <option name="timeStamp" value="173" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -711,5 +849,6 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ForeTiS$ForeTiS_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1674213355837" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/HorticulturalSalesPrediction$HorticulturalSalesPrediction_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1666270498365" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ForeTiS_Hortico$ForeTiS_run.coverage" NAME="ForeTiSHortico.run Coverage Results" MODIFIED="1674232095782" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
