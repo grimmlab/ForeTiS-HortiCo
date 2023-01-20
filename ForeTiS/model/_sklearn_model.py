@@ -7,20 +7,20 @@ import sklearn
 
 class SklearnModel(_base_model.BaseModel, abc.ABC):
     """
-    Parent class based on :obj:`~ForeTiS.model._base_model.BaseModel` for all models with a sklearn-like API to share
-    functionalities. See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+    Parent class based on :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for all models with a sklearn-like API to share
+    functionalities. See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information.
 
     **Attributes**
 
         *Inherited attributes*
 
-        See :obj:`~ForeTiS.model._base_model.BaseModel`
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel`
     """
 
     def retrain(self, retrain: pd.DataFrame):
         """
         Implementation of the retraining for models with sklearn-like API.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information.
         """
         x_train = retrain.drop(self.target_column, axis=1).to_numpy()
         y_train = retrain[self.target_column].to_numpy()
@@ -47,7 +47,7 @@ class SklearnModel(_base_model.BaseModel, abc.ABC):
     def update(self, update: pd.DataFrame, period: int):
         """
         Implementation of the retraining for models with sklearn-like API.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information
         """
         x_train = update.drop(self.target_column, axis=1).to_numpy()
         y_train = update[self.target_column].to_numpy()
@@ -66,7 +66,7 @@ class SklearnModel(_base_model.BaseModel, abc.ABC):
     def predict(self, X_in: pd.DataFrame) -> np.array:
         """
         Implementation of a prediction based on input features for models with sklearn-like API.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information.
         """
         X_in = X_in.drop(self.target_column, axis=1).to_numpy()
         if hasattr(self, 'standardize_X') and self.standardize_X:
@@ -90,7 +90,7 @@ class SklearnModel(_base_model.BaseModel, abc.ABC):
     def train_val_loop(self, train: pd.DataFrame, val: pd.DataFrame) -> np.array:
         """
         Implementation of a train and validation loop for models with sklearn-like API.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information.
         """
         # train model
         self.prediction = None

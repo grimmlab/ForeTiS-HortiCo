@@ -10,7 +10,7 @@ class Mlp(_torch_model.TorchModel):
     """
     Implementation of a class for a bayesian feedforward Multilayer Perceptron (MLP).
 
-    See :obj:`~ForeTiS.model._base_model.BaseModel` and :obj:`~ForeTiS.model._torch_model.TorchModel` for more information on the attributes.
+    See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` and :obj:`~ForeTiS-Hortico.model._torch_model.TorchModel` for more information on the attributes.
     """
 
     def define_model(self) -> torch.nn.Sequential:
@@ -63,9 +63,9 @@ class Mlp(_torch_model.TorchModel):
 
     def define_hyperparams_to_tune(self) -> dict:
         """
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information on the format.
 
-        See :obj:`~ForeTiS.model._torch_model.TorchModel` for more information on hyperparameters common for all torch models.
+        See :obj:`~ForeTiS-Hortico.model._torch_model.TorchModel` for more information on hyperparameters common for all torch models.
         """
         return {
             'n_initial_units_factor': {
@@ -129,7 +129,7 @@ class Mlp(_torch_model.TorchModel):
     def predict(self, X_in: pd.DataFrame) -> np.array:
         """
         Implementation of a prediction based on input features for PyTorch models.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information
         """
         dataloader = self.get_dataloader(X=X_in.drop(labels=[self.target_column], axis=1), y=X_in[self.target_column],
                                          only_transform=True, predict=True)

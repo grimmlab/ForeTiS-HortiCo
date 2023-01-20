@@ -9,9 +9,9 @@ class BaseModel(abc.ABC):
     """
     BaseModel parent class for all models that can be used within the framework.
 
-    Every model must be based on :obj:`~ForeTiS.model._base_model.BaseModel` directly or
-    BaseModel's child classes, e.g. :obj:`~ForeTiS.model._sklearn_model.SklearnModel` or
-    :obj:`~ForeTiS.model._torch_model.TorchModel`
+    Every model must be based on :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` directly or
+    BaseModel's child classes, e.g. :obj:`~ForeTiS-Hortico.model._sklearn_model.SklearnModel` or
+    :obj:`~ForeTiS-Hortico.model._torch_model.TorchModel`
 
     ** Attributes **
 
@@ -20,7 +20,7 @@ class BaseModel(abc.ABC):
         - optuna_trial (*optuna.trial.Trial*): trial of optuna for optimization
         - datasets (*list<pd.DataFrame>*): all datasets that are available
         - n_outputs (*int*): number of outputs of the prediction model
-        - all_hyperparams (*dict*): dictionary with all hyperparameters with related info that can be tuned (structure see :obj:`~ForeTiS.model._base_model.BaseModel.define_hyperparams_to_tune`)
+        - all_hyperparams (*dict*): dictionary with all hyperparameters with related info that can be tuned (structure see :obj:`~ForeTiS-Hortico.model._base_model.BaseModel.define_hyperparams_to_tune`)
         - dataset (*pd.DataFrame*): the dataset for this optimization trial
         - model: model object
 
@@ -171,7 +171,7 @@ class BaseModel(abc.ABC):
 
         If you want to add a parameter to your model / in your pipeline to be optimized, you need to call this method
 
-        :param hyperparam_name: name of the hyperparameter to be tuned (see :obj:`~ForeTiS.model._base_model.BaseModel.define_hyperparams_to_tune`)
+        :param hyperparam_name: name of the hyperparameter to be tuned (see :obj:`~ForeTiS-Hortico.model._base_model.BaseModel.define_hyperparams_to_tune`)
 
         :return: suggested value
         """
@@ -260,7 +260,7 @@ class BaseModel(abc.ABC):
     def save_model(self, path: str, filename: str):
         """
         Persist the whole model object on a hard drive
-        (can be loaded with :obj:`~ForeTiS.model._model_functions.load_model`)
+        (can be loaded with :obj:`~ForeTiS-Hortico.model._model_functions.load_model`)
 
         :param path: path where the model will be saved
         :param filename: filename of the model

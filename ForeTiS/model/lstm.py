@@ -10,7 +10,7 @@ class LSTM(_torch_model.TorchModel):
     """
     Implementation of a class for a Long Short-Term Memory (LSTM) network.
 
-    See :obj:`~ForeTiS.model._base_model.BaseModel` and :obj:`~ForeTiS.model._torch_model.TorchModel` for more information on the attributes.
+    See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` and :obj:`~ForeTiS-Hortico.model._torch_model.TorchModel` for more information on the attributes.
     """
 
     def define_model(self) -> torch.nn.Sequential:
@@ -44,9 +44,9 @@ class LSTM(_torch_model.TorchModel):
 
     def define_hyperparams_to_tune(self) -> dict:
         """
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information on the format.
 
-        See :obj:`~ForeTiS.model._torch_model.TorchModel` for more information on hyperparameters common for all torch models.
+        See :obj:`~ForeTiS-Hortico.model._torch_model.TorchModel` for more information on hyperparameters common for all torch models.
         """
         return {
             'lstm_hidden_dim': {
@@ -79,7 +79,7 @@ class LSTM(_torch_model.TorchModel):
     def predict(self, X_in: pd.DataFrame) -> np.array:
         """
         Implementation of a prediction based on input features for PyTorch models.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information
         """
         self.model.eval()
         predictions = None

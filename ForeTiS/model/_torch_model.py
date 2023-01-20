@@ -13,14 +13,14 @@ from . import _base_model
 
 class TorchModel(_base_model.BaseModel, abc.ABC):
     """
-    Parent class based on :obj:`~ForeTiS.model._base_model.BaseModel` for all PyTorch models to share functionalities.
-    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+    Parent class based on :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for all PyTorch models to share functionalities.
+    See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information.
 
     *Attributes*
 
         *Inherited attributes*
 
-        See :obj:`~ForeTiS.model._base_model.BaseModel`.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel`.
 
         *Additional attributes*
 
@@ -66,7 +66,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
     def train_val_loop(self, train: pd.DataFrame, val: pd.DataFrame) -> np.array:
         """
         Implementation of a train and validation loop for  PyTorch models.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information
         """
         self.prediction = None
         train_loader, val_loader, val = self.train_val_loader(train=train, val=val)
@@ -152,7 +152,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
     def retrain(self, retrain: pd.DataFrame):
         """
         Implementation of the retraining for PyTorch models.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information
         """
         retrain_loader = self.get_dataloader(X=retrain.drop(labels=[self.target_column], axis=1),
                                              y=retrain[self.target_column], only_transform=False)
@@ -177,7 +177,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
     def update(self, update: pd.DataFrame, period: int):
         """
         Implementation of the retraining for PyTorch models.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information
         """
         update_loader = self.get_dataloader(X=update.drop(labels=[self.target_column], axis=1),
                                             y=update[self.target_column], only_transform=False)
@@ -195,7 +195,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
     def predict(self, X_in: pd.DataFrame) -> np.array:
         """
         Implementation of a prediction based on input features for PyTorch models.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information
         """
         dataloader = self.get_dataloader(X=X_in.drop(labels=[self.target_column], axis=1), y=X_in[self.target_column],
                                          only_transform=True, predict=True)
@@ -267,7 +267,7 @@ class TorchModel(_base_model.BaseModel, abc.ABC):
         """
         Add hyperparameters that are common for PyTorch models.
         Do not need to be included in optimization for every child model.
-        Also See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
+        Also See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information
         """
         return {
             'dropout': {

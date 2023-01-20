@@ -32,8 +32,8 @@ def get_list_of_implemented_models() -> list:
         model_src_files = os.listdir('../model')
     elif os.path.exists('model'):
         model_src_files = os.listdir('model')
-    elif os.path.exists('ForeTiS/model'):
-        model_src_files = os.listdir('ForeTiS/model')
+    elif os.path.exists('ForeTiS-Hortico/model'):
+        model_src_files = os.listdir('ForeTiS-Hortico/model')
     else:
         model_src_files = [model_file + '.py' for model_file in ForeTiS.model.__all__]
     model_src_files = [file for file in model_src_files if file[0] != '_']
@@ -50,8 +50,8 @@ def get_mapping_name_to_class() -> dict:
         files = os.listdir('../model')
     elif os.path.exists('model'):
         files = os.listdir('model')
-    elif os.path.exists('ForeTiS/model'):
-        files = os.listdir('ForeTiS/model')
+    elif os.path.exists('ForeTiS-Hortico/model'):
+        files = os.listdir('ForeTiS-Hortico/model')
     else:
         files = [model_file + '.py' for model_file in ForeTiS.model.__all__]
     modules_mapped = {}
@@ -61,7 +61,7 @@ def get_mapping_name_to_class() -> dict:
                 continue
 
             file_name = file[:-3]
-            module_name = 'ForeTiS.model.' + file_name
+            module_name = 'ForeTiS-Hortico.model.' + file_name
             for name, cls in inspect.getmembers(importlib.import_module(module_name), inspect.isclass):
                 if cls.__module__ == module_name:
                     modules_mapped[file_name] = cls

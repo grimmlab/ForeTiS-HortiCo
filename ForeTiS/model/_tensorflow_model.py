@@ -2,15 +2,19 @@ from . import _base_model
 import abc
 import pandas as pd
 import numpy as np
-import optuna
 import sklearn
 import tensorflow as tf
+import itertools
+import optuna
+import gpflow
+
+from gpflow.kernels import Matern52, White, RationalQuadratic, Periodic, SquaredExponential, Polynomial
 
 
 class TensorflowModel(_base_model.BaseModel, abc.ABC):
     """
-    Parent class based on :obj:`~ForeTiS.model._base_model.BaseModel` for all TensorFlow models to share functionalities.
-    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+    Parent class based on :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for all TensorFlow models to share functionalities.
+    See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information.
 
     **Attributes**
 
@@ -23,20 +27,47 @@ class TensorflowModel(_base_model.BaseModel, abc.ABC):
         - x_scaler (*sklearn.preprocessing.StandardScaler*): Standard scaler for the x data
         - y_scaler (*sklearn.preprocessing.StandardScaler*): Standard scaler for the y data
 
-    :param optuna_trial: Trial of optuna for optimization
-    :param datasets: all datasets that are available
-    :param featureset: on which featuresets the models should be optimized
-    :param target_column: the target column for the prediction
     """
-    def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str, target_column: str = None,
-                 pca_transform: bool = None):
+
+    def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str, pca_transform: bool = None,
+                 target_column: str = None):
+        self.conf = True
         super().__init__(optuna_trial=optuna_trial, datasets=datasets, featureset=featureset,
                          target_column=target_column, pca_transform=pca_transform)
+
+
+    def define_model(self) -> gpflow.models.GPR:
+        """
+        Definition of the actual prediction model.
+
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information.
+        """
+        self.standardize_X = self.suggest_hyperparam_to_optuna('standardize_X')
+        self.standardize_y = self.suggest_hyperparam_to_optuna('standardize_y')
+        if self.standardize_X:
+            self.x_scaler = sklearn.preprocessing.StandardScaler()
+        if self.standardize_y:
+            self.y_scaler = sklearn.preprocessing.StandardScaler()
+
+        optimizer_dict = {'Scipy': gpflow.optimizers.Scipy()}
+        optimizer_key = self.suggest_hyperparam_to_optuna('optimizer')
+        self.optimizer = optimizer_dict[optimizer_key]
+
+        mean_function_dict = {'Constant': gpflow.mean_functions.Constant(),
+                              None: None}
+        mean_function_key = self.suggest_hyperparam_to_optuna('mean_function')
+        self.mean_function = mean_function_dict[mean_function_key]
+        kernel_key = self.suggest_hyperparam_to_optuna('kernel')
+        self.kernel = self.kernel_dict[kernel_key]
+        self.noise_variance = self.suggest_hyperparam_to_optuna('noise_variance')
+
+        return gpflow.models.GPR(data=(np.zeros((5, 1)), np.zeros((5, 1))), kernel=self.kernel,
+                                 mean_function=self.mean_function, noise_variance=self.noise_variance)
 
     def retrain(self, retrain: pd.DataFrame):
         """
         Implementation of the retraining for models with sklearn-like API.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information
         """
         x_train = retrain.drop(self.target_column, axis=1).values.reshape(-1, retrain.shape[1] - 1)
         y_train = retrain[self.target_column].values.reshape(-1, 1)
@@ -64,7 +95,7 @@ class TensorflowModel(_base_model.BaseModel, abc.ABC):
     def update(self, update: pd.DataFrame, period: int):
         """
         Implementation of the retraining for models with sklearn-like API.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information
         """
         x_train = update.drop(self.target_column, axis=1).values.reshape(-1, update.shape[1] - 1)
         y_train = update[self.target_column].values.reshape(-1, 1)
@@ -87,7 +118,7 @@ class TensorflowModel(_base_model.BaseModel, abc.ABC):
     def predict(self, X_in: pd.DataFrame) -> np.array:
         """
         Implementation of a prediction based on input features for models with sklearn-like API.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information
         """
         X_in = X_in.drop(self.target_column, axis=1).values.reshape(-1, X_in.shape[1] - 1)
         if hasattr(self, 'standardize_X') and self.standardize_X:
@@ -103,10 +134,86 @@ class TensorflowModel(_base_model.BaseModel, abc.ABC):
     def train_val_loop(self, train: pd.DataFrame, val: pd.DataFrame) -> np.array:
         """
         Implementation of a train and validation loop for models with sklearn-like API.
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information
         """
         # train model
         self.prediction = None
         self.retrain(retrain=train)
         # validate model
         return self.predict(X_in=val)
+
+    def extend_kernel_combinations(self):
+        """
+        Function extending kernels list with combinations based on base_kernels
+        """
+        kernels = []
+        base_kernels = ['SquaredExponential', 'Matern52', 'WhiteKernel', 'RationalQuadratic', 'Polynomial',
+                        'PeriodicSquaredExponential', 'PeriodicMatern52', 'PeriodicRationalQuadratic']
+        kernel_dict = {
+            'SquaredExponential': SquaredExponential(),
+            'WhiteKernel': White(),
+            'Matern52': Matern52(),
+            'RationalQuadratic': RationalQuadratic(),
+            'Polynomial': Polynomial(),
+            'PeriodicSquaredExponential': Periodic(SquaredExponential(), period=52),
+            'PeriodicMatern52': Periodic(Matern52(), period=52),
+            'PeriodicRationalQuadratic': Periodic(RationalQuadratic(), period=52)
+        }
+        kernels.extend(base_kernels)
+        for el in list(itertools.combinations(*[base_kernels], r=2)):
+            kernels.append(el[0] + '+' + el[1])
+            kernel_dict[el[0] + '+' + el[1]] = kernel_dict[el[0]] + kernel_dict[el[1]]
+            kernels.append(el[0] + '*' + el[1])
+            kernel_dict[el[0] + '*' + el[1]] = kernel_dict[el[0]] * kernel_dict[el[1]]
+        for el in list(itertools.combinations(*[base_kernels], r=3)):
+            kernels.append(el[0] + '+' + el[1] + '+' + el[2])
+            kernel_dict[el[0] + '+' + el[1] + '+' + el[2]] = kernel_dict[el[0]] + kernel_dict[el[1]] + kernel_dict[
+                el[2]]
+            kernels.append(el[0] + '*' + el[1] + '*' + el[2])
+            kernel_dict[el[0] + '*' + el[1] + '*' + el[2]] = kernel_dict[el[0]] * kernel_dict[el[1]] * kernel_dict[
+                el[2]]
+            kernels.append(el[0] + '*' + el[1] + '+' + el[2])
+            kernel_dict[el[0] + '*' + el[1] + '+' + el[2]] = kernel_dict[el[0]] * kernel_dict[el[1]] + kernel_dict[
+                el[2]]
+            kernels.append(el[0] + '+' + el[1] + '*' + el[2])
+            kernel_dict[el[0] + '+' + el[1] + '*' + el[2]] = kernel_dict[el[0]] + kernel_dict[el[1]] * kernel_dict[
+                el[2]]
+            kernels.append(el[0] + '*' + el[2] + '+' + el[1])
+            kernel_dict[el[0] + '*' + el[2] + '+' + el[1]] = kernel_dict[el[0]] * kernel_dict[el[2]] + kernel_dict[
+                el[1]]
+        return kernels, kernel_dict
+
+    def define_hyperparams_to_tune(self) -> dict:
+        """
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information on the format.
+        """
+        kernels, self.kernel_dict = self.extend_kernel_combinations()
+        return {
+            'kernel': {
+                'datatype': 'categorical',
+                'list_of_values': kernels,
+            },
+            'noise_variance': {
+                'datatype': 'float',
+                'lower_bound': 0.01,
+                'upper_bound': 100,
+                'log': True
+            },
+            'optimizer': {
+                'datatype': 'categorical',
+                'list_of_values': ['Scipy']
+            },
+            'mean_function': {
+                'datatype': 'categorical',
+                'list_of_values': [None, 'Constant']
+            },
+            'standardize_X': {
+                'datatype': 'categorical',
+                'list_of_values': [True, False]
+            },
+            'standardize_y': {
+                'datatype': 'categorical',
+                'list_of_values': [True, False]
+            }
+        }
+

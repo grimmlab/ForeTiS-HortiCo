@@ -6,14 +6,14 @@ from . import _stat_model
 class Es(_stat_model.StatModel):
     """
     Implementation of a class for an Exponential Smoothing (ES) model.
-    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the attributes.
+    See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information on the attributes.
     """
 
     def define_model(self) -> statsmodels.tsa.api.ExponentialSmoothing:
         """
         Definition of the actual prediction model.
 
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information.
         """
         self.remove_bias = self.suggest_hyperparam_to_optuna('remove_bias')
         self.use_brute = self.suggest_hyperparam_to_optuna('use_brute')
@@ -38,7 +38,7 @@ class Es(_stat_model.StatModel):
 
     def define_hyperparams_to_tune(self) -> dict:
         """
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information on the format.
         """
         return {
             'trend': {

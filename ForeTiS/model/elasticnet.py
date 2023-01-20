@@ -7,14 +7,14 @@ class ElasticNet(_sklearn_model.SklearnModel):
     """
     Implementation of a class for ElasticNet.
 
-    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the attributes.
+    See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information on the attributes.
     """
 
     def define_model(self) -> sklearn.linear_model.ElasticNet:
         """
         Definition of the actual prediction model.
 
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information.
         """
         # all hyperparameters defined for XGBoost are suggested for optimization
         self.standardize_X = self.suggest_hyperparam_to_optuna('standardize_X')
@@ -37,7 +37,7 @@ class ElasticNet(_sklearn_model.SklearnModel):
 
     def define_hyperparams_to_tune(self) -> dict:
         """
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information on the format.
         """
         return {
             'alpha': {

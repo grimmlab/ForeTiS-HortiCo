@@ -6,14 +6,14 @@ from . import _stat_model
 class Arima(_stat_model.StatModel):
     """
     Implementation of a class for a (Seasonal) Autoregressive Integrated Moving Average ((S)ARIMA) model.
-    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the attributes.
+    See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information on the attributes.
     """
 
     def define_model(self) -> pmdarima.ARIMA:
         """
         Definition of the actual prediction model.
 
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information.
         """
         self.conf = True
 
@@ -37,7 +37,7 @@ class Arima(_stat_model.StatModel):
 
     def define_hyperparams_to_tune(self) -> dict:
         """
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information on the format.
         """
         return {
             'p': {

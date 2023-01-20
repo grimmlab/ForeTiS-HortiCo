@@ -26,7 +26,7 @@ class OptunaOptim:
     ** Attributes **
 
         - current_model_name (*str*): name of the current model according to naming of .py alkle in package model
-        - dataset (*obj:`~ForeTiS.preprocess.base_dataset.Dataset*): dataset to use for optimization run
+        - dataset (*obj:`~ForeTiS-Hortico.preprocess.base_dataset.Dataset*): dataset to use for optimization run
         - base_path (*str*): base_path for save_path
         - save_path (*str*): path for model and results storing
         - study (*optuna.study.Study*): optuna study for optimization run
@@ -54,7 +54,9 @@ class OptunaOptim:
                  n_trials: int, save_final_model: bool, batch_size: int, n_epochs: int, current_model_name: str,
                  datasets: base_dataset.Dataset, periodical_refit_cycles: list, refit_drops: int, refit_window: int,
                  target_column: str, intermediate_results_interval: int = 50, pca_transform: bool = False,
-                 config: configparser.ConfigParser = None):
+                 config: configparser.ConfigParser = None, scale_thr: float = None, scale_seasons: int = None,
+                 scale_window_factor: float = None, cf_r: float = None, cf_order: int = None, cf_smooth: int = None,
+                 cf_thr_perc: int = None, scale_window_minimum: int = None, max_samples_factor: int = None):
         self.current_model_name = current_model_name
         self.datasets = datasets
         self.featureset = featureset
@@ -123,6 +125,18 @@ class OptunaOptim:
                 additional_attributes_dict['batch_size'] = self.user_input_params["batch_size"]
                 additional_attributes_dict['n_epochs'] = self.user_input_params["n_epochs"]
                 early_stopping_points = []  # log early stopping point at each fold for torch models
+        if self.current_model_name == 'evars-gpr':
+            additional_attributes_dict['scale_thr'] = self.user_input_params["scale_thr"]
+            additional_attributes_dict['scale_seasons'] = self.user_input_params["scale_seasons"]
+            additional_attributes_dict['scale_window_factor'] = self.user_input_params["scale_window_factor"]
+            additional_attributes_dict['scale_window_minimum'] = self.user_input_params["scale_window_minimum"]
+            additional_attributes_dict['max_samples_factor'] = self.user_input_params["max_samples_factor"]
+            additional_attributes_dict['cf_r'] = self.user_input_params["cf_r"]
+            additional_attributes_dict['cf_order'] = self.user_input_params["cf_order"]
+            additional_attributes_dict['cf_smooth'] = self.user_input_params["cf_smooth"]
+            additional_attributes_dict['cf_thr_perc'] = self.user_input_params["cf_thr_perc"]
+            additional_attributes_dict['scale_window_minimum'] = self.user_input_params["scale_window_minimum"]
+            additional_attributes_dict['max_samples_factor'] = self.user_input_params["max_samples_factor"]
         try:
             model: _base_model.BaseModel = helper_functions.get_mapping_name_to_class()[self.current_model_name](
                  target_column=self.target_column, datasets=self.datasets,  featureset=self.featureset,

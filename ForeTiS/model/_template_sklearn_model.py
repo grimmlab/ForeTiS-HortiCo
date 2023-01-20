@@ -6,15 +6,15 @@ from . import _sklearn_model
 
 class TemplateSklearnModel(_sklearn_model.SklearnModel):
     """
-    Template file for a prediction model based on :obj:`~ForeTiS.model._sklearn_model.SklearnModel`
+    Template file for a prediction model based on :obj:`~ForeTiS-Hortico.model._sklearn_model.SklearnModel`
 
-    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the attributes.
+    See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information on the attributes.
 
     **Steps you have to do to add your own model:**
 
         1. Copy this template file and rename it according to your model (will be the name to call it later on on the command line)
 
-        2. Rename the class and add it to *ForeTiS.model.__init__.py*
+        2. Rename the class and add it to *ForeTiS-Hortico.model.__init__.py*
 
         3. Adjust the class attributes if necessary
 
@@ -33,7 +33,7 @@ class TemplateSklearnModel(_sklearn_model.SklearnModel):
         the value of a hyperparameter that should be optimized.
         The function needs to return the model object.
 
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information.
         """
         ...
 
@@ -42,7 +42,7 @@ class TemplateSklearnModel(_sklearn_model.SklearnModel):
         Define the hyperparameters and ranges you want to optimize.
         Caution: they will only be optimized if you add them via *self.suggest_hyperparam_to_optuna(PARAM_NAME)* in *define_model()*
 
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format and options.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information on the format and options.
         """
         return {
             'example_param_1': {

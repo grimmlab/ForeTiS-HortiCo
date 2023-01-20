@@ -7,14 +7,14 @@ class XgBoost(_sklearn_model.SklearnModel):
     """
     Implementation of a class for XGBoost.
 
-    See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the attributes.
+    See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information on the attributes.
     """
 
     def define_model(self) -> xgboost.XGBModel:
         """
         Definition of the actual prediction model.
 
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information.
         """
         # all hyperparameters defined for XGBoost are suggested for optimization
         params = self.suggest_all_hyperparams_to_optuna()
@@ -27,7 +27,7 @@ class XgBoost(_sklearn_model.SklearnModel):
 
     def define_hyperparams_to_tune(self) -> dict:
         """
-        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information on the format.
+        See :obj:`~ForeTiS-Hortico.model._base_model.BaseModel` for more information on the format.
         """
         return {
             'n_estimators': {

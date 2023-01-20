@@ -13,7 +13,9 @@ def run(data_dir: str, save_dir: str = None, featuresets: list = None, datasplit
         models: list = None, target_column: str = None, n_trials: int = 100, pca_transform: bool =False,
         save_final_model: bool = False, periodical_refit_cycles: list = None, refit_drops: int = 0, data: str = None,
         config_type: str = None, refit_window: int = 5, intermediate_results_interval: int = None, batch_size: int = 32,
-        n_epochs: int = None):
+        n_epochs: int = None, scale_thr: float = None, scale_seasons: int = None, scale_window_factor: float = None,
+        cf_r: float = None, cf_order: int = None, cf_smooth: int = None, cf_thr_perc: int = None,
+        scale_window_minimum: int = None, max_samples_factor: int = None):
 
     # Optimization Pipeline #
     helper_functions.set_all_seeds()
@@ -42,7 +44,12 @@ def run(data_dir: str, save_dir: str = None, featuresets: list = None, datasplit
                                                   refit_drops=refit_drops, refit_window=refit_window,
                                                   intermediate_results_interval=intermediate_results_interval,
                                                   batch_size=batch_size, n_epochs=n_epochs, datasets=datasets,
-                                                  current_model_name=current_model_name, config=config)
+                                                  current_model_name=current_model_name, config=config,
+                                                  scale_thr=scale_thr, scale_seasons=scale_seasons,
+                                                  scale_window_factor=scale_window_factor, cf_r=cf_r, cf_order=cf_order,
+                                                  cf_smooth=cf_smooth, cf_thr_perc=cf_thr_perc,
+                                                  scale_window_minimum=scale_window_minimum,
+                                                  max_samples_factor=max_samples_factor)
             print('### Starting Optuna Optimization for model ' + current_model_name + ' and featureset ' + featureset
                   + ' ###')
             overall_results = optuna_run.run_optuna_optimization
