@@ -26,10 +26,8 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                          target_column=target_column, pca_transform=pca_transform)
         self.seasonal_periods = self.datasets.seasonal_periods
         self.time_format = self.dataset.index.freqstr[0]
-        self.__scale_window = max(scale_window_minimum,
-                                int(scale_window_factor * self.seasonal_periods))
+        self.scale_window = max(scale_window_minimum, int(scale_window_factor * self.seasonal_periods))
         self.__max_samples = max_samples_factor * self.seasonal_periods
-        self.__y_deseas = self.dataset[self.target_column].diff(self.seasonal_periods).dropna().values
         self.__cf = changefinder.ChangeFinder(r=cf_r, order=cf_order, smooth=cf_smooth)
 
     def get_augmented_data(self):
@@ -39,7 +37,7 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
         :return: augmented dataset
         """
         samples = \
-            self.featureset.copy()[:self.change_point_index + pd.Timedelta(1, unit=self.time_format)].reset_index(drop=True)
+            self.dataset.copy()[:self.change_point_index + pd.Timedelta(1, unit=self.time_format)].reset_index(drop=True)
         samples = samples.iloc[-self.__max_samples:] if (
                     self.__max_samples is not None and samples.shape[0] > self.__max_samples) else samples
         samples_scaled = samples.copy()
@@ -52,12 +50,15 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
         Implementation of the retraining for models with sklearn-like API.
         See :obj:`~ForeTiSHortico-Hortico.model._base_model.BaseModel` for more information
         """
-        self.train_ind = retrain.shape[0]
-        y_train_deseas = self.__y_deseas[:self.train_ind - self.seasonal_periods]
-        self.scores = []
-        for i in y_train_deseas:
-            self.scores.append(self.__cf.update(i))
-        self.cf_threshold = np.percentile(self.scores, self.__cf_thr_perc)
+        if not hasattr(self, 'train_ind'):
+            y_deseas = self.dataset[self.target_column].diff(self.seasonal_periods).dropna().values
+            self.train_ind = retrain.shape[0]
+            y_train_deseas = y_deseas[:self.train_ind - self.seasonal_periods]
+            self.scores = []
+            for i in y_train_deseas:
+                self.scores.append(self.__cf.update(i))
+            self.cf_threshold = np.percentile(self.scores, self.__cf_thr_perc)
+
         x_train = retrain.drop(self.target_column, axis=1).values.reshape(-1, retrain.shape[1] - 1)
         y_train = retrain[self.target_column].values.reshape(-1, 1)
         if hasattr(self, 'standardize_X') and self.standardize_X:
@@ -87,10 +88,6 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
         See :obj:`~ForeTiSHortico-Hortico.model._base_model.BaseModel` for more information
         """
         self.train_ind = update.shape[0]
-        y_train_deseas = self.__y_deseas[:self.train_ind - self.seasonal_periods]
-        self.scores = []
-        for i in y_train_deseas:
-            self.scores.append(self.__cf.update(i))
         self.cf_threshold = np.percentile(self.scores, self.__cf_thr_perc)
         x_train = update.drop(self.target_column, axis=1).values.reshape(-1, update.shape[1] - 1)
         y_train = update[self.target_column].values.reshape(-1, 1)
@@ -141,10 +138,10 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                 confs = np.concatenate((confs, conf.numpy()))
             change_point_detected = False
             try:
-                self.__y_deseas = target - self.dataset.loc[index - pd.Timedelta(self.seasonal_periods, unit=self.time_format)][self.target_column]
+                y_deseas = target - self.dataset.loc[index - pd.Timedelta(self.seasonal_periods, unit=self.time_format)][self.target_column]
             except (KeyError):
-                self.__y_deseas = 0
-            score = self.__cf.update(self.__y_deseas)
+                y_deseas = 0
+            score = self.__cf.update(y_deseas)
             self.scores.append(score)
             if score >= self.cf_threshold:
                 change_point_detected = True
@@ -157,20 +154,20 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                     mean_now = \
                         np.mean(
                             self.dataset[
-                            self.change_point_index - pd.Timedelta(self.__scale_window + 1, unit=self.time_format):
+                            self.change_point_index - pd.Timedelta(self.scale_window + 1, unit=self.time_format):
                             self.change_point_index + pd.Timedelta(1, unit=self.time_format)][self.target_column])
                     mean_prev_seas_1 = \
                         np.mean(
                             self.dataset[
                             self.change_point_index -
-                            pd.Timedelta(self.seasonal_periods - self.__scale_window + 1, unit=self.time_format):
+                            pd.Timedelta(self.seasonal_periods + self.scale_window + 1, unit=self.time_format):
                             self.change_point_index -
                             pd.Timedelta(self.seasonal_periods + 1, unit=self.time_format)][self.target_column])
                     mean_prev_seas_2 = \
                         np.mean(
                             self.dataset[
                             self.change_point_index -
-                            pd.Timedelta(2 * self.seasonal_periods - self.__scale_window + 1, unit=self.time_format):
+                            pd.Timedelta(2 * self.seasonal_periods + self.scale_window + 1, unit=self.time_format):
                             self.change_point_index -
                             pd.Timedelta(2 * self.seasonal_periods + 1, unit=self.time_format)][self.target_column])
                     if self.__scale_seasons == 1:
