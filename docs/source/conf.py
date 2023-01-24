@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 
 # -- Project information
 
-project = 'ForeTiSHortico-Hortico'
+project = 'ForeTiSHortiCo-Hortico'
 copyright = '2022, GrimmLab @ TUM Campus Straubing (https://bit.cs.tum.de/)'
 author = 'Josef Eiglsperger, Florian Haselbeck, Dominik G. Grimm'
 
