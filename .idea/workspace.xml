@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="renamed to HortiCo" />
+    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="renamed to HortiCo">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -256,13 +258,7 @@
       <workItem from="1674565930890" duration="1469000" />
       <workItem from="1674575921563" duration="17000" />
       <workItem from="1674577955963" duration="97000" />
-    </task>
-    <task id="LOCAL-00029" summary="debug short datasets">
-      <created>1667394710347</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1667394710347</updated>
+      <workItem from="1674578259561" duration="647000" />
     </task>
     <task id="LOCAL-00030" summary="debug short datasets">
       <created>1667468942352</created>
@@ -600,7 +596,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674577985866</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <task id="LOCAL-00078" summary="renamed to HortiCo">
+      <created>1674578288006</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1674578288006</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
