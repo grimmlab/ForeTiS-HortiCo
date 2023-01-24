@@ -4,67 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="checked evars-gpr">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="renamed to HortiCo">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/.idea/HorticulturalSalesPrediction_new_2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/.idea/HorticulturalSalesPrediction_new_2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/evaluation/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/evaluation/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/evaluation/eval_metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/evaluation/eval_metrics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_additionalmodels/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_additionalmodels/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_additionalmodels/gpr.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_additionalmodels/gpr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_additionalmodels/lstmbayes_intel.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_additionalmodels/lstmbayes_intel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_additionalmodels/mlpbayes_intel.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_additionalmodels/mlpbayes_intel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_base_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_base_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_baseline_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_baseline_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_model_classes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_model_classes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_model_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_model_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_sklearn_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_sklearn_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_stat_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_stat_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_template_sklearn_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_template_sklearn_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_template_tensorflow_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_template_tensorflow_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_template_torch_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_template_torch_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_tensorflow_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_tensorflow_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/_torch_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_torch_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/ard.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/ard.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/arima.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/arima.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/arimax.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/arimax.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/averagehistorical.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/averagehistorical.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/averagemoving.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/averagemoving.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/averageseasonal.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/averageseasonal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/averageseasonallag.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/averageseasonallag.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/bayesridge.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/bayesridge.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/elasticnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/elasticnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/es.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/es.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/evars-gpr.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/gprtf.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/gprtf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/lasso.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/lasso.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/lstm.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/lstm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/lstmbayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/lstmbayes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/mlp.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/mlp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/mlpbayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/mlpbayes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/ridge.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/ridge.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/model/xgboost.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/xgboost.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/optim_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/optim_pipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/optimization/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/optimization/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/optimization/optuna_optim.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/optimization/optuna_optim.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/preprocess/DateCalenderFeatures.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/preprocess/DateCalenderFeatures.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/preprocess/FeatureAdder.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/preprocess/FeatureAdder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/preprocess/StatisticalFeatures.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/preprocess/StatisticalFeatures.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/preprocess/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/preprocess/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/preprocess/base_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/preprocess/base_dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/preprocess/raw_data_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/preprocess/raw_data_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/utils/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/utils/check_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/utils/check_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortico/utils/helper_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/utils/helper_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/docs/source/conf.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,26 +34,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/josef/Schreibtisch/01_HorticulturalSalesPrediction/ForeTiS-Hortico&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PythonContentEntriesConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/josef/Schreibtisch/01_HorticulturalSalesPrediction/ForeTiS-HortiCo",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PythonContentEntriesConfigurable",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;Python&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Python"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ForeTiS/model" />
@@ -314,13 +255,7 @@
       <workItem from="1674227228201" duration="1410000" />
       <workItem from="1674228664990" duration="11347000" />
       <workItem from="1674564109781" duration="1673000" />
-    </task>
-    <task id="LOCAL-00026" summary="debug short datasets">
-      <created>1667210319001</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1667210319001</updated>
+      <workItem from="1674565930890" duration="1398000" />
     </task>
     <task id="LOCAL-00027" summary="debug short datasets">
       <created>1667378671127</created>
@@ -658,7 +593,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674244265433</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="renamed to HortiCo">
+      <created>1674565993438</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1674565993439</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -676,7 +618,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="adjusted resampling to correlations" />
     <MESSAGE value="turnover in euro" />
     <MESSAGE value="debugged lstm" />
     <MESSAGE value="debugged mlp" />
@@ -701,7 +642,8 @@
     <MESSAGE value="deleted retailer names" />
     <MESSAGE value="renamed to ForeTiS-Hortico" />
     <MESSAGE value="checked evars-gpr" />
-    <option name="LAST_COMMIT_MESSAGE" value="checked evars-gpr" />
+    <MESSAGE value="renamed to HortiCo" />
+    <option name="LAST_COMMIT_MESSAGE" value="renamed to HortiCo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
