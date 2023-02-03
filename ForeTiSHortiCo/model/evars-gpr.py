@@ -25,10 +25,10 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
         super().__init__(optuna_trial=optuna_trial, datasets=datasets, featureset=featureset,
                          target_column=target_column, pca_transform=pca_transform)
         self.seasonal_periods = self.datasets.seasonal_periods
-        self.time_format = self.dataset.index.freqstr[0]
         self.scale_window = max(scale_window_minimum, int(scale_window_factor * self.seasonal_periods))
         self.__max_samples = max_samples_factor * self.seasonal_periods
         self.__cf = changefinder.ChangeFinder(r=cf_r, order=cf_order, smooth=cf_smooth)
+        self.time_format = 'W' if self.datasets.resample_weekly == True else 'D'
 
     def get_augmented_data(self):
         """
@@ -37,9 +37,10 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
         :return: augmented dataset
         """
         samples = \
-            self.dataset.copy()[:self.change_point_index + pd.Timedelta(1, unit=self.time_format)].reset_index(drop=True)
+            self.dataset.copy()[:self.change_point_index + pd.Timedelta(1, unit=self.time_format)].reset_index(
+                drop=True)
         samples = samples.iloc[-self.__max_samples:] if (
-                    self.__max_samples is not None and samples.shape[0] > self.__max_samples) else samples
+                self.__max_samples is not None and samples.shape[0] > self.__max_samples) else samples
         samples_scaled = samples.copy()
         samples_scaled[self.target_column] *= self.output_scale
         augmented_data = samples_scaled
@@ -48,7 +49,7 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
     def retrain(self, retrain: pd.DataFrame):
         """
         Implementation of the retraining for models with sklearn-like API.
-        See :obj:`~ForeTiSHortiCo-Hortico.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
         """
         if not hasattr(self, 'train_ind'):
             y_deseas = self.dataset[self.target_column].diff(self.seasonal_periods).dropna().values
@@ -85,7 +86,7 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
     def update(self, update: pd.DataFrame, period: int):
         """
         Implementation of the retraining for models with sklearn-like API.
-        See :obj:`~ForeTiSHortiCo-Hortico.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
         """
         self.train_ind = update.shape[0]
         self.cf_threshold = np.percentile(self.scores, self.__cf_thr_perc)
@@ -110,7 +111,7 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
     def predict(self, X_in: pd.DataFrame) -> np.array:
         """
         Implementation of a prediction based on input features for models with sklearn-like API.
-        See :obj:`~ForeTiSHortiCo-Hortico.model._base_model.BaseModel` for more information
+        See :obj:`~ForeTiS.model._base_model.BaseModel` for more information
         """
         target_column = X_in[self.target_column]
         X_in = X_in.drop(self.target_column, axis=1)
@@ -124,10 +125,11 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
             target = target_column.loc[index]
             sample = X_in.loc[index]
             if hasattr(self, 'standardize_X') and self.standardize_X:
-                sample = self.x_scaler.transform(sample.values.reshape(1,-1))
+                sample = self.x_scaler.transform(sample.values.reshape(1, -1))
             else:
-                sample = sample.values.reshape(1,-1)
-            predict, conf = self.model.predict_y(Xnew=tf.convert_to_tensor(value=sample.astype(float), dtype=tf.float64))
+                sample = sample.values.reshape(1, -1)
+            predict, conf = self.model.predict_y(
+                Xnew=tf.convert_to_tensor(value=sample.astype(float), dtype=tf.float64))
             if predictions is None:
                 predictions = predict.numpy().copy()
             else:
@@ -138,7 +140,9 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                 confs = np.concatenate((confs, conf.numpy()))
             change_point_detected = False
             try:
-                y_deseas = target - self.dataset.loc[index - pd.Timedelta(self.seasonal_periods, unit=self.time_format)][self.target_column]
+                y_deseas = target - \
+                           self.dataset.loc[index - pd.Timedelta(self.seasonal_periods, unit=self.time_format)][
+                               self.target_column]
             except (KeyError):
                 y_deseas = 0
             score = self.__cf.update(y_deseas)
@@ -183,9 +187,12 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                         train_samples = self.get_augmented_data()
                         # retrain current model
                         self.model = gpflow.models.GPR(
-                            data=(np.zeros((5, 1)), np.zeros((5, 1))), kernel=self.kernel, mean_function=self.mean_function,
+                            data=(np.zeros((5, 1)), np.zeros((5, 1))), kernel=self.kernel,
+                            mean_function=self.mean_function,
                             noise_variance=self.noise_variance
                         )
+                        if self.dim_reduction:
+                            train_samples = self.pca_transform_train_test(train_samples)
                         self.retrain(train_samples)
                         # in case of a successful refit change output_scale_old
                         output_scale_old = self.output_scale
@@ -196,4 +203,23 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
             self.prediction = self.y_scaler.inverse_transform(predictions)
             confs = self.y_scaler.inverse_transform(confs)
         return self.prediction.flatten(), self.var.flatten(), confs[:, 0]
+
+    def pca_transform_train_test(self, train: pd.DataFrame) -> tuple:
+        """
+        Deliver PCA transformed train and test set
+
+        :param train: data for the training
+        :param test: data for the testing
+
+        :return: tuple of transformed train and test dataset
+        """
+        scaler = sklearn.preprocessing.StandardScaler()
+        train_stand = scaler.fit_transform(train.drop(self.target_column, axis=1))
+        pca = sklearn.decomposition.PCA(0.95)
+        train_transf = pca.fit_transform(train_stand)
+        train_data = pd.DataFrame(data=train_transf,
+                                  columns=['PC' + str(i) for i in range(train_transf.shape[1])],
+                                  index=train.index)
+        train_data[self.target_column] = train[self.target_column]
+        return train_data
 

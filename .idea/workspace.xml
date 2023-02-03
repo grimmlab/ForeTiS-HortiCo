@@ -6,6 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="renamed to HortiCo">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/optimization/optuna_optim.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/optimization/optuna_optim.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/run.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -258,14 +261,18 @@
       <workItem from="1674565930890" duration="1469000" />
       <workItem from="1674575921563" duration="17000" />
       <workItem from="1674577955963" duration="97000" />
-      <workItem from="1674578259561" duration="647000" />
-    </task>
-    <task id="LOCAL-00030" summary="debug short datasets">
-      <created>1667468942352</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1667468942352</updated>
+      <workItem from="1674578259561" duration="1274000" />
+      <workItem from="1674653653874" duration="936000" />
+      <workItem from="1674663122987" duration="1604000" />
+      <workItem from="1674714941520" duration="3148000" />
+      <workItem from="1674727943102" duration="4923000" />
+      <workItem from="1674741858240" duration="4538000" />
+      <workItem from="1674803826371" duration="4571000" />
+      <workItem from="1675062063433" duration="5000" />
+      <workItem from="1675149931203" duration="28000" />
+      <workItem from="1675150510816" duration="31000" />
+      <workItem from="1675354444956" duration="91000" />
+      <workItem from="1675422075272" duration="3675000" />
     </task>
     <task id="LOCAL-00031" summary="standardize ist default for gprtf">
       <created>1667485061811</created>
@@ -603,7 +610,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674578288006</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="renamed to HortiCo">
+      <created>1674579389223</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1674579389223</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -652,11 +666,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$USER_HOME$/.local/lib/python3.10/site-packages/blitz/modules/lstm_bayesian_layer.py</url>
-          <line>243</line>
-          <option name="timeStamp" value="78" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ForeTiSHortiCo/preprocess/base_dataset.py</url>
           <line>447</line>
           <option name="timeStamp" value="168" />
@@ -667,14 +676,14 @@
           <option name="timeStamp" value="173" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr.py</url>
-          <line>89</line>
-          <option name="timeStamp" value="230" />
+          <url>file://$PROJECT_DIR$/ForeTiSHortiCo/optimization/optuna_optim.py</url>
+          <line>504</line>
+          <option name="timeStamp" value="242" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr.py</url>
-          <line>188</line>
-          <option name="timeStamp" value="241" />
+          <url>file://$PROJECT_DIR$/ForeTiSHortiCo/optimization/optuna_optim.py</url>
+          <line>468</line>
+          <option name="timeStamp" value="247" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -687,6 +696,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ForeTiS_HortiCo$ForeTiSHortiCo_run.coverage" NAME="ForeTiSHortiCo.run Coverage Results" MODIFIED="1675431040567" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ForeTiS$ForeTiS_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1674213355837" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/HorticulturalSalesPrediction$HorticulturalSalesPrediction_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1666270498365" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ForeTiS_HortiCo$ForeTiSHortico_run.coverage" NAME="ForeTiSHortiCo.run Coverage Results" MODIFIED="1674564422331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

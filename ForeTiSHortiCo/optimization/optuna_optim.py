@@ -469,7 +469,7 @@ class OptunaOptim:
                         if hasattr(final_model, 'conf'):
                             y_pred_test_pred, y_pred_test_pred_var_artifical, y_pred_test_pred_conf \
                                 = model.predict(X_in=x_test[0])
-                            y_pred_test_conf.append(y_pred_test_pred_conf)
+                            y_pred_test_conf.extend(y_pred_test_pred_conf)
                         else:
                             y_pred_test_pred, y_pred_test_pred_var_artifical = model.predict(X_in=x_test[0])
                         y_pred_test.append(y_pred_test_pred)
