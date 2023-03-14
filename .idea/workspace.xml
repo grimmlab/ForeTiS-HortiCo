@@ -4,73 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="added evars-gpr.py">
-      <change afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr++.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.readthedocs.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/docker_requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/docker_requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/optimization/optuna_optim.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/optimization/optuna_optim.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.rst" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Makefile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/image/classoverview.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/make.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/base/base.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/base_detail.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/base_embed.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/base_list.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/class.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/constructor.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/delegate.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/enum.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/event.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/field.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/interface.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/method.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/namespace.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/operator.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/property.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/dotnet/struct.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/go/base_member.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/go/const.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/go/func.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/go/method.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/go/package.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/go/type.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/go/var.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/index.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/javascript/class.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/javascript/function.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/javascript/member.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/javascript/module.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/python/attribute.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/python/class.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/python/data.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/python/exception.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/python/function.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/python/method.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/python/module.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/_autoapi_templates/python/package.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/conf.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/data.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/index.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/install.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/install_docker.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/install_pip.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/tutorials.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/tutorials/HowTo: Use ForeTiS as a pip package.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/tutorials/tut_adv.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/tutorials/tut_adv_add_new.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/tutorials/tut_adv_adjustexisting.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/tutorials/tut_adv_codewalkthrough.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/tutorials/tut_run_docker.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/tutorials/tutorial_data/.ipynb_checkpoints/API_checks_boilerplate_code-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/source/tutorials/tutorial_data/.ipynb_checkpoints/concat_datasets-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.cfg" beforeDir="false" />
-    </list>
+    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="added evars-gpr++" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -345,14 +279,7 @@
       <workItem from="1678377458513" duration="2610000" />
       <workItem from="1678688730637" duration="2522000" />
       <workItem from="1678780296887" duration="3194000" />
-      <workItem from="1678802621664" duration="1082000" />
-    </task>
-    <task id="LOCAL-00032" summary="debugging gprtf and lstmbayes">
-      <created>1667555754685</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1667555754686</updated>
+      <workItem from="1678802621664" duration="1401000" />
     </task>
     <task id="LOCAL-00033" summary="gprtf changing matern kernel">
       <created>1667580035701</created>
@@ -690,7 +617,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675432427521</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="added evars-gpr++">
+      <created>1678803801718</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1678803801718</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -708,7 +642,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="debugged lstm" />
     <MESSAGE value="debugged mlp" />
     <MESSAGE value="new bayesnet package and other stuff" />
     <MESSAGE value="adjusted run.py" />
@@ -733,7 +666,8 @@
     <MESSAGE value="checked evars-gpr" />
     <MESSAGE value="renamed to HortiCo" />
     <MESSAGE value="added evars-gpr.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="added evars-gpr.py" />
+    <MESSAGE value="added evars-gpr++" />
+    <option name="LAST_COMMIT_MESSAGE" value="added evars-gpr++" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
