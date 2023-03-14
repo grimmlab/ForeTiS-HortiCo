@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="added evars-gpr++">
-      <change beforePath="$PROJECT_DIR$/Config/dataset_specific_config.ini" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/dataset_specific_config.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,26 +35,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/josef/Schreibtisch/01_HorticulturalSalesPrediction/ForeTiS-HortiCo/ForeTiSHortiCo",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PythonContentEntriesConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/josef/Schreibtisch/01_HorticulturalSalesPrediction/ForeTiS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PythonContentEntriesConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "Python"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;Python&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ForeTiSHortiCo/model" />
@@ -60,16 +64,16 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ForeTiSHortiCo" />
       <recent name="$PROJECT_DIR$/ForeTiS/model/_additionalmodels" />
       <recent name="$PROJECT_DIR$/ForeTiS/model/additionalmodels" />
       <recent name="$PROJECT_DIR$/ForeTiS/additionalmodels" />
       <recent name="$PROJECT_DIR$/Docker" />
-      <recent name="$PROJECT_DIR$/docs/source" />
     </key>
   </component>
   <component name="RunManager">
     <configuration name="ForeTiSHortiCo.run" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="ForeTiS-HortiCo" />
+      <module name="ForeTiS" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -91,7 +95,7 @@
       <method v="2" />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <module name="ForeTiS-HortiCo" />
+      <module name="ForeTiS" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -281,14 +285,7 @@
       <workItem from="1678377458513" duration="2610000" />
       <workItem from="1678688730637" duration="2522000" />
       <workItem from="1678780296887" duration="3194000" />
-      <workItem from="1678802621664" duration="2087000" />
-    </task>
-    <task id="LOCAL-00035" summary="gprtf debug">
-      <created>1667674278192</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1667674278192</updated>
+      <workItem from="1678802621664" duration="2753000" />
     </task>
     <task id="LOCAL-00036" summary="lstmbayes debug">
       <created>1667801229377</created>
@@ -626,7 +623,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678804531236</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <task id="LOCAL-00084" summary="added evars-gpr++">
+      <created>1678804764521</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1678804764521</updated>
+    </task>
+    <option name="localTasksCounter" value="85" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
