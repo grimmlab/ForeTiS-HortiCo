@@ -197,6 +197,15 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                         self.retrain(train_samples)
                         # in case of a successful refit change output_scale_old
                         output_scale_old = self.output_scale
+                    else:
+                        self.model = gpflow.models.GPR(
+                            data=(np.zeros((5, 1)), np.zeros((5, 1))), kernel=self.kernel,
+                            mean_function=self.mean_function,
+                            noise_variance=self.noise_variance
+                        )
+                        if self.dim_reduction:
+                            train_samples = self.pca_transform_train_test(train_samples)
+                        self.retrain(train_samples)
                 except Exception as exc:
                     print(exc)
         self.prediction = predictions

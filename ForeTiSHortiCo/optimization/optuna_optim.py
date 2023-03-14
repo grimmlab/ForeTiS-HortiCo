@@ -228,7 +228,8 @@ class OptunaOptim:
 
                 # store results
                 objective_values.append(objective_value)
-                validation_results.at[0:len(train) - 1, fold_name + '_train_true'] = train[self.target_column]
+                validation_results.at[0:len(train) - 1, fold_name + '_train_true'] = \
+                    train.loc[:, [self.target_column]].values.reshape(-1)
                 if 'lstm' in self.current_model_name:
                     try:
                         validation_results.at[0:len(train) - model.seq_length - 1, fold_name + '_train_pred'] = \
