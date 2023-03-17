@@ -20,10 +20,10 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                  cf_r: float = None, cf_order: int = None, cf_smooth: int = None, cf_thr_perc: int = None,
                  scale_window_minimum: int = None, max_samples_factor: int = None):
         self.__scale_seasons = scale_seasons
-        self.__scale_thr = scale_thr
         self.__cf_thr_perc = cf_thr_perc
         super().__init__(optuna_trial=optuna_trial, datasets=datasets, featureset=featureset,
                          target_column=target_column, pca_transform=pca_transform)
+        self.__scale_thr = scale_thr if scale_thr is not None else self.suggest_hyperparam_to_optuna('scale_thr')
         self.seasonal_periods = self.datasets.seasonal_periods
         self.scale_window = max(scale_window_minimum, int(scale_window_factor * self.seasonal_periods))
         self.__max_samples = max_samples_factor * self.seasonal_periods
@@ -36,15 +36,12 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
 
         :return: augmented dataset
         """
-        samples = \
-            self.dataset.copy()[:self.change_point_index + pd.Timedelta(1, unit=self.time_format)].reset_index(
-                drop=True)
+        samples = self.dataset.copy()[:self.change_point_index]
         samples = samples.iloc[-self.__max_samples:] if (
                 self.__max_samples is not None and samples.shape[0] > self.__max_samples) else samples
         samples_scaled = samples.copy()
         samples_scaled[self.target_column] *= self.output_scale
-        augmented_data = samples_scaled
-        return augmented_data
+        return samples_scaled
 
     def retrain(self, retrain: pd.DataFrame):
         """
@@ -158,20 +155,20 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                     mean_now = \
                         np.mean(
                             self.dataset[
-                            self.change_point_index - pd.Timedelta(self.scale_window + 1, unit=self.time_format):
-                            self.change_point_index + pd.Timedelta(1, unit=self.time_format)][self.target_column])
+                            self.change_point_index - pd.Timedelta(self.scale_window - 1, unit=self.time_format):
+                            self.change_point_index][self.target_column])
                     mean_prev_seas_1 = \
                         np.mean(
                             self.dataset[
                             self.change_point_index -
-                            pd.Timedelta(self.seasonal_periods + self.scale_window + 1, unit=self.time_format):
+                            pd.Timedelta(self.seasonal_periods + self.scale_window - 1, unit=self.time_format):
                             self.change_point_index -
-                            pd.Timedelta(self.seasonal_periods + 1, unit=self.time_format)][self.target_column])
+                            pd.Timedelta(self.seasonal_periods, unit=self.time_format)][self.target_column])
                     mean_prev_seas_2 = \
                         np.mean(
                             self.dataset[
                             self.change_point_index -
-                            pd.Timedelta(2 * self.seasonal_periods + self.scale_window + 1, unit=self.time_format):
+                            pd.Timedelta(2 * self.seasonal_periods + self.scale_window - 1, unit=self.time_format):
                             self.change_point_index -
                             pd.Timedelta(2 * self.seasonal_periods + 1, unit=self.time_format)][self.target_column])
                     if self.__scale_seasons == 1 and mean_prev_seas_1 != 0:
@@ -189,8 +186,7 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                         # retrain current model
                         self.model = gpflow.models.GPR(
                             data=(np.zeros((5, 1)), np.zeros((5, 1))), kernel=self.kernel,
-                            mean_function=self.mean_function,
-                            noise_variance=self.noise_variance
+                            mean_function=self.mean_function, noise_variance=self.noise_variance
                         )
                         if self.dim_reduction:
                             train_samples = self.pca_transform_train_test(train_samples)
@@ -223,4 +219,22 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                                   index=train.index)
         train_data[self.target_column] = train[self.target_column]
         return train_data
+
+    def define_hyperparams_to_tune(self) -> dict:
+        """
+        See :obj:`~ForeTiSHortiCo-Hortico.model._base_model.BaseModel` for more information on the format.
+        """
+        kernels, self.kernel_dict = self.extend_kernel_combinations()
+        return {
+            'scale_thr': {
+                'datatype': 'float',
+                'lower_bound': 0.05,
+                'upper_bound': 0.5,
+                'step': 0.01
+            },
+            'kernel': {
+                'datatype': 'categorical',
+                'list_of_values': kernels,
+            }
+        }
 

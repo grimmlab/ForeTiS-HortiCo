@@ -8,43 +8,39 @@ import optuna
 
 from . import _tensorflow_model
 
-class Evars_gpr(_tensorflow_model.TensorflowModel):
+class Evars_gprplusplus(_tensorflow_model.TensorflowModel):
     """
     Implementation of a class for Gpr.
 
     See :obj:`~ForeTiSHortiCo-Hortico.model._base_model.BaseModel` for more information on the attributes.
     """
 
-    def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str,
-                 pca_transform: bool = None, target_column: str = None, scale_thr: float = None, scale_seasons: int = None, scale_window_factor: float = None,
-                 cf_r: float = None, cf_order: int = None, cf_smooth: int = None, cf_thr_perc: int = None,
-                 scale_window_minimum: int = None, max_samples_factor: int = None):
+    def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str, pca_transform: bool = None,
+                 target_column: str = None, scale_thr: float = None, scale_seasons: int = None,
+                 scale_window_factor: float = None, cf_r: float = None, cf_order: int = None, cf_smooth: int = None,
+                 cf_thr_perc: int = None, scale_window_minimum: int = None, max_samples_factor: int = None):
         self.__scale_seasons = scale_seasons
-        self.__scale_thr = scale_thr
         self.__cf_thr_perc = cf_thr_perc
         super().__init__(optuna_trial=optuna_trial, datasets=datasets, featureset=featureset,
                          target_column=target_column, pca_transform=pca_transform)
+        self.__scale_thr = scale_thr if scale_thr is not None else self.suggest_hyperparam_to_optuna('scale_thr')
         self.seasonal_periods = self.datasets.seasonal_periods
         self.scale_window = max(scale_window_minimum, int(scale_window_factor * self.seasonal_periods))
         self.__max_samples = max_samples_factor * self.seasonal_periods
         self.__cf = changefinder.ChangeFinder(r=cf_r, order=cf_order, smooth=cf_smooth)
         self.time_format = 'W' if self.datasets.resample_weekly == True else 'D'
 
-    def get_augmented_data(self):
+    def get_augmented_data(self, retrain_set):
         """
         get augmented data
 
         :return: augmented dataset
         """
-        samples = \
-            self.dataset.copy()[:self.change_point_index + pd.Timedelta(1, unit=self.time_format)].reset_index(
-                drop=True)
-        samples = samples.iloc[-self.__max_samples:] if (
-                self.__max_samples is not None and samples.shape[0] > self.__max_samples) else samples
+        samples = retrain_set.iloc[-self.__max_samples:] if (
+                self.__max_samples is not None and retrain_set.shape[0] > self.__max_samples) else retrain_set
         samples_scaled = samples.copy()
         samples_scaled[self.target_column] *= self.output_scale
-        augmented_data = samples_scaled
-        return augmented_data
+        return samples_scaled
 
     def retrain(self, retrain: pd.DataFrame):
         """
@@ -121,6 +117,7 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
         output_scale_old = 1
         self.output_scale = 1
         n_refits = 0
+        retrain_set = self.dataset.copy()[:self.train_ind]
         for index in X_in.index:
             target = target_column.loc[index]
             sample = X_in.loc[index]
@@ -150,6 +147,7 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
             if score >= self.cf_threshold:
                 change_point_detected = True
                 curr_ind = index - pd.Timedelta(self.train_ind, unit=self.time_format)
+            retrain_set = pd.concat([retrain_set, self.dataset.copy().loc[[index]]])
             # Trigger remaining EVARS-GPR procedures if a change point is detected
             if change_point_detected:
                 cp_detected.append(curr_ind)
@@ -158,24 +156,23 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                     mean_now = \
                         np.mean(
                             self.dataset[
-                            self.change_point_index - pd.Timedelta(self.scale_window + 1, unit=self.time_format):
-                            self.change_point_index + pd.Timedelta(1, unit=self.time_format)][self.target_column])
+                            self.change_point_index - pd.Timedelta(self.scale_window - 1, unit=self.time_format):
+                            self.change_point_index][self.target_column])
                     mean_prev_seas_1 = \
                         np.mean(
                             self.dataset[
                             self.change_point_index -
-                            pd.Timedelta(self.seasonal_periods + self.scale_window + 1, unit=self.time_format):
+                            pd.Timedelta(self.seasonal_periods + self.scale_window - 1, unit=self.time_format):
                             self.change_point_index -
-                            pd.Timedelta(self.seasonal_periods + 1, unit=self.time_format)][self.target_column])
+                            pd.Timedelta(self.seasonal_periods, unit=self.time_format)][self.target_column])
                     mean_prev_seas_2 = \
                         np.mean(
                             self.dataset[
                             self.change_point_index -
-                            pd.Timedelta(2 * self.seasonal_periods + self.scale_window + 1, unit=self.time_format):
+                            pd.Timedelta(2 * self.seasonal_periods + self.scale_window - 1, unit=self.time_format):
                             self.change_point_index -
                             pd.Timedelta(2 * self.seasonal_periods + 1, unit=self.time_format)][self.target_column])
                     if self.__scale_seasons == 1 and mean_prev_seas_1 != 0:
-                        print(mean_prev_seas_1)
                         self.output_scale = mean_now / mean_prev_seas_1
                     elif self.__scale_seasons == 2 and mean_prev_seas_1 != 0 and mean_prev_seas_2 != 0:
                         self.output_scale = np.mean([mean_now / mean_prev_seas_1, mean_now / mean_prev_seas_2])
@@ -185,7 +182,7 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                     if np.abs(self.output_scale - output_scale_old) / output_scale_old > self.__scale_thr:
                         n_refits += 1
                         # augment data
-                        train_samples = self.get_augmented_data()
+                        retrain_set = self.get_augmented_data(retrain_set=retrain_set)
                         # retrain current model
                         self.model = gpflow.models.GPR(
                             data=(np.zeros((5, 1)), np.zeros((5, 1))), kernel=self.kernel,
@@ -193,8 +190,8 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                             noise_variance=self.noise_variance
                         )
                         if self.dim_reduction:
-                            train_samples = self.pca_transform_train_test(train_samples)
-                        self.retrain(train_samples)
+                            retrain_set = self.pca_transform_train_test(retrain_set)
+                        self.retrain(retrain_set)
                         # in case of a successful refit change output_scale_old
                         output_scale_old = self.output_scale
                     else:
@@ -204,8 +201,8 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                             noise_variance=self.noise_variance
                         )
                         if self.dim_reduction:
-                            train_samples = self.pca_transform_train_test(train_samples)
-                        self.retrain(train_samples)
+                            retrain_set = self.pca_transform_train_test(retrain_set)
+                        self.retrain(retrain_set)
                 except Exception as exc:
                     print(exc)
         self.prediction = predictions
@@ -232,4 +229,22 @@ class Evars_gpr(_tensorflow_model.TensorflowModel):
                                   index=train.index)
         train_data[self.target_column] = train[self.target_column]
         return train_data
+
+    def define_hyperparams_to_tune(self) -> dict:
+        """
+        See :obj:`~ForeTiSHortiCo-Hortico.model._base_model.BaseModel` for more information on the format.
+        """
+        kernels, self.kernel_dict = self.extend_kernel_combinations()
+        return {
+            'scale_thr': {
+                'datatype': 'float',
+                'lower_bound': 0.05,
+                'upper_bound': 0.5,
+                'step': 0.01
+            },
+            'kernel': {
+                'datatype': 'categorical',
+                'list_of_values': kernels,
+            }
+        }
 

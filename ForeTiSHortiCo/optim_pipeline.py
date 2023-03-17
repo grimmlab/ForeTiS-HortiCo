@@ -12,7 +12,7 @@ def run(data_dir: str, save_dir: str = None, featuresets: list = None, datasplit
         imputation_method: str = 'None', correlation_method: str = None, correlation_number: int = None,
         models: list = None, target_column: str = None, n_trials: int = 100, pca_transform: bool =False,
         save_final_model: bool = False, periodical_refit_cycles: list = None, refit_drops: int = 0, data: str = None,
-        config_type: str = None, refit_window: int = 5, intermediate_results_interval: int = None, batch_size: int = 32,
+        config_type: str = None, refit_window: int = 5, intermediate_results_interval: int = None, batch_size: int = None,
         n_epochs: int = None, scale_thr: float = None, scale_seasons: int = None, scale_window_factor: float = None,
         cf_r: float = None, cf_order: int = None, cf_smooth: int = None, cf_thr_perc: int = None,
         scale_window_minimum: int = None, max_samples_factor: int = None):
@@ -23,7 +23,7 @@ def run(data_dir: str, save_dir: str = None, featuresets: list = None, datasplit
     featureset_overview = {}
     model_featureset_overview = {}
     config = configparser.ConfigParser()
-    config.read('Config/dataset_specific_config.ini')
+    config.read_file(open('ForeTiSHortiCo/dataset_specific_config.ini', 'r'))
     datasets = base_dataset.Dataset(data_dir=data_dir, data=data, config_type=config_type,
                                     test_set_size_percentage=test_set_size_percentage, target_column=target_column,
                                     cyclic_encoding=cyclic_encoding,

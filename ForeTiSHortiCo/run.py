@@ -31,17 +31,17 @@ if __name__ == '__main__':
     parser.add_argument("-sd", "--save_dir", type=str, default='docs/source/tutorials/tutorial_data',
                         help="Provide the full path of the directory in which you want to save your results. "
                              "Default is same as data_dir.")
-    parser.add_argument("-data", "--data", type=str, default='blumenzentrale',
+    parser.add_argument("-data", "--data", type=str, default='schachtschneider',
                         help="specify the dataset that you want to use.")
     parser.add_argument("-con", "--config_type", type=str, default='api',
                         help="specify the config type that you want to use.")
     parser.add_argument("-tc", "--target_column", type=str, default='total_turnover',
                         help="specify the target column for the prediction.")
-    parser.add_argument("-fs", "--featuresets", nargs='+', default=['dataset_weather'],
+    parser.add_argument("-fs", "--featuresets", nargs='+', default=['dataset_full'],
                         help="specify on which featuresets the models should be optimized: Valid arguments are: " +
                              str(helper_functions.get_list_of_featuresets()) +
                              "If optimize, the featuresets will be optimized by optuna.")
-    parser.add_argument("-mod", "--models", nargs='+', default=['mlpbayes'],
+    parser.add_argument("-mod", "--models", nargs='+', default=['evars-gpr', 'evars-gpr++'],
                         # gprtf xgboost mlp mlpbayes lstm lstmbayes ard arima arimax es averagehistorical averagemoving averageseasonal averageseasonallag bayesridge elasticnet lasso ridge
                         # gprtf xgboost ard arima arimax es averagehistorical averagemoving averageseasonal averageseasonallag bayesridge elasticnet lasso ridge mlp mlpbayes lstm lstmbayes
                         help="specify the models to optimize: 'all' or naming according to source file name. "
@@ -96,13 +96,13 @@ if __name__ == '__main__':
                              "Standard is 3")
 
     # Model and Optimization Params #
-    parser.add_argument("-tr", "--n_trials", type=int, default=200,
+    parser.add_argument("-tr", "--n_trials", type=int, default=5,
                         help="specify the number of trials for the Bayesian optimization (optuna).")
     parser.add_argument("-sf", "--save_final_model", type=bool, default=True,
                         help="specify whether to save the final model to hard drive or not "
                              "(caution: some models may use a lot of disk space, "
                              "unfitted models that can be retrained are already saved by default).")
-    parser.add_argument("-prc", "--periodical_refit_cycles", type=list, default=['complete', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    parser.add_argument("-prc", "--periodical_refit_cycles", type=list, default=['complete', 0, 1, 2],
                         help="specify with which periods periodical refitting will be done. "
                              "0 means no periodical refitting, "
                              "complete means no periodical refitting and the whole train dataset will be used for "
@@ -130,27 +130,31 @@ if __name__ == '__main__':
                         help="Only relevant for neural networks: define the number of epochs. If nothing is specified,"
                              "it will be considered as a hyperparameter for optimization.")
 
-    # Only relevant for EVARS-GPR #
+    # Only relevant for EVARS-GPR(++) #
     # Pipeline
-    parser.add_argument("-scalethr", "--scale_thr", type=float, default=0.1,
-                        help="specify output scale threshold")
+    parser.add_argument("-scalethr", "--scale_thr", type=float, default=None,
+                        help="Only relevant for evars-gpr(++): specify output scale threshold. If nothing is specified,"
+                             "it will be considered as a hyperparameter for optimization.")
     parser.add_argument("-scaleseas", "--scale_seasons", type=int, default=2,
-                        help="specify output scale seasons taken into account")
+                        help="Only relevant for evars-gpr(++): specify output scale seasons taken into account")
     parser.add_argument("-scalew-factor", "--scale_window_factor", type=float, default=0.1,
-                        help="specify scale window factor based on seasonal periods")
+                        help="Only relevant for evars-gpr(++): specify scale window factor based on seasonal periods")
     parser.add_argument("-scalew-min", "--scale_window_minimum", type=int, default=2,
-                        help="specify scale window minimum")
-    parser.add_argument("-max-samples-fact", "--max_samples_factor", type=int, default=10,
-                        help="specify max samples factor of seasons to keep for gpr pipeline")
+                        help="Only relevant for evars-gpr(++): specify scale window minimum")
+    parser.add_argument("-max-samples-fact", "--max_samples_factor", type=int, default=5,
+                        help="Only relevant for evars-gpr(++): specify max samples factor of seasons to keep for gpr "
+                             "pipeline")
     # CF
     parser.add_argument("-cfr", "--cf_r", type=float, default=0.4,
-                        help="specify changefinders r param (decay factor older values)")
+                        help="Only relevant for evars-gpr(++): specify changefinders r param (decay factor older "
+                             "values)")
     parser.add_argument("-cforder", "--cf_order", type=int, default=1,
-                        help="specify changefinders SDAR model order param")
+                        help="Only relevant for evars-gpr(++): specify changefinders SDAR model order param")
     parser.add_argument("-cfsmooth", "--cf_smooth", type=int, default=4,
                         help="specify changefinders smoothing param")
     parser.add_argument("-cfthrperc", "--cf_thr_perc", type=int, default=70,
-                        help="specify percentile of train set anomaly factors as threshold for cpd with changefinder")
+                        help="Only relevant for evars-gpr(++): specify percentile of train set anomaly factors as "
+                             "threshold for cpd with changefinder")
 
     args = vars(parser.parse_args())
 

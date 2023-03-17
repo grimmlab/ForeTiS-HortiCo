@@ -125,7 +125,7 @@ class OptunaOptim:
                 additional_attributes_dict['batch_size'] = self.user_input_params["batch_size"]
                 additional_attributes_dict['n_epochs'] = self.user_input_params["n_epochs"]
                 early_stopping_points = []  # log early stopping point at each fold for torch models
-        if self.current_model_name == 'evars-gpr':
+        if 'evars-gpr' in self.current_model_name:
             additional_attributes_dict['scale_thr'] = self.user_input_params["scale_thr"]
             additional_attributes_dict['scale_seasons'] = self.user_input_params["scale_seasons"]
             additional_attributes_dict['scale_window_factor'] = self.user_input_params["scale_window_factor"]

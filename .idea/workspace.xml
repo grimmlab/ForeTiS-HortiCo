@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="added evars-gpr++">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/model/_tensorflow_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_tensorflow_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr++.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr++.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/optim_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/optim_pipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/optimization/optuna_optim.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/optimization/optuna_optim.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/run.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,13 +43,13 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/josef/Schreibtisch/01_HorticulturalSalesPrediction/ForeTiS&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/josef/Schreibtisch/02_ForeTiSHortiCo/ForeTiS-HortiCo&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PythonContentEntriesConfigurable&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -57,11 +60,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/ForeTiSHortiCo/model" />
-      <recent name="$PROJECT_DIR$/ForeTiS/model" />
-      <recent name="$PROJECT_DIR$/HorticulturalSalesPrediction/model" />
-      <recent name="$PROJECT_DIR$/docs/source/tutorials" />
-      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/docs/source/tutorials/tutorial_data/totalturnover" />
+      <recent name="$PROJECT_DIR$/docs/source/tutorials/tutorial_data" />
+      <recent name="$PROJECT_DIR$/docs/source/tutorials/tutorials_data" />
+      <recent name="$PROJECT_DIR$/docs/source/tutorials/tutorials_data/totalturnover" />
+      <recent name="$PROJECT_DIR$/Data/totalturnover" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ForeTiSHortiCo" />
@@ -73,15 +76,16 @@
   </component>
   <component name="RunManager">
     <configuration name="ForeTiSHortiCo.run" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="ForeTiS" />
+      <module name="ForeTiS-HortiCo" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="/usr/bin/python3" />
+      <option name="SDK_NAME" value="Python 3.10" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -286,13 +290,17 @@
       <workItem from="1678688730637" duration="2522000" />
       <workItem from="1678780296887" duration="3194000" />
       <workItem from="1678802621664" duration="2753000" />
-    </task>
-    <task id="LOCAL-00036" summary="lstmbayes debug">
-      <created>1667801229377</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1667801229377</updated>
+      <workItem from="1678805395332" duration="420000" />
+      <workItem from="1678807127299" duration="30000" />
+      <workItem from="1678871984052" duration="12000" />
+      <workItem from="1678885394391" duration="10037000" />
+      <workItem from="1678957014231" duration="3247000" />
+      <workItem from="1678961492104" duration="5287000" />
+      <workItem from="1678970817963" duration="802000" />
+      <workItem from="1678974554083" duration="627000" />
+      <workItem from="1678985184941" duration="3036000" />
+      <workItem from="1679037588747" duration="5331000" />
+      <workItem from="1679046332412" duration="3772000" />
     </task>
     <task id="LOCAL-00037" summary="changed timeseries-cv">
       <created>1667902710725</created>
@@ -630,11 +638,29 @@
       <option name="project" value="LOCAL" />
       <updated>1678804764521</updated>
     </task>
-    <option name="localTasksCounter" value="85" />
+    <task id="LOCAL-00085" summary="added evars-gpr++">
+      <created>1678805575694</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1678805575694</updated>
+    </task>
+    <option name="localTasksCounter" value="86" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -684,14 +710,9 @@
           <option name="timeStamp" value="168" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ForeTiSHortiCo/utils/helper_functions.py</url>
-          <line>55</line>
-          <option name="timeStamp" value="173" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr.py</url>
-          <line>130</line>
-          <option name="timeStamp" value="270" />
+          <url>file://$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr++.py</url>
+          <line>204</line>
+          <option name="timeStamp" value="317" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -704,7 +725,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ForeTiS_HortiCo$ForeTiSHortiCo_run.coverage" NAME="ForeTiSHortiCo.run Coverage Results" MODIFIED="1678688830723" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ForeTiS_HortiCo$ForeTiSHortiCo_run.coverage" NAME="ForeTiSHortiCo.run Coverage Results" MODIFIED="1679048468021" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ForeTiS$ForeTiS_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1674213355837" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/HorticulturalSalesPrediction$HorticulturalSalesPrediction_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1666270498365" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ForeTiS_HortiCo$ForeTiSHortico_run.coverage" NAME="ForeTiSHortiCo.run Coverage Results" MODIFIED="1674564422331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
