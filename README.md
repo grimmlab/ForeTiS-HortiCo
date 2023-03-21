@@ -9,10 +9,9 @@ In addition, our framework is designed to allow an easy and straightforward inte
 Contributors
 ----------------------------------------
 
-This pipeline is developed and maintained by members of the `Bioinformatics lab <https://bit.cs.tum.de>`_ lead by `Prof. Dr. Dominik Grimm <https://bit.cs.tum.de/team/dominik-grimm/>`_:
-
-- `Josef Eiglsperger, M.Sc. <https://bit.cs.tum.de/team/josef-eiglsperger/>`_
-- `Florian Haselbeck, M.Sc. <https://bit.cs.tum.de/team/florian-haselbeck/>`_
+This pipeline is developed and maintained by members of the [Bioinformatics lab](https://bit.cs.tum.de) lead by [Prof. Dr. Dominik Grimm](https://bit.cs.tum.de/team/dominik-grimm/):
+- [Josef Eiglsperger, M.Sc.](https://bit.cs.tum.de/team/josef-eiglsperger/)
+- [Florian Haselbeck, M.Sc.](https://bit.cs.tum.de/team/florian-haselbeck/)
 
 Citation
 ---------------------
