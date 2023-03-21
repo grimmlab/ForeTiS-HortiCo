@@ -30,14 +30,15 @@ class Evars_gprplusplus(_tensorflow_model.TensorflowModel):
         self.__cf = changefinder.ChangeFinder(r=cf_r, order=cf_order, smooth=cf_smooth)
         self.time_format = 'W' if self.datasets.resample_weekly == True else 'D'
 
-    def get_augmented_data(self, retrain_set):
+    def get_augmented_data(self):
         """
         get augmented data
 
         :return: augmented dataset
         """
-        samples = retrain_set.iloc[-self.__max_samples:] if (
-                self.__max_samples is not None and retrain_set.shape[0] > self.__max_samples) else retrain_set
+        samples = self.dataset.copy()[:self.change_point_index]
+        samples = samples.iloc[-self.__max_samples:] if (
+                self.__max_samples is not None and samples.shape[0] > self.__max_samples) else samples
         samples_scaled = samples.copy()
         samples_scaled[self.target_column] *= self.output_scale
         return samples_scaled
@@ -117,7 +118,6 @@ class Evars_gprplusplus(_tensorflow_model.TensorflowModel):
         output_scale_old = 1
         self.output_scale = 1
         n_refits = 0
-        retrain_set = self.dataset.copy()[:self.train_ind]
         for index in X_in.index:
             target = target_column.loc[index]
             sample = X_in.loc[index]
@@ -147,7 +147,6 @@ class Evars_gprplusplus(_tensorflow_model.TensorflowModel):
             if score >= self.cf_threshold:
                 change_point_detected = True
                 curr_ind = index - pd.Timedelta(self.train_ind, unit=self.time_format)
-            retrain_set = pd.concat([retrain_set, self.dataset.copy().loc[[index]]])
             # Trigger remaining EVARS-GPR procedures if a change point is detected
             if change_point_detected:
                 cp_detected.append(curr_ind)
@@ -182,7 +181,8 @@ class Evars_gprplusplus(_tensorflow_model.TensorflowModel):
                     if np.abs(self.output_scale - output_scale_old) / output_scale_old > self.__scale_thr:
                         n_refits += 1
                         # augment data
-                        retrain_set = self.get_augmented_data(retrain_set=retrain_set)
+                        augmented_train_samples = self.get_augmented_data()
+                        augmented_change_point_index = self.change_point_index
                         # retrain current model
                         self.model = gpflow.models.GPR(
                             data=(np.zeros((5, 1)), np.zeros((5, 1))), kernel=self.kernel,
@@ -190,19 +190,29 @@ class Evars_gprplusplus(_tensorflow_model.TensorflowModel):
                             noise_variance=self.noise_variance
                         )
                         if self.dim_reduction:
-                            retrain_set = self.pca_transform_train_test(retrain_set)
-                        self.retrain(retrain_set)
+                            augmented_train_samples = self.pca_transform_train_test(augmented_train_samples)
+                        self.retrain(augmented_train_samples)
                         # in case of a successful refit change output_scale_old
                         output_scale_old = self.output_scale
                     else:
+                        if "augmented_train_samples" in locals():
+                            recent_samples = self.dataset.copy()[augmented_change_point_index + pd.Timedelta(1, unit=self.time_format):self.change_point_index]
+                            if self.dim_reduction:
+                                recent_samples = self.pca_transform_train_test(recent_samples)
+                            train_samples = pd.concat([augmented_train_samples, recent_samples])
+                        else:
+                            train_samples = self.dataset.copy()[:self.change_point_index]
+                            if self.dim_reduction:
+                                train_samples = self.pca_transform_train_test(train_samples)
+                        train_samples = train_samples.iloc[-self.__max_samples:] if \
+                            (self.__max_samples is not None and train_samples.shape[0] > self.__max_samples) \
+                            else train_samples
                         self.model = gpflow.models.GPR(
                             data=(np.zeros((5, 1)), np.zeros((5, 1))), kernel=self.kernel,
                             mean_function=self.mean_function,
                             noise_variance=self.noise_variance
                         )
-                        if self.dim_reduction:
-                            retrain_set = self.pca_transform_train_test(retrain_set)
-                        self.retrain(retrain_set)
+                        self.retrain(train_samples)
                 except Exception as exc:
                     print(exc)
         self.prediction = predictions
