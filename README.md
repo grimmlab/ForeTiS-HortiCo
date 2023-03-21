@@ -6,11 +6,6 @@ These range from classical models, such as regularized linear regression over en
 To enable automatic hyperparameter optimization, we leverage state-of-the-art and efficient Bayesian optimization techniques. 
 In addition, our framework is designed to allow an easy and straightforward integration of further prediction models.
 
-For more information, installation guides, tutorials and much more, see our documentation: https://ForeTiS.readthedocs.io/
-
-ForeTiS and its documentation is currently under construction. 
-The pip-package is not yet available, but feel free to already test the Docker workflow as described in our documentation: https://ForeTiS.readthedocs.io/en/latest/tutorials.html#howto-run-ForeTiS-using-docker
-
 Contributors
 ----------------------------------------
 
