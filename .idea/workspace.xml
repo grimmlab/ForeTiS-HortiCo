@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="updated evars-gpr">
+    <list default="true" id="0747a232-0e89-400c-8bae-4ff1dffc5aac" name="Changes" comment="updated README">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/model/_torch_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_torch_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr++.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/evars-gpr++.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/model/mlp.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/mlp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/model/_tensorflow_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/_tensorflow_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/model/gprtf.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/gprtf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/model/lstmbayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/lstmbayes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/model/mlpbayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/model/mlpbayes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ForeTiSHortiCo/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/ForeTiSHortiCo/run.py" afterDir="false" />
     </list>
@@ -306,20 +306,25 @@
       <workItem from="1679320219467" duration="641000" />
       <workItem from="1679325345705" duration="615000" />
       <workItem from="1679379347520" duration="1268000" />
-    </task>
-    <task id="LOCAL-00038" summary="changed timeseries-cv">
-      <created>1667919149263</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1667919149263</updated>
-    </task>
-    <task id="LOCAL-00039" summary="adjusted bayes neural nets">
-      <created>1667995973653</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1667995973653</updated>
+      <workItem from="1679382176511" duration="748000" />
+      <workItem from="1679390714969" duration="6831000" />
+      <workItem from="1679488799862" duration="656000" />
+      <workItem from="1680522252169" duration="47000" />
+      <workItem from="1680672837994" duration="469000" />
+      <workItem from="1680675463550" duration="727000" />
+      <workItem from="1680767731757" duration="47000" />
+      <workItem from="1682582147141" duration="608000" />
+      <workItem from="1682693750992" duration="190000" />
+      <workItem from="1683549731376" duration="711000" />
+      <workItem from="1683881846237" duration="1218000" />
+      <workItem from="1684152716608" duration="8609000" />
+      <workItem from="1684217892776" duration="258000" />
+      <workItem from="1684739497809" duration="18070000" />
+      <workItem from="1684781393014" duration="2000" />
+      <workItem from="1684781533948" duration="320000" />
+      <workItem from="1684782371193" duration="2130000" />
+      <workItem from="1684823157406" duration="4072000" />
+      <workItem from="1684943941694" duration="301000" />
     </task>
     <task id="LOCAL-00040" summary="adjusted timeseries cv">
       <created>1668174254060</created>
@@ -650,7 +655,21 @@
       <option name="project" value="LOCAL" />
       <updated>1679054805662</updated>
     </task>
-    <option name="localTasksCounter" value="87" />
+    <task id="LOCAL-00087" summary="updated README">
+      <created>1679382200048</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1679382200049</updated>
+    </task>
+    <task id="LOCAL-00088" summary="updated README">
+      <created>1679382294950</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1679382294950</updated>
+    </task>
+    <option name="localTasksCounter" value="89" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -679,7 +698,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="new bayesnet package and other stuff" />
     <MESSAGE value="adjusted run.py" />
     <MESSAGE value="Dockerfile" />
     <MESSAGE value="some debugging" />
@@ -704,7 +722,8 @@
     <MESSAGE value="added evars-gpr.py" />
     <MESSAGE value="added evars-gpr++" />
     <MESSAGE value="updated evars-gpr" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated evars-gpr" />
+    <MESSAGE value="updated README" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated README" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -713,6 +732,41 @@
           <url>file://$PROJECT_DIR$/ForeTiSHortiCo/preprocess/base_dataset.py</url>
           <line>447</line>
           <option name="timeStamp" value="168" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiSHortiCo/preprocess/base_dataset.py</url>
+          <line>134</line>
+          <option name="timeStamp" value="169" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiSHortiCo/preprocess/base_dataset.py</url>
+          <line>181</line>
+          <option name="timeStamp" value="170" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiSHortiCo/preprocess/base_dataset.py</url>
+          <line>100</line>
+          <option name="timeStamp" value="171" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiSHortiCo/preprocess/base_dataset.py</url>
+          <line>101</line>
+          <option name="timeStamp" value="172" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiSHortiCo/preprocess/base_dataset.py</url>
+          <line>106</line>
+          <option name="timeStamp" value="173" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiSHortiCo/optimization/optuna_optim.py</url>
+          <line>140</line>
+          <option name="timeStamp" value="174" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ForeTiSHortiCo/utils/helper_functions.py</url>
+          <line>67</line>
+          <option name="timeStamp" value="176" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -725,10 +779,10 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ForeTiS_HortiCo$ForeTiSHortiCo_run.coverage" NAME="ForeTiSHortiCo.run Coverage Results" MODIFIED="1679325360416" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/ForeTiS$ForeTiS_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1674213355837" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/HorticulturalSalesPrediction$HorticulturalSalesPrediction_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1666270498365" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ForeTiS_HortiCo$ForeTiSHortiCo_run.coverage" NAME="ForeTiSHortiCo.run Coverage Results" MODIFIED="1684784459641" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ForeTiS_HortiCo$ForeTiSHortico_run.coverage" NAME="ForeTiSHortiCo.run Coverage Results" MODIFIED="1674564422331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/HorticulturalSalesPrediction$HorticulturalSalesPrediction_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1666270498365" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ForeTiS$ForeTiS_run.coverage" NAME="ForeTiS.run Coverage Results" MODIFIED="1674213355837" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ForeTiS_Hortico$ForeTiS_run.coverage" NAME="ForeTiSHortico.run Coverage Results" MODIFIED="1674242348427" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -4,12 +4,7 @@ import pandas as pd
 import numpy as np
 import sklearn
 import tensorflow as tf
-import itertools
 import optuna
-import gpflow
-
-from gpflow.kernels import Matern52, White, RationalQuadratic, Periodic, SquaredExponential, Polynomial
-
 
 class TensorflowModel(_base_model.BaseModel, abc.ABC):
     """
@@ -28,42 +23,10 @@ class TensorflowModel(_base_model.BaseModel, abc.ABC):
         - y_scaler (*sklearn.preprocessing.StandardScaler*): Standard scaler for the y data
 
     """
-
-    def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str, pca_transform: bool = None,
-                 target_column: str = None):
-        self.all_hyperparams = self.common_hyperparams()
-        self.conf = True
+    def __init__(self, optuna_trial: optuna.trial.Trial, datasets: list, featureset: str, target_column: str = None,
+                 pca_transform: bool = None):
         super().__init__(optuna_trial=optuna_trial, datasets=datasets, featureset=featureset,
                          target_column=target_column, pca_transform=pca_transform)
-
-
-    def define_model(self) -> gpflow.models.GPR:
-        """
-        Definition of the actual prediction model.
-
-        See :obj:`~ForeTiSHortiCo-Hortico.model._base_model.BaseModel` for more information.
-        """
-        self.standardize_X = self.suggest_hyperparam_to_optuna('standardize_X')
-        self.standardize_y = self.suggest_hyperparam_to_optuna('standardize_y')
-        if self.standardize_X:
-            self.x_scaler = sklearn.preprocessing.StandardScaler()
-        if self.standardize_y:
-            self.y_scaler = sklearn.preprocessing.StandardScaler()
-
-        optimizer_dict = {'Scipy': gpflow.optimizers.Scipy()}
-        optimizer_key = self.suggest_hyperparam_to_optuna('optimizer')
-        self.optimizer = optimizer_dict[optimizer_key]
-
-        mean_function_dict = {'Constant': gpflow.mean_functions.Constant(),
-                              None: None}
-        mean_function_key = self.suggest_hyperparam_to_optuna('mean_function')
-        self.mean_function = mean_function_dict[mean_function_key]
-        kernel_key = self.suggest_hyperparam_to_optuna('kernel')
-        self.kernel = self.kernel_dict[kernel_key]
-        self.noise_variance = self.suggest_hyperparam_to_optuna('noise_variance')
-
-        return gpflow.models.GPR(data=(np.zeros((5, 1)), np.zeros((5, 1))), kernel=self.kernel,
-                                 mean_function=self.mean_function, noise_variance=self.noise_variance)
 
     def retrain(self, retrain: pd.DataFrame):
         """
@@ -142,75 +105,4 @@ class TensorflowModel(_base_model.BaseModel, abc.ABC):
         self.retrain(retrain=train)
         # validate model
         return self.predict(X_in=val)
-
-    def extend_kernel_combinations(self):
-        """
-        Function extending kernels list with combinations based on base_kernels
-        """
-        kernels = []
-        base_kernels = ['SquaredExponential', 'Matern52', 'WhiteKernel', 'RationalQuadratic', 'Polynomial',
-                        'PeriodicSquaredExponential', 'PeriodicMatern52', 'PeriodicRationalQuadratic']
-        kernel_dict = {
-            'SquaredExponential': SquaredExponential(),
-            'WhiteKernel': White(),
-            'Matern52': Matern52(),
-            'RationalQuadratic': RationalQuadratic(),
-            'Polynomial': Polynomial(),
-            'PeriodicSquaredExponential': Periodic(SquaredExponential(), period=52),
-            'PeriodicMatern52': Periodic(Matern52(), period=52),
-            'PeriodicRationalQuadratic': Periodic(RationalQuadratic(), period=52)
-        }
-        kernels.extend(base_kernels)
-        for el in list(itertools.combinations(*[base_kernels], r=2)):
-            kernels.append(el[0] + '+' + el[1])
-            kernel_dict[el[0] + '+' + el[1]] = kernel_dict[el[0]] + kernel_dict[el[1]]
-            kernels.append(el[0] + '*' + el[1])
-            kernel_dict[el[0] + '*' + el[1]] = kernel_dict[el[0]] * kernel_dict[el[1]]
-        for el in list(itertools.combinations(*[base_kernels], r=3)):
-            kernels.append(el[0] + '+' + el[1] + '+' + el[2])
-            kernel_dict[el[0] + '+' + el[1] + '+' + el[2]] = kernel_dict[el[0]] + kernel_dict[el[1]] + kernel_dict[
-                el[2]]
-            kernels.append(el[0] + '*' + el[1] + '*' + el[2])
-            kernel_dict[el[0] + '*' + el[1] + '*' + el[2]] = kernel_dict[el[0]] * kernel_dict[el[1]] * kernel_dict[
-                el[2]]
-            kernels.append(el[0] + '*' + el[1] + '+' + el[2])
-            kernel_dict[el[0] + '*' + el[1] + '+' + el[2]] = kernel_dict[el[0]] * kernel_dict[el[1]] + kernel_dict[
-                el[2]]
-            kernels.append(el[0] + '+' + el[1] + '*' + el[2])
-            kernel_dict[el[0] + '+' + el[1] + '*' + el[2]] = kernel_dict[el[0]] + kernel_dict[el[1]] * kernel_dict[
-                el[2]]
-            kernels.append(el[0] + '*' + el[2] + '+' + el[1])
-            kernel_dict[el[0] + '*' + el[2] + '+' + el[1]] = kernel_dict[el[0]] * kernel_dict[el[2]] + kernel_dict[
-                el[1]]
-        return kernels, kernel_dict
-
-    @staticmethod
-    def common_hyperparams() -> dict:
-        """
-        See :obj:`~ForeTiSHortiCo-Hortico.model._base_model.BaseModel` for more information on the format.
-        """
-        return {
-            'noise_variance': {
-                'datatype': 'float',
-                'lower_bound': 0.01,
-                'upper_bound': 100,
-                'log': True
-            },
-            'optimizer': {
-                'datatype': 'categorical',
-                'list_of_values': ['Scipy']
-            },
-            'mean_function': {
-                'datatype': 'categorical',
-                'list_of_values': [None, 'Constant']
-            },
-            'standardize_X': {
-                'datatype': 'categorical',
-                'list_of_values': [True, False]
-            },
-            'standardize_y': {
-                'datatype': 'categorical',
-                'list_of_values': [True, False]
-            }
-        }
 
