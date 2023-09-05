@@ -37,7 +37,7 @@ class AverageSeasonal(_baseline_model.BaselineModel):
         Implementation of the retraining for the AverageSeasonal model.
         See :obj:`~ForeTiSHortiCo-Hortico.model._base_model.BaseModel` for more information.
         """
-        observed_period = retrain.shift(self.datasets.seasonal_periods)
+        observed_period = retrain.shift(self.datasets.seasonal_periods-1)
         observed_period = observed_period.tail(self.window) if hasattr(self, 'window') else retrain
         self.average = observed_period[self.target_column].mean()
 
@@ -57,7 +57,7 @@ class AverageSeasonal(_baseline_model.BaselineModel):
         Implementation of the retraining for the AverageSeasonal model.
         See :obj:`~ForeTiSHortiCo-Hortico.model._base_model.BaseModel` for more information
         """
-        observed_period = update.shift(self.datasets.seasonal_periods).tail(
+        observed_period = update.shift(self.datasets.seasonal_periods-1).tail(
             self.window) if hasattr(self, 'window') else update
         self.average = observed_period[self.target_column].mean()
 

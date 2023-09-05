@@ -28,27 +28,27 @@ if __name__ == '__main__':
     # Input Params #
     parser.add_argument("-dd", "--data_dir", type=str, default='docs/source/tutorials/tutorial_data',
                         help="Provide the full path of your data directory.")
-    parser.add_argument("-sd", "--save_dir", type=str, default='docs/source/tutorials/tutorial_data',
+    parser.add_argument("-sd", "--save_dir", type=str, default='docs/source/tutorials/tutorial_data/blumenzentrale/focusproduct',
                         help="Provide the full path of the directory in which you want to save your results. "
                              "Default is same as data_dir.")
-    parser.add_argument("-data", "--data", type=str, default=None,
+    parser.add_argument("-data", "--data", type=str, default='blumenzentrale',
                         help="specify the dataset that you want to use.")
     parser.add_argument("-con", "--config_type", type=str, default='api',
                         help="specify the config type that you want to use.")
-    parser.add_argument("-tc", "--target_column", type=str, default='total_turnover',
+    parser.add_argument("-tc", "--target_column", type=str, default='Pelargonium peltatum_amount',
                         help="specify the target column for the prediction.")
     parser.add_argument("-fs", "--featuresets", nargs='+', default=['dataset_sales'],
                         help="specify on which featuresets the models should be optimized: Valid arguments are: " +
                              str(helper_functions.get_list_of_featuresets()) +
                              "If optimize, the featuresets will be optimized by optuna.")
-    parser.add_argument("-mod", "--models", nargs='+', default=['all'],
+    parser.add_argument("-mod", "--models", nargs='+', default=['averageseasonallag'],
                         # gprtf xgboost mlp mlpbayes lstm lstmbayes ard arima arimax es averagehistorical averagemoving averageseasonal averageseasonallag bayesridge elasticnet lasso ridge
                         # gprtf xgboost ard arima arimax es averagehistorical averagemoving averageseasonal averageseasonallag bayesridge elasticnet lasso ridge mlp mlpbayes lstm lstmbayes
                         help="specify the models to optimize: 'all' or naming according to source file name. "
                              "Multiple models can be selected by just naming multiple model names, "
                              "e.g. --models mlp xgboost. "
                              "The following are available: " + str(helper_functions.get_list_of_implemented_models()))
-    parser.add_argument("-ty", "--test_year", type=int, default=2022,
+    parser.add_argument("-ty", "--test_year", type=int, default=2021,
                         help="Only relevant when the test size percentage is 'yearly':"
                              "specify the year that should be used as test set. "
                              "Standard is 2021")
@@ -102,7 +102,7 @@ if __name__ == '__main__':
                         help="specify whether to save the final model to hard drive or not "
                              "(caution: some models may use a lot of disk space, "
                              "unfitted models that can be retrained are already saved by default).")
-    parser.add_argument("-prc", "--periodical_refit_cycles", type=list, default=['complete', 0, 1, 2, 4, 8],
+    parser.add_argument("-prc", "--periodical_refit_cycles", type=list, default=['complete', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                         help="specify with which periods periodical refitting will be done. "
                              "0 means no periodical refitting, "
                              "complete means no periodical refitting and the whole train dataset will be used for "
