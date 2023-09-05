@@ -1,6 +1,6 @@
-ForeTiS-Hortico: A Forecasting Time Series framework for Horticultural Sales
+ForeTiS-HortiCo: A Forecasting Time Series framework for Horticultural Sales
 =============================================================================
-ForeTiS-Hort is a Python framework that enables the rigorous training, comparison and analysis of time series forecasting for a variety of different models.
+ForeTiS-HortiCo is a Python framework that enables the rigorous training, comparison and analysis of time series forecasting for a variety of different models.
 ForeTiS includes multiple state-of-the-art prediction models or machine learning methods, respectively. 
 These range from classical models, such as regularized linear regression over ensemble learners, e.g. XGBoost, to deep learning-based architectures, such as Multilayer Perceptron (MLP). 
 To enable automatic hyperparameter optimization, we leverage state-of-the-art and efficient Bayesian optimization techniques. 
